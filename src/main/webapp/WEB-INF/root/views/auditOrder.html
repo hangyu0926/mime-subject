@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html;charset=utf-8">
+	<meta http-equiv="X-UA-compatible" content="IE=edge">
+	<title>待审核订单</title>
+	<script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="../resources/javascript/validate.js"></script>
+	<!-- <script type="text/javascript" src="../resources/javascript/bootstrap.min.js"></script> -->
+	<script type="text/javascript" src="../resources/javascript/main.js"></script>
+	<script type="text/javascript" src="../resources/javascript/publick.js"></script>
+	<script type="text/javascript" src="../resources/javascript/auditOrder/auditOrder.js"></script>
+    <link rel="stylesheet" href="../resources/style/bootstrap.min.css">
+    <link rel="stylesheet" href="../resources/style/publick.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/auditOrder/auditorder.css">
+</head>
+<body>
+	<nav class="nav-head">
+		 <div class="nav-head-LOGO">米么股权系统</div>
+		 <div class="nav-head-right">
+		    <span class="nav-head-logout">退出</span>
+		    <span class="nav-head-changPwd" data-target="#changePwd-modal" data-toggle="modal">修改密码</span>
+		    <span class="nav-head-userName">沈旭祥</span>
+		 </div>
+	</nav>
+	<div class="contentBox">
+		<div class="leftMenu">
+			<ul>
+				<li class="accountManagement">
+					<span>账户管理</span>
+					<ul class="secondMenu">
+						<li class="" urlSrc="#"><a href="auditOrder.html">新增账户</a></li>
+						<li urlSrc="#">账户查看</li>
+					</ul>
+				</li> 
+				<li class="admin ">
+					<span>管理员</span>
+					<ul  class="secondMenu">
+						<li urlSrc="#">竞拍配置</li>
+						<li urlSrc="auditOrder.html">待审核订单</li>
+						<li urlSrc="#">待确认订单</li>
+					</ul>
+				</li>
+				<li class="forme ">
+					<span>我的股权</span>
+					<ul  class="secondMenu">
+						<li urlSrc="#">我的发布</li>
+						<li urlSrc="#">我的竞拍</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="contentRight">
+		<form class="form-horizontal" role="form" onsubmit="return false;">
+			<div class="account-add-email">
+				<label for="account-email">邮箱</label>
+				<input type="email" name="" id="account-email" required>
+			</div>
+			<div class="account-add-name">
+				<label for="account-name">姓名</label>
+				<input type="email" name="" id="account-name" required>
+			</div>
+			<div class="account-add-name">
+				<label for="account-phone">手机</label>
+				<input type="text" name="" id="account-phone" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" oninput="if(value.length>11)value=value.slice(0,11)" required>
+			</div>
+			<div class="account-add-gushu">
+				<label for="account-gushu">股权数</label>
+				<input type="text" name="" id="account-gushu" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" required>
+			</div>
+			<div class="account-add-ksgushu">
+				<label for="account-ksgushu"><span>可售股权数<span><span style="font-size: 12px">(不填默认全部)</span></label>
+				<input type="text" name="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="account-ksgushu" required>
+			</div>
+			<div class="account-add-sure">
+				<button onclick="accountAdd()">提交</button>
+				<button onclick="accountReset()">重置</button>
+			</div>
+		</div>
+		</form>
+	</div>
+</body>
+</html>

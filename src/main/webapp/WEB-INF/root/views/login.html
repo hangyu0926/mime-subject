@@ -1,211 +1,82 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>曦域资本</title>
-		<link rel="stylesheet" href="../resources/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="../resources/css/main.css" />
-		<link rel="stylesheet" href="../resources/css/rotate.css" />
-		<link rel="stylesheet" href="../resources/css/alert.css" />
-		<script type="text/javascript" src="../resources/js/jquery-1.8.3.js" ></script>
-		<script type="text/javascript" src="../resources/js/md5.js" ></script>
-		<script type="text/javascript" src="../resources/js/validate.js" ></script>
-		<script type="text/javascript" src="../resources/js/dialog.js" ></script>
-		<script type="text/javascript" src="../resources/js/main.js" ></script>
-		<script>
-			$(function(){
-				judgeAutoInput();
-				$('#loginPassword').focus(function(){
-					if($(this).val() == '******************'){
-						$(this).val('');
-					}
-				})
-			})
-			// localStorage封装
-			function setLocalStorage(key, value){
-				var curTime = new Date().getTime();
-				localStorage.setItem(key,JSON.stringify({data:value,time:curTime}));
-			}
-			function getLocalStorage(key, exp){
-				var data = localStorage.getItem(key);
-				if(!data){
-					return undefined;
-				}
-				var dataObj = JSON.parse(data);
-				if (new Date().getTime() - dataObj.time>exp) {
-					localStorage.removeItem(key);
-					return undefined;
-				}else{
-					var dataObjDatatoJson = dataObj.data
-					return dataObjDatatoJson;
-				}
-			}
-			function judgeAutoInput(){
-				// 判断是否需要自动登陆
-				if(!global_validate.objectIsEmpty(getLocalStorage('remember_userMobile', 1000*60*60*24*15)) && !global_validate.objectIsEmpty(getLocalStorage('remember_userMobile', 1000*60*60*24*15))){
-					$('#loginUserName').val(getLocalStorage('remember_userMobile', 1000*60*60*24*15));
-					$('#loginPassword').val('******************');
-					$('#loginRealPsw').val(getLocalStorage('remember_password', 1000*60*60*24*15));
-				}
-			}
-			function login(){
-				// 登录操作
-				// 参数获取，验证
-				var username = $('#loginUserName').val();
-				var password = $('#loginPassword').val();
-				var isRemember = true;
-				if(password == '******************'){
-					isRemember = false;
-					password = $('#loginRealPsw').val();
-				}
-				if(global_validate.stringIsEmpty(username)){
-					global_dialog.error('请输入用户名！');
-					return;
-				}
-				if(global_validate.stringIsEmpty(password)){
-					global_dialog.error('请输入登录密码！');
-					return;
-				}
-				if(isRemember){
-					password = hex_md5(password);
-				}
+<html lang="en">
 
-				// 数据提交，成功进入主界面
-				global_ajax('login', {
-					'userMobile': username,
-					'password': password
-				}, function(data){
-					setLocalStorage("remember_userMobile", username);
-					setLocalStorage("remember_password", password);
-					// 登录信息保存
-					sessionStorage.setItem("login_userMobile", data.detailInfo.userMobile);
-					window.location.href = './index.html';
-				})
-			}
-			function updatePassword(){
-				// 修改密码操作
-				// 参数获取，验证
-				var username = $('#updatePswUserName').val();
-				var oldPassword = $('#updatePswOldPsw').val();
-				var newPassword = $('#updatePswNewPsw').val();
-				var reNewPassword = $('#updatePswReNewPsw').val();
-				if(global_validate.stringIsEmpty(username) || global_validate.stringIsEmpty(oldPassword) || global_validate.stringIsEmpty(newPassword) || global_validate.stringIsEmpty(reNewPassword)){
-					global_dialog.error('请填写完整！');
-					return;
-				}
-				if(!global_validate.passwordIsOk(oldPassword)){
-					global_dialog.error('旧密码错误，请重新输入！');
-					return;
-				}
-				if(oldPassword == newPassword){
-					global_dialog.error('输入的新旧密码相同，请重新输入！');
-					return;
-				}
-				if(newPassword != reNewPassword){
-					global_dialog.error('两次输入的新密码不统一，请重新输入！');
-					return;
-				}
-				if(!global_validate.passwordIsOk(newPassword)){
-					global_dialog.error('新密码不符合要求，请重新输入！');
-					return;
-				}
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../resources/style/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/login/login.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/dialog.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/alert.css">
+    <script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../resources/javascript/md5.js"></script>
+    <script type="text/javascript" src="../resources/javascript/dialog.js"></script>
+</head>
 
-				oldPassword = hex_md5(oldPassword);
-				newPassword = hex_md5(newPassword);
-				// 数据提交，成功回到登录
-				global_ajax('updatePassword', {
-					'userMobile': username,
-					'oldPassword': oldPassword,
-					'newPassword': newPassword
-				}, function(data){
-					global_dialog.alert("修改密码成功！");
-					$('#loginUserName').val(username);
-					$('#loginPassword').val('******************');
-					$('#loginRealPsw').val(newPassword);
-					showLoginDialog(true);
-				})
-			}
+<body>
+    <!-- 登录 -->
+    <div class="subject-login" id="loginIn">
+        <div class="subject-login-header">米么金服股权竞拍系统</div>
+        <form class="form-horizontal" role="form" onsubmit="return false;">
+        <div class="input-group input-group-lg subject-login-name">
+            <span class="input-group-addon" style="width:90px">用户名</span>
+            <input class="form-control" id="login_username" style="width:230px" type="text" placeholder="请输入用户名" required>
+            <span onclick="doCheckregister()">现在注册</span>
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" style="width:90px">密码</span>
+            <input class="form-control" id="login_password" style="width:230px" type="text" placeholder="请输入密码" required>
+            <span class="subject-login-find" onclick="findPass()">找回密码</span>
+        </div>
+        <div class="login-bottom">
+            
+            <button onclick="doLogin()">登录</button>
+        </div>
+        </form>
+    </div>
+    <!-- 注册 -->
+    <div class="register-login" id="register">
+        <div class="subject-login-header">注册</div>
+        <form class="form-horizontal" role="form" onsubmit="return false;">
+        <div class="input-group input-group-lg subject-register-name">
+            <span class="input-group-addon" style="width:90px">用户名</span>
+            <input class="form-control" id="register_username" type="text" placeholder="请输入用户名" required>
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" style="width:90px">密码</span>
+            <input class="form-control" id="register_password" type="text" placeholder="请输入密码" required>
+        </div>
+        <div class="register-login-bottom">
+            <button onclick="doRegister()">立即注册</button>
+        </div>
+        </form>
+    </div>
+    <!-- 找回密码 -->
+    <div class="finpassword-login register-login" id="findPass">
+        <div class="subject-login-header">找回密码</div>
+        <form class="form-horizontal" role="form" onsubmit="return false;">
+        <div class="input-group input-group-lg subject-find-name">
+            <span class="input-group-addon" style="width:90px">用户名</span>
+            <input class="form-control" id="find_username" type="text" placeholder="请输入用户名" required>
+        </div>
+        <div class="input-group input-group-lg finpassword-login-old">
+            <span class="input-group-addon" style="width:90px">旧密码</span>
+            <input class="form-control" id="find_passwordOld" type="text" placeholder="请输入密码" required>
+        </div>
+         <div class="input-group input-group-lg finpassword-login-new">
+            <span class="input-group-addon" style="width:90px">新密码</span>
+            <input class="form-control" id="find_passwordNew" type="text" placeholder="请输入密码" required>
+        </div>
+         <div class="input-group input-group-lg finpassword-login-newAgain">
+            <span class="input-group-addon" style="width:90px">新密码确认</span>
+            <input class="form-control" id="find_passwordNewagain" type="text" placeholder="请输入密码" required>
+        </div>
+        <div class="register-login-bottom">
+            <button onclick="doModifypass()">修改</button>
+        </div>
+        </form>
+    </div>
+    <script type="text/javascript" src="../resources/javascript/login/login.js"></script>
+</body>
 
-			$(function(){
-				$(document).click(function(){
-					// 执行动画
-					if($('#loginInputDialog').is(':hidden') && !$('body').hasClass('animationPlaying')){
-						$('body').addClass('animationPlaying');
-						// 1.外圆缩小
-						$('#bigCircle').addClass('narrow-big-circle');
-						$('#smallCircle').addClass('narrow-small-circle');
-						// 2.logo消失
-						$('#loginDialog').addClass('hide-login-dialog');
-						// 3.登录出现
-						setTimeout("showLoginInputDialog()",2500);
-					}
-				})
-				
-				// 统一处理input的focus事件
-				$('.xy-model-input input').focus(function(){
-					$(this).parent().addClass('xy-model-input-focus');
-				}).blur(function(){
-					$(this).parent().removeClass('xy-model-input-focus');
-				})
-			})
-			
-			// 显示输入登录框
-			function showLoginInputDialog(){
-				$('#loginInputDialog').show().find('#loginInputDialogLogin').addClass('show-login-input-dialog-login');
-				$('body').removeClass('animationPlaying');
-			}
-			
-			// 显示输入修改密码框
-			function showUpdatePswDialog(){
-				$('#updatePswUserName').val('');
-				$('#updatePswOldPsw').val('');
-				$('#updatePswNewPsw').val('');
-				$('#updatePswReNewPsw').val('');
-				$('#loginInputDialogLogin').removeClass('show-login-input-dialog-login').removeClass('show-login-input-dialog-login-snd').addClass('hide-login-input-dialog-login');
-				$('#loginInputDialogUpdatePsw').removeClass('hide-login-input-dialog-updatePsw').addClass('show-login-input-dialog-updatePsw');
-			}
-			
-			// 显示输入登录框
-			function showLoginDialog(isReset){
-				if(!isReset){
-					$('#loginUserName').val('');
-					$('#loginPassword').val('');
-				}
-				$('#loginInputDialogUpdatePsw').removeClass('show-login-input-dialog-updatePsw').addClass('hide-login-input-dialog-updatePsw');
-				$('#loginInputDialogLogin').removeClass('hide-login-input-dialog-login').addClass('show-login-input-dialog-login-snd');
-			}
-		</script>
-	</head>
-	<body>
-		<div class="circle">
-			<div class="rotate-big-circle" id="bigCircle">
-				<i></i>
-				<div class="login-input-dialog" id="loginInputDialog">
-					<div class="login-input-dialog-login" id="loginInputDialogLogin">
-						<img class="login-input-dialog-login-logo" src="../resources/image/logo200200.png" />
-						<div class="login-input-dialog-login-userName xy-model-input"><input id="loginUserName" type="text" placeholder="请输入账号" maxlength="11"/></div>
-						<div class="login-input-dialog-login-password xy-model-input"><input id="loginPassword" type="password" placeholder="请输入登录密码" maxlength="6"/></div>
-						<input type="hidden" id="loginRealPsw"/>
-						<span class="login-input-dialog-login-submit" onclick="login()"><font>登</font>录<i class="login-input-dialog-login-submit-leftL"></i><i class="login-input-dialog-login-submit-midL"></i><i class="login-input-dialog-login-submit-rightL"></i></span>
-						<span class="login-input-dialog-login-showUpdatePsw" onclick="showUpdatePswDialog()">修改密码</span>
-					</div>
-					<div class="login-input-dialog-updatePsw" id="loginInputDialogUpdatePsw">
-						<div class="login-input-dialog-updatePsw-userName xy-model-input"><input id="updatePswUserName" type="text" placeholder="请输入账号" maxlength="11"/></div>
-						<div class="login-input-dialog-updatePsw-oldPassword xy-model-input"><input id="updatePswOldPsw" type="password" placeholder="旧密码" maxlength="6"/></div>
-						<div class="login-input-dialog-updatePsw-newPassword xy-model-input"><input id="updatePswNewPsw" type="password" placeholder="新密码" maxlength="6"/></div>
-						<div class="login-input-dialog-updatePsw-reNewPassword xy-model-input"><input id="updatePswReNewPsw" type="password" placeholder="新密码确认" maxlength="6"/></div>
-						<span class="login-input-dialog-updatePsw-submit" onclick="updatePassword()"><font>完</font>成<i class="login-input-dialog-updatePsw-submit-leftL"></i><i class="login-input-dialog-updatePsw-submit-midL"></i><i class="login-input-dialog-updatePsw-submit-rightL"></i></span>
-						<span class="login-input-dialog-updatePsw-showLogin" onclick="showLoginDialog()">登录</span>
-					</div>
-				</div>
-			</div>
-			<div class="rotate-small-circle animation-rotate-small-circle-init" id="smallCircle">
-				<i></i>
-			</div>
-			<div class="login-dialog" id="loginDialog">
-				<img class="login-dialog-logo" src="../resources/image/logo320320.png" />
-				<div class="login-dialog-arrow"/></div>
-			</div>
-		</div>
-	</body>
 </html>

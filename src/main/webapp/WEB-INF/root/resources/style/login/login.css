@@ -1,0 +1,110 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: url("../../image/bg.jpg");
+}
+
+.subject-login,.register-login{
+  position: absolute;
+  width: 430px;
+  height: 280px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+  padding: 50px;
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 10px 10px 5px #888888;
+  padding-top: 30px;
+
+}
+.subject-login{
+    padding-right: 0;
+}
+.subject-login .subject-login-header,.subject-login-header {
+  width: 250px;
+  height: 50px;
+  margin: 0 auto;
+  color: #555;
+  font-size: 20px;
+}
+
+.subject-login .subject-login-name,.subject-register-name{
+  margin-bottom: 20px;
+}
+
+.clearfix:after {
+  content: " ";
+  display: block;
+  clear: both;
+  height: 0;
+}
+
+.subject-login-name span:nth-of-type(2),.subject-login-find{
+font-size: 12px;
+  line-height: 20px;
+  cursor: pointer;
+  color: #5093e1;
+}
+.login-bottom button{
+  outline: none;
+  border: none;
+  /* width: 6em; */
+  width: 100%;
+  font-size: 16px;
+  line-height: 20px;
+  color: #fff;
+  background-color: #ff6b6b;
+  border-color: #357ebd;
+  padding: 10px 0;
+  border-radius: 6px;
+}
+.login-bottom{
+  text-align: center;
+  padding-right: 60px;
+}
+.subject-login div:nth-of-type(3),.register-login div:nth-of-type(3){
+  margin-top: 20px;
+}
+.register-login-bottom button{
+  width: 100%;
+  outline: none;
+  border: none;
+  /* width: 6em; */
+  font-size: 16px;
+  background-color: #ff6b6b;
+  border-radius: 6px;
+  color: #fff;
+  height: 33px;
+}
+.register-login{
+  display: none;
+}
+.input-group{
+  line-height: 46px;
+}
+.finpassword-login{
+  height: 380px;
+  padding-right: 40px;
+}
+.subject-find-name,.finpassword-login-old,.finpassword-login-new,.finpassword-login-newAgain{
+  margin-bottom: 10px;
+}
+.finpassword-login .finpassword-login-new{
+  margin-top: 0!important;
+}
+.finpassword-login-newAgain span{
+  padding: 0!important;
+}

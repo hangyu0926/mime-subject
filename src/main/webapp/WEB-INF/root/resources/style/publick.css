@@ -1,0 +1,273 @@
+@charset "UTF-8";
+body {
+	font-family: "Microsoft Yahei";
+	font-size: 12px;
+	padding: 0;
+	margin: 0;
+	position: relative;
+}
+* {
+	padding: 0;
+	margin: 0;
+}
+ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.hide {
+    display: none;
+}
+.show {
+	display: block;
+}
+.clearfix:before,
+.clearfix:after {
+	display: table;
+	content: "";
+}
+.clearfix:after {
+	clear: both;
+}
+::selection {
+    background: #b3d4fc;
+    border: none;
+}
+*:focus {
+	outline: none;
+}
+/**
+*nav导航样式
+*/
+.nav-head {
+	width: 100%;
+	height: 50px;
+	background: #5a6378;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2;
+}
+.nav-head > .nav-head-LOGO{
+	width: 180px;
+    height: 50px;
+    float: left;
+    font-size: 14px;
+    font-weight: normal;
+    color: #fff;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    background: url("../image/LOGO-indent.png") no-repeat left+20px center;
+    text-indent: 60px;
+}
+.nav-head > .nav-head-right{
+	width: calc(100% - 180px);
+    height: 50px;
+    padding-right: 40px;
+    float: right;
+}
+.nav-head > .nav-head-right > span{
+	float: right;
+	padding: 0 20px;
+	font-size: 14px;
+	color: #1e282c;
+    line-height: 50px;
+    cursor: pointer;
+}
+.nav-head > .nav-head-right > span:hover:not(.nav-head-userName){
+	color: #fff;
+	background: #5093e1;
+}
+.nav-head > .nav-head-right > span + span{
+	margin-right: 40px;
+}
+
+/**
+*内容展示--左侧菜单栏
+*/
+.contentBox {
+	width: 100%;
+	height: 1000px;
+	position: absolute;
+	top: 50px;
+	left: 0;
+	z-index: 1;
+}
+.contentBox > .leftMenu {
+	width: 180px;
+	height: 100%;
+	background: #393f4f;
+	position: fixed;
+	left: 0;
+
+}
+.contentBox > .leftMenu > ul {
+	width: 100%;
+	height: auto;
+	background: transparent;
+}
+.contentBox > .leftMenu > ul > li {
+	width: 100%;
+    height: 80px;
+    background: transparent;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-transition: height .4s;
+            transition: height .4s;
+}
+.contentBox > .leftMenu > ul > li > span {
+	display: block;
+	width: 100%;
+	padding-left: 30px;
+	line-height: 80px;
+	color: #fff;
+	font-size: 16px;
+	font-weight: normal;
+	background: url("../image/select.png") no-repeat right+15px center;
+}
+.contentBox > .leftMenu > ul > li.accountManagement.active{
+	background: #ff6b6b;
+	height: 240px;
+}
+.contentBox > .leftMenu > ul > li + li{
+	border-top: 1px solid #465468;
+}
+.contentBox > .leftMenu > ul > li.active > span {
+	background: url("../image/selected.png") no-repeat right+15px center;
+}
+.contentBox > .leftMenu > ul > li.admin.active{
+	background: #ff6b6b;
+	height: 320px;
+}
+.contentBox > .leftMenu > ul > li.forme.active{
+	background: #ff6b6b;
+	height: 240px;
+}
+.contentBox > .leftMenu > ul > li > ul.secondMenu{
+	width: 100%;
+	height: auto;
+	background: #5a6378;
+}
+.contentBox > .leftMenu > ul > li > ul.secondMenu > li{
+	width: 100%;
+	height: 80px;
+	padding-left: 55px;
+	line-height: 80px;
+	color: #fff;
+	font-size: 16px;
+}
+.contentBox > .leftMenu > ul > li > ul.secondMenu > li:hover{
+	background: #6e7689;
+}
+.contentBox > .leftMenu > ul > li > ul.secondMenu > li.active{
+	background: #7686bb;
+}
+/**
+*内容展示--右侧内容展示部分
+*/
+.contentBox {
+	width: 100%;
+	height: auto;
+	position: absolute;
+	top: 50px;
+	left: 0;
+	z-index: 1;
+}
+.contentBox > .contentRight {
+	width: 100%;
+	height: auto;
+	padding: 40px 40px 40px 220px;
+	background: #fff;
+
+}
+
+/**
+*修改密码模态框
+*/
+.modal-content {
+	margin-top: 150px;
+}
+.modal-title{
+	font-size: 16px;
+	line-height: 60px;
+}
+.form-group label {
+	line-height: 34px;
+	font-weight: normal;
+	font-size: 14px;
+	text-align: right;
+}
+.modal-footer {
+	margin-top: 0;
+}
+.modal-footer > div{
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+}
+.modal-footer .btn + .btn{
+	margin-left: 20px;
+}
+#changePwd-modal .btn {
+	padding: 6px 40px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

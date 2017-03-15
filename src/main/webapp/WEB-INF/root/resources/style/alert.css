@@ -1,0 +1,52 @@
+.alert-dialog, .confirm-dialog{
+    position: fixed;top: 0;left: 0;height: 100%;width: 100%;
+    background-color: rgba(0, 0, 0, .4);z-index: 10000;font-size: 16px;
+    opacity: 0;visibility: hidden;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;-moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    -o-transition: opacity 0.3s 0s, visibility 0s 0.3s;transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+.alert-dialog.is-visible, .confirm-dialog.is-visible{
+    opacity: 1;visibility: visible;-webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0s;-o-transition: opacity 0.3s 0s, visibility 0s 0s;
+    transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+.alert-dialog .alert-dialog-message, .confirm-dialog .confirm-dialog-message{
+    position: relative;
+    width: 364px;
+    margin: 4em auto;
+    background: #f2f0f1;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    -webkit-transform: translateY(60px);
+    -moz-transform: translateY(60px);
+    -ms-transform: translateY(60px);
+    -o-transform: translateY(60px);
+    transform: translateY(60px);
+    -webkit-backface-visibility: hidden;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    height: 190px;
+}
+.alert-dialog-header{position: relative;top:30px;}
+.alert-dialog .alert-dialog-message p, .confirm-dialog .confirm-dialog-message p{position: relative;top:60px;}
+.alert-dialog .alert-dialog-message p .alert-dialog-message-error, .confirm-dialog .confirm-dialog-message p{color: #9ba9db;}
+.alert-dialog .alert-dialog-message button{width: 100%;border-radius: 0 0 10px 10px;line-height: 2em;}
+.confirm-dialog .confirm-dialog-message button{width: 50%;line-height: 2em;}
+.confirm-dialog .confirm-dialog-message button:first-of-type{border-radius: 0 0 0 10px;}
+.confirm-dialog .confirm-dialog-message button:last-of-type{border-radius: 0 0 10px 0;}
+.alert-dialog-message .btn-default{
+    position: relative;
+    top: 80px;
+    display: inline-block;
+    height: 33px;
+    width: 104px;
+    border-top: 1px solid rgba(0,0,0,.2);
+    color: #fff;
+    background-color: #5093e1;
+    border: none;
+}
