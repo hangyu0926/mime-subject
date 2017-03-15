@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nanmi.xypms.web.dao.UserMapper">
+    <resultMap id="userMap" type="cn.nanmi.msts.web.model.ModelDTO">
+        <result column="USER_ID" javaType="Long" property="userId"></result>
+        <result column="USER_MOBILE" javaType="String" property="userMobile"></result>
+        <result column="USER_NAME" javaType="String" property="userName"></result>
+        <result column="MAIL_ADD" javaType="String" property="mailAddress"></result>
+        <result column="LOGIN_PASS" javaType="String" property="loginPass"></result>
+        <result column="USER_WECHAT" javaType="String" property="userWechat"></result>
+        <result column="INIT_PASS" javaType="String" property="initPass"></result>
+        <result column="INIT_PASS_MD5" javaType="String" property="initPassMd5"></result>
+        <result column="PERMISSION_ID" javaType="Integer" property="permissionId"></result>
+        <result column="DEL_FLAG" javaType="Integer" property="deleteFlag"></result>
+        <result column="DEL_MAN" javaType="Long" property="deleteMan"></result>
+        <result column="DEL_TIME" javaType="Date" property="deleteTime"></result>
+        <result column="CREATE_MAN" javaType="Long" property="createMan"></result>
+        <result column="CREATE_TIME" javaType="Date" property="createTime"></result>
+        <result column="PERMISSION_NAME" javaType="String" property="permissionName"></result>
+        <result column="WX_USER_ID" javaType="String" property="wxUserId"></result>
+    </resultMap>
+
+    <!-- 根据用户名查找用户 -->
+    <select id="getUserByMobile" resultMap="userMap" parameterType="String">
+    	select u.USER_ID,u.LOGIN_PASS,u.USER_NAME,u.USER_MOBILE,u.MAIL_ADD ,u.INIT_PASS ,u.INIT_PASS_MD5,u.USER_WECHAT,u.PERMISSION_ID  ,u.DEL_FLAG ,u.DEL_MAN ,u.DEL_TIME ,u.CREATE_MAN ,u.CREATE_TIME  ,p.PERMISSION_NAME,u.WX_USER_ID
+    	from USER u
+        left join PERMISSIONS p on u.PERMISSION_ID=p.PERMISSION_ID
+        where USER_MOBILE=#{mobile} AND DEL_FLAG=0
+    </select>
+
+    <select id="getUsersByUserGroups" resultType="java.lang.String">
+        SELECT WX_USER_ID
+        FROM USER
+        WHERE WX_USER_ID IS NOT NULL AND PERMISSION_ID IN
+        (
+        <foreach collection="userGroups" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <!-- 根据userID修改密码 -->
+    <update id="modifyPwdByUserID">
+        UPDATE USER SET LOGIN_PASS=#{password} WHERE USER_ID=#{userID}
+    </update>
+    <!-- 检查微信号重复 -->
+    <select id="checkWXId" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM USER WHERE WX_USER_ID=#{wxUserId} AND DEL_FLAG=0
+    </select>
+
+
+    <!-- 绑定wx -->
+    <update id="bindWXCount">
+        UPDATE USER SET WX_USER_ID=#{wxUserId},USER_WECHAT=#{wxUserId} WHERE USER_ID=#{userID}
+    </update>
+
+    <!-- 根据用户名查找用户 -->
+    <select id="getUserByWXId" resultMap="userMap" parameterType="String">
+        select u.USER_ID,u.LOGIN_PASS,u.USER_NAME,u.USER_MOBILE,u.MAIL_ADD ,u.INIT_PASS ,u.INIT_PASS_MD5,u.USER_WECHAT,u.PERMISSION_ID  ,u.DEL_FLAG ,u.DEL_MAN ,u.DEL_TIME ,u.CREATE_MAN ,u.CREATE_TIME  ,p.PERMISSION_NAME,u.WX_USER_ID
+        from USER u
+        left join PERMISSIONS p on u.PERMISSION_ID=p.PERMISSION_ID
+        where WX_USER_ID=#{wxUserId} AND DEL_FLAG=0
+    </select>
+
+</mapper>

@@ -1,0 +1,661 @@
+body {
+	font-family: "Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei";
+	font-size: 0.32rem;
+	padding: 0;    
+	margin: 0; 
+	overflow: hidden;
+	position: relative;
+	-webkit-overflow-scrolling: touch;
+}
+* {
+	padding: 0;
+	margin: 0;
+}
+a, input, button, select, textarea {
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+a, img {
+	-webkit-touch-callout: none;
+}
+ul { 
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.clearfix:before,
+.clearfix:after {
+	content: "";
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}
+.hide {
+	display: none !important;
+}
+.show {
+	display: block !important;
+}
+
+/*
+*顶部导航部分
+**/
+.xy-projecterList-head {
+	display: block;
+	width: 10rem;
+	height: 2.4533rem;
+	background: #fff;
+	position: fixed;
+	top: 0;
+	left: 0;
+	margin-top: 0;
+	z-index: 8;
+}
+.pullDown {
+	-webkit-transition: top .4s; 
+	        transition: top .4s; 
+	top: 0;
+}
+.pullUp {
+	-webkit-transition: top .4s; 
+	        transition: top .4s; 
+	top: -2.4533rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-search {
+    width: 10rem;
+    height: 1.2267rem;
+    padding: 0.16rem 0.4rem;
+    font-size: 0;
+    margin: 0;
+    position: relative;
+}
+.xy-projecterList-head > .xy-projecterCon-head-search:before {
+    display: block;
+    content: "";
+    width: 10rem;
+    height: 1px;
+    background: #f4f4f8;
+    transform: scaleY(0.5);
+    position: absolute;
+    top: 1.2267rem;
+    left: 0;
+}
+.xy-projecterList-head > .xy-projecterCon-head-search > .projectSearch {
+	display: block;
+	float: left;
+	width: 7.6rem;
+	height: 0.9067rem;
+	font-size: 0.3733rem;
+	color: #3b3946;
+	border: none;
+	border-radius: 0.4533rem;
+	background: #f4f4f8;
+	margin: 0;
+	padding: 0.2667rem 1.0667rem;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+#projectSearch::-webkit-input-placeholder {
+	font-size: 0.3733rem;
+	color: #c2c5d1;
+	line-height: normal;
+}
+.xy-projecterList-head > .xy-projecterCon-head-search > .mui-icon-clear{
+	font-size: 0.48rem;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 7.28rem;
+    width: 0.48rem;
+    height: 0.9067rem;
+    line-height: 0.9067rem;
+    margin-top: 0.16rem;
+    text-align: center;
+    color: #999;
+    display: none;
+}
+.xy-projecterList-head > .xy-projecterCon-head-search > #iconSearch{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0.72rem;
+    width: 0.3733rem;
+    height: 0.9067rem;
+    line-height: 0.9067rem;
+    margin-top: 0.16rem;
+    background: url("../image/icon_search@3x.png") no-repeat center center;
+    background-size: 0.3733rem 0.3733rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-search > #projectSearchSubmit {
+	/*position: absolute;
+	top: 0.16rem;
+	left: 8rem;*/
+	width: 1.6rem;
+	line-height: 0.9067rem;
+	font-size: 0.3733rem;
+	color: #7D818d;
+	font-weight: normal;
+	border: none;
+	background: transparent;
+	box-shadow: none;
+	margin: 0;
+	padding: 0;
+	padding-left: 0.4rem;
+	float: left;
+}
+.xy-projecterList-head > .xy-projecterCon-head-search > .choiceSelected {
+	color: #dab866;
+	font-weight: bold;
+}
+
+
+
+.xy-projecterList-head > .xy-projecterCon-head-choice{
+    width: 10rem;
+    height: 1.2267rem;
+    padding: 0;
+    position: relative;
+}
+
+.xy-projecterList-head > .xy-projecterCon-head-choice:before {
+    display: block;
+    content: "";
+    width: 10rem;
+    height: 1px;
+    background: #f4f4f8;
+    -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index:10;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title {
+	width: 100%;
+	height: 1.2267rem;
+	padding: 0 0.4rem;
+	margin: 0;
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-pack: justify;
+	-webkit-box-align: center;
+	-webkit-box-flex: 1;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title > li.xy-projecterCon-head-choice-title-financingStage {
+	width: 2rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title > li.xy-projecterCon-head-choice-title-filter {
+	width: 1.945rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title > li {
+	height: 1.2267rem;
+	line-height: 1.2667rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title > li.xy-projecterCon-head-choice-title-financingStage > span {
+	font-size: 0.3733rem;
+	color: #9094a0;
+	font-weight: normal;
+	text-align: left;
+	padding-right: 0.4533rem;
+	background: url("../image/icon_arrow_N@3x.png") no-repeat right center;
+	background-size: 0.3733rem 0.3733rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title > li.xy-projecterCon-head-choice-title-projectDebriefing > span {
+	font-size: 0.3733rem;
+	color: #9094a0;
+	font-weight: normal;
+	text-align: center;
+	padding-right: 0.4533rem;
+	background: url("../image/icon_arrow_N@3x.png") no-repeat right center;
+	background-size: 0.3733rem 0.3733rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title > li.xy-projecterCon-head-choice-title-filter > span {
+	font-size: 0.3733rem;
+	color: #9094a0;
+	font-weight: normal;
+	text-align: right;
+	float: right;
+	padding-right: 0.4533rem;
+	background: url("../image/icon_filter_N@3x.png") no-repeat right center;
+	background-size: 0.3733rem 0.3733rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title > li.xy-projecterCon-head-choice-title-financingStage > span.choiceSelected {
+	color: #dab866;
+	font-weight: bold;
+	background: url("../image/icon_arrow_S@3x.png") no-repeat right center;
+	background-size: 0.3733rem 0.3733rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title > li.xy-projecterCon-head-choice-title-projectDebriefing > span.choiceSelected {
+	color: #dab866;
+	font-weight: bold;
+	background: url("../image/icon_arrow_S@3x.png") no-repeat right center;
+	background-size: 0.3733rem 0.3733rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-filter-title > li.xy-projecterCon-head-choice-title-filter > span.choiceSelected {
+	color: #dab866;
+	font-weight: bold;
+	background: url("../image/icon_filter_S@3x.png") no-repeat right center;
+	background-size: 0.3733rem 0.3733rem;
+}
+
+
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-choice-content {
+	position: absolute;
+	top: 1.2267rem;
+	width: 10rem;
+	height: 0;
+	padding: 0;
+	margin: 0;
+	background: #fff;
+	z-index: 9;
+	transition: height .2s;
+	overflow: hidden;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.slideDown {
+	height: 5.9733rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-choice-content > li.xy-projecterCon-head-choice-content-financingStage {
+	width: 100%;
+	height: 100%;
+	padding: 0.5333rem 0.4rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-choice-content > li.xy-projecterCon-head-choice-content-financingStage > div {
+	width: 100%;
+	height: 0.3733rem;
+	line-height: 0.3733rem;
+	font-size: 0.3733rem;
+	color: #3b3946;
+	font-weight: normal;
+	margin-bottom: 0.5333rem;
+}
+.xy-projecterList-head > .xy-projecterCon-head-choice >ul.xy-projecterCon-head-choice-content > li.xy-projecterCon-head-choice-content-financingStage > div.choiceSelected {
+	color: #dab866;
+	font-weight: bold;
+	background: url("../image/icon_gou.png") no-repeat right center;
+}
+
+/**
+*内容展示部分
+*/
+#xy-projecterList-content-box {
+	padding-top: 2.72rem;
+}
+.xy-projecterList-content{
+	width: 10rem;
+	background: #fafafa;
+	overflow-y: hidden;
+	position:fixed;
+	top: 0;
+	bottom: 0;
+}
+
+.xy-projecterList-recomment{
+	display: block;
+	width: 10rem;
+	height: auto;
+	padding: 0 0.4rem;
+	background: #fff;
+}
+.xy-projecterList-recomment > span{
+	display: block;
+	width: 100%;
+	height: 0.7733rem;
+	line-height: 0.3733rem;
+	text-align: center;
+	font-size: 0.3733rem;
+	word-spacing: 6px;
+	color: #3b3946;
+	padding-top: 15px;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list{
+	display: block;
+	width:100%;
+	height: auto;
+	list-style: none;
+	background: #fff;
+	padding: 0;
+	margin: 0;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li{
+	width: 100%;
+	height: 2.9333rem;
+	padding: 0.5333rem 0;
+	position: relative;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li + li:after{
+	position: absolute;
+	top: 0;
+	content: "";
+	display: block;
+	width: 100%;
+	height: 1px;
+	background: #efeff4;
+	-webkit-transform: scaleY(0.5);
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-logo {
+	float: left;
+	width: 1.8667rem;
+	height: 1.8667rem;
+	margin-right: 0.4rem;
+	border: none;
+	border-radius: 6px;
+	background: #f4f4f8;
+	overflow: hidden;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-logo > img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-right {
+	float: left;
+	width: 6.9333rem;
+	height: 100%;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-right > h4 {
+	float: left;
+	display: block;
+	width: 5rem;
+	height: 0.48rem;
+	font-size: 0.48rem;
+	line-height: 0.48rem;
+	color: #3b3946;
+	font-weight: bold;
+	padding: 0;
+	margin: 0;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-right > span.xy-projecterList-recommend-list-right-time {
+	float:right;
+	font-size: 0.32rem!important;
+	line-height: 0.32rem;
+	color: #e2e4ea;
+	margin-top: 0.16rem;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-right > p {
+	font-size: 0.32rem;
+	line-height: 0.8533rem;
+	color: #c2c5d1;
+	clear: both;
+	padding: 0;
+	margin: 0;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-right > div.xy-projecterList-recommend-list-right-companyIntroduce {
+	width: 100%;
+	height: 0.4rem;
+	margin-top:6px;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-right > div.xy-projecterList-recommend-list-right-companyIntroduce > span {
+	font-size: 0.32rem;
+	height: 0.4rem;
+	line-height: 0.4rem;
+	color: #9094a0;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-right > div.xy-projecterList-recommend-list-right-companyIntroduce > span.xy-projecterList-recommend-list-right-companyIntroduce-listOne {
+	padding-left: 0.5333rem;
+	float: left;
+	background:url("../image/icon_financing@3x.png") no-repeat left center;
+	background-size: 0.4rem 0.4rem;
+}
+.xy-projecterList-recomment > ul.xy-projecterList-recommend-list > li > a > div.xy-projecterList-recommend-list-right > div.xy-projecterList-recommend-list-right-companyIntroduce > span.xy-projecterList-recommend-list-right-companyIntroduce-listTwo {
+	float: right;
+	word-spacing: 2px;
+}
+#xy-projecterList-recomment{
+	margin-bottom: 0.2667rem;
+}
+.xy-projecterList-content   .noResult {
+	width: 100%;
+	height: 13.2rem;
+	padding-top: 1.8667rem;
+	background: url("../image/img_result@2x.png") no-repeat center 1.8667rem;
+	background-size: 2.1333rem 2.1333rem;
+}
+.xy-projecterList-content   .noResult > h4 {
+	display: block;
+	width: 100%;
+	height: 3.0667rem;
+	font-size: 0.5333rem;
+	color: #c2c5d1;
+	line-height: 0.5333rem;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	padding-top: 2.5333rem;
+}
+.xy-projecterList-content   .noResult > span {
+	display: block;
+	width: 100%;
+	height: 0.9067rem;
+	font-size: 0.3733rem;
+	color: #c2c5d1;
+	line-height: 0.9067rem;
+	text-align: center;
+}
+.xy-projecterList-content-box{
+	height: auto !important;
+	background: #fafafa;
+	padding-top: 0.2667rem;
+	margin: 0;
+}
+
+
+/**
+*右侧的弹出框
+*/
+.xy-projecterList-leftMenu {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 10rem;
+	overflow:hidden;
+	background: transparent;
+	z-index: 15;
+	display: none;
+}
+.xy-projecterList-bombBox {
+	width: 7.2rem;
+	background: #fff;
+	overflow-y: hidden;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: -7.2rem;
+	z-index: 12;
+	-webkit-transition: right .4s;
+	        transition: right .4s;
+}
+.pullRight {
+	right: 0rem;
+}
+.xy-projecterList-bombBox > .xy-projecterList-bombBox-box {
+	background: #fff;
+}
+.xy-projecterList-bombBox  .xy-projecterList-bombBox-head {
+	width: 100%;
+	height: 1.2533rem;
+	padding: 0 0.6667rem;
+	background: #f4f4f8;
+}
+.xy-projecterList-bombBox  .xy-projecterList-bombBox-head:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 1.2533rem;
+	width: 100%;
+	height: 1px;
+	background: #e2e4ea;
+	transform:scaleY(0.5);
+}
+.xy-projecterList-bombBox  .xy-projecterList-bombBox-head > span {
+	float: left;
+	width: 33.3333%;
+	line-height: 1.2533rem;
+	font-size: 0.4rem;
+}
+.xy-projecterList-bombBox  .xy-projecterList-bombBox-head > span.xy-projecterList-bombBox-head-clear {
+	text-align: left;
+	color: #3b3946;
+}
+.xy-projecterList-bombBox  .xy-projecterList-bombBox-head > span.xy-projecterList-bombBox-head-filter {
+	text-align: center;
+	color: #c2c5d1;
+}
+.xy-projecterList-bombBox  .xy-projecterList-bombBox-head > span.xy-projecterList-bombBox-head-determine {
+	text-align: right;
+	color: #3b3946;
+}
+.xy-projecterList-bombBox  .xy-projecterList-bombBox-head > span.choiceSelected {
+	color: #dab866;
+	font-weight: bold;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option {
+	width: 100%;
+	height: auto;
+	padding: 0.72rem 0.6667rem;
+	margin: 0;
+	background: #fff;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li {
+	width: 100%;
+	height: auto;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li > h4 {
+	font-size: 0.4rem;
+	font-weight: bold;
+	color: #3B3946;
+	line-height: 0.4rem;
+	height: 0.56rem;
+	padding-bottom: 0.16rem;
+	border-bottom: 1px solid #ccc;
+	position: relative;
+	padding: 0;
+	margin: 0;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li > h4.choiceSelected {
+	color: #dab866;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li > ul {
+	width: 100%;
+	height: auto;
+	margin-top: 0.24rem;
+	padding-bottom: 0.64rem;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li > ul > li {
+	float: left;
+	width: 33.3333%;
+	height: auto;
+	line-height: 0.9333rem;
+	color: #9094a0;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li > ul > li.choiceSelected {
+	color: #dab866;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li.xy-projecterList-bombBox-head-option-payment > ul > li {
+	width: 100%;
+	height: 0.9333rem;
+	line-height: 0.9333rem;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li.xy-projecterList-bombBox-head-option-assets > h4:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.52rem;
+	width: 2.2rem;
+	height: 3px;
+	background: #dab866;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li.xy-projecterList-bombBox-head-option-platform > h4:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.52rem;
+	width: 1.7rem;
+	height: 3px;
+	background: #dab866;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li.xy-projecterList-bombBox-head-option-capital > h4:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.52rem;
+	width: 2rem;
+	height: 3px;
+	background: #dab866;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li.xy-projecterList-bombBox-head-option-negotiableSecurities > h4:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.52rem;
+	width: 0.8rem;
+	height: 3px;
+	background: #dab866;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li.xy-projecterList-bombBox-head-option-insurance > h4:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.52rem;
+	width: .8rem;
+	height: 3px;
+	background: #dab866;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li.xy-projecterList-bombBox-head-option-fintch > h4:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.52rem;
+	width: 1.3rem;
+	height: 3px;
+	background: #dab866;
+}
+.xy-projecterList-bombBox  ul.xy-projecterList-bombBox-option > li.xy-projecterList-bombBox-head-option-payment > h4:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.52rem;
+	width: 3rem;
+	height: 3px;
+	background: #dab866;
+}
+
+.backdrop {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 10rem;
+	background: #333;
+	opacity: 0.5;
+	z-index: 10;
+}
+.backdropTwo {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 10rem;
+	background: #333;
+	opacity: 0.5;
+	z-index: 3;
+}
+.mui-pull {
+	color: #9094a0;
+	font-size: 0.3733rem;
+	font-weight: normal;
+}
+.mui-pull-caption {
+	font-size: 0.3733rem;
+}
+
+
+
+

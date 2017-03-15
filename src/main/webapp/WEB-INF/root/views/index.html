@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>曦域资本</title>
+    <link rel="stylesheet" href="../resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../resources/css/main.css"/>
+    <link rel="stylesheet" href="../resources/css/alert.css"/>
+    <link rel="stylesheet" href="../resources/css/page.css"/>
+    <script type="text/javascript" src="../resources/js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="../resources/js/validate.js"></script>
+    <script type="text/javascript" src="../resources/js/dialog.js"></script>
+    <script type="text/javascript" src="../resources/js/menu.js"></script>
+    <script type="text/javascript" src="../resources/js/main.js"></script>
+    <script type="text/javascript" src="../resources/js/jquery.upload.js"></script>
+    <script type="text/javascript" src="../resources/js/jquery-form.js"></script>
+    <script>
+        var attIndex = function () {
+            var attIndex = 0;
+            return {
+                getIndex: function () {
+                    return attIndex;
+                },
+                addIndex: function () {
+                    attIndex++;
+                }
+            }
+        }();
+
+        $(function (e) {
+            if (window.history && window.history.pushState) {
+                $(window).on('popstate', function () {
+                    window.history.pushState('forward', null);
+                    $('#indexMenu').find('[menu-index=2]').click();
+                });
+            }
+
+            window.history.pushState('forward', null); //在IE中必须得有这两行
+            $('#indexMenu').find('[menu-index=2]').click();
+        })
+
+        $(function () {
+            // 根据屏幕宽度计算请求数量
+            var h = 3;
+            if (document.body.clientHeight >= 1000) {
+                $('#projectQuery').height(805);
+                h = 3
+            }
+            global_pageSize = document.body.clientWidth >= 1920 ? 3 * h : 2 * h;
+
+            $('#loginUserName').text(formatterUserName(sessionStorage.getItem('login_userMobile')));
+            global_menu.bindEvent().init();
+
+            $('.xy-index-body-header-menuBtn').click(function (e) {
+                if ($('#indexMenu').hasClass('show-xy-index-menu')) {
+                    $('#indexMenuBtn').removeClass('xy-index-menu-btn-show');
+                    $('#indexMenu').removeClass('show-xy-index-menu');
+                    $('#indexHeader').removeClass('xy-index-menu-hasChecked').find('.xy-index-body-header-logo').removeClass('xy-index-body-header-logo-checked');
+                } else {
+                    $('#indexMenu').addClass('show-xy-index-menu');
+                    $('#indexHeader').addClass('xy-index-menu-hasChecked').find('.xy-index-body-header-logo').addClass('xy-index-body-header-logo-checked');
+                    $('#indexMenuBtn').addClass('xy-index-menu-btn-show');
+                }
+                e.stopPropagation();
+            })
+
+            $.each($('input.searchInputKeyword'), function (i, m) {
+                $(m).change(function () {
+                    var str = $(this).val();
+                    $('input.searchInputKeyword').val(str);
+                });
+            })
+
+            // 统一处理input的focus事件
+            $('.xy-model-input input').focus(function () {
+                $(this).parent().addClass('xy-model-input-focus');
+            }).blur(function () {
+                $(this).parent().removeClass('xy-model-input-focus');
+            })
+
+            // 上传初始化
+            $('.projectPictureUpload').click(function () {
+                var that = $(this);
+                $.upload({
+                    // 上传地址
+                    url: global_projectName + global_serviceUrl['picUpload'],
+                    // 文件域名字
+                    fileName: 'file',
+                    // 上传完成后, 返回json, text
+                    dataType: 'json',
+                    // 上传文件类型自定义
+                    accept: '.jpg,.png,.jpeg,.bmp,.gif',
+                    // 上传之前回调,return true表示可继续上传
+                    onSend: function () {
+                        return true;
+                    },
+                    // 上传之后回调
+                    onComplate: function (data) {
+                        if (data.code == '0000') {
+                            $('#projectPictureUpload').parent().find('img').attr('src', data.detailInfo.url).attr('alt', data.detailInfo.picName);
+                        } else {
+                            global_dialog.error(data.desc);
+                        }
+                    }
+                });
+            })
+            $('.projectPictureUpload').hover(function () {
+                $(this).attr('src', '../resources/image/picdaok.png').css('cursor', 'pointer');
+            }, function () {
+                $(this).attr('src', '../resources/image/pigda.png').css('cursor', 'default');
+            })
+            $('#projectAttachmentNoShareUpload').click(function () {
+                $('form#attachmentUploadNoShareForm').find('input[type=file]').click();
+            })
+            $('#projectAttachmentShareUpload').click(function () {
+                $('form#attachmentUploadShareForm').find('input[type=file]').click();
+            })
+            $('form#attachmentUploadNoShareForm').ajaxForm({
+                beforeSerialize: function () {// 表单数据序列化前执行的操作！
+
+                },
+                beforeSubmit: function () {// 表单提交前的操作
+
+                },
+                beforeSend: function () {
+                    var str = '<li class="clearfix" data-index="' + attIndex.getIndex() + '" data-ok="0"><span class="xy-index-body-content-projectInput-addAttachment-jd"></span><span class="xy-index-body-content-projectInput-addAttachment-bfb">0%</span></li>';
+                    $('#projectAttachmentNoShareUpload').parent().prepend(str);
+                    return attIndex.getIndex();
+                },
+                uploadProgress: function (event, position, total, percentComplete) {//上传的过程
+                    // position 已上传了多少
+                    // total 总大小
+                    // percentComplete 已上传的百分数
+                    var percentVal = percentComplete + '%';
+                    var parent = $('#projectAttachmentNoShareUpload').parent().find('li[data-index=' + this.index + ']');
+                    parent.find('.xy-index-body-content-projectInput-addAttachment-bfb').text(percentComplete == 100 ? '等待上传' : percentVal);
+                },
+                success: function (data, i) {//成功
+                    if (data.code == '0000') {
+                        var parent = $('#projectAttachmentNoShareUpload').parent().find('li[data-index=' + i + ']');
+                        parent.attr('data-ok', 1);
+                        parent.addClass(fileAddressToFileIcon(data.detailInfo.attName));
+                        parent.attr('data-attUrl', data.detailInfo.url);
+                        parent.attr('data-attName', data.detailInfo.attName);
+                        parent.find('.xy-index-body-content-projectInput-addAttachment-jd').remove();
+                        parent.find('.xy-index-body-content-projectInput-addAttachment-bfb').remove();
+                        parent.append('<span>' + data.detailInfo.attName + '</span><i onclick="removeThisAttachment(this)"></i>')
+                        $('#attachmentUploadNoShareForm').find('input').val('');
+                    } else {
+                        $('#projectAttachmentNoShareUpload').parent().find('li[data-index=' + i + ']').remove();
+                        global_dialog.alert(data.desc);
+                    }
+                },
+                error: function (err) {//失败
+
+                },
+                complete: function (xhr) {//完成
+
+                }
+            });
+            $('form#attachmentUploadShareForm').ajaxForm({
+                beforeSerialize: function () {// 表单数据序列化前执行的操作！
+
+                },
+                beforeSubmit: function () {// 表单提交前的操作
+
+                },
+                beforeSend: function () {
+                    var str = '<li class="clearfix" data-index="' + attIndex.getIndex() + '" data-ok="0"><span class="xy-index-body-content-projectInput-addAttachment-jd"></span><span class="xy-index-body-content-projectInput-addAttachment-bfb">0%</span></li>';
+                    $('#projectAttachmentShareUpload').parent().prepend(str);
+                    return attIndex.getIndex();
+                },
+                uploadProgress: function (event, position, total, percentComplete) {//上传的过程
+                    // position 已上传了多少
+                    // total 总大小
+                    // percentComplete 已上传的百分数
+                    var percentVal = percentComplete + '%';
+                    var parent = $('#projectAttachmentShareUpload').parent().find('li[data-index=' + this.index + ']');
+                    parent.find('.xy-index-body-content-projectInput-addAttachment-bfb').text(percentComplete == 100 ? '等待上传' : percentVal);
+                },
+                success: function (data, i) {//成功
+                    if (data.code == '0000') {
+                        var parent = $('#projectAttachmentShareUpload').parent().find('li[data-index=' + i + ']');
+                        parent.attr('data-ok', 1);
+                        parent.addClass(fileAddressToFileIcon(data.detailInfo.attName));
+                        parent.attr('data-attUrl', data.detailInfo.url);
+                        parent.attr('data-attName', data.detailInfo.attName);
+                        parent.find('.xy-index-body-content-projectInput-addAttachment-jd').remove();
+                        parent.find('.xy-index-body-content-projectInput-addAttachment-bfb').remove();
+                        parent.append('<span>' + data.detailInfo.attName + '</span><i onclick="removeThisAttachment(this)"></i>')
+                        $('#attachmentUploadShareForm').find('input').val('');
+                    } else {
+                        $('#projectAttachmentShareUpload').parent().find('li[data-index=' + i + ']').remove();
+                        global_dialog.alert(data.desc);
+                    }
+                },
+                error: function (err) {//失败
+
+                },
+                complete: function (xhr) {//完成
+
+                }
+            });
+
+            // 鼠标滚轮事件
+            if (document.attachEvent) {
+                document.attachEvent("onmousewheel", function (e) {
+                    mouseWheelEvent(e, e.wheelDelta);
+                });
+            } else if (document.addEventListener) {
+                document.addEventListener("DOMMouseScroll", function (e) {
+                    mouseWheelEvent(e, e.detail * -40);
+                }, false);
+            }
+            if (document.addEventListener) {
+                document.addEventListener('DOMMouseScroll', mouseWheelEvent, false);
+            }//W3C
+            window.onmousewheel = document.onmousewheel = mouseWheelEvent;//IE/Opera/Chrome
+        })
+
+        // 附件上传提交
+        function getFileName(o) {
+            var pos = o.lastIndexOf("\\");
+            return o.substring(pos + 1);
+        }
+        function submitAttachmentUploadShareForm() {
+            var fileName = getFileName($('form#attachmentUploadShareForm').find('input[type=file]').val());
+            var farr = fileName.split('.');
+            var fileType = farr[farr.length - 1];
+            if (fileType.toLowerCase() != 'doc' && fileType.toLowerCase() != 'docx' && fileType.toLowerCase() != 'ppt' && fileType.toLowerCase() != 'pdf' && fileType.toLowerCase() != 'wma') {
+                global_dialog.error("请选择正确格式的文件！");
+                $('form#attachmentUploadShareForm').find('input[type=file]').val('');
+                return;
+            }
+            var fileDom = $('form#attachmentUploadShareForm').find('input[type=file]')[0];
+            var fileSize = fileDom.files[0].size;
+            if (fileSize == 0) {
+                global_dialog.error("请不要上传空文件！");
+                $('form#attachmentUploadShareForm').find('input[type=file]').val('');
+                return;
+            }
+            if (fileSize / 1024 / 1024 > 500) {
+                global_dialog.error("上传文件大小限制为500M！");
+                $('form#attachmentUploadShareForm').find('input[type=file]').val('');
+                return;
+            }
+            $('form#attachmentUploadShareForm').submit();
+        }
+        function submitAttachmentUploadNoShareForm() {
+            var fileName = getFileName($('form#attachmentUploadNoShareForm').find('input[type=file]').val());
+            var farr = fileName.split('.');
+            var fileType = farr[farr.length - 1];
+            if (fileType.toLowerCase() != 'doc' && fileType.toLowerCase() != 'docx' && fileType.toLowerCase() != 'ppt' && fileType.toLowerCase() != 'pdf' && fileType.toLowerCase() != 'wma') {
+                global_dialog.error("请选择正确格式的文件！");
+                $('form#attachmentUploadNoShareForm').find('input[type=file]').val('');
+                return;
+            }
+            var fileDom = $('form#attachmentUploadShareForm').find('input[type=file]');
+            var fileSize = fileDom.files[0].size;
+            if (fileSize == 0) {
+                global_dialog.error("请不要上传空文件！");
+                $('form#attachmentUploadShareForm').find('input[type=file]').val('');
+                return;
+            }
+            if (fileSize / 1024 < 500) {
+                global_dialog.error("上传文件大小限制为500M！");
+                $('form#attachmentUploadShareForm').find('input[type=file]').val('');
+                return;
+            }
+            $('form#attachmentUploadNoShareForm').submit();
+        }
+
+        function removeThisAttachment(_this) {
+            $(_this).parent().remove();
+        }
+
+        function formatterUserName(userName) {
+            return userName.substr(0, 3) + '****' + userName.substr(7);
+        }
+
+        // 显示/隐藏菜单按钮
+        function showOrHideMenu(e) {
+            var e = e || window.event;
+//				var e = document.all ? window.event : arguments[0] ? arguments[0] : event;
+            if ($('#indexMenu').hasClass('show-xy-index-menu')) {
+                $('#indexMenuBtn').removeClass('xy-index-menu-btn-show');
+                $('#indexMenu').removeClass('show-xy-index-menu');
+                $('#indexHeader').removeClass('xy-index-menu-hasChecked').find('.xy-index-body-header-logo').removeClass('xy-index-body-header-logo-checked');
+            } else {
+                $('#indexMenu').addClass('show-xy-index-menu');
+                $('#indexHeader').addClass('xy-index-menu-hasChecked').find('.xy-index-body-header-logo').addClass('xy-index-body-header-logo-checked');
+                $('#indexMenuBtn').addClass('xy-index-menu-btn-show');
+            }
+            e.stopPropagation();
+        }
+
+        /* 退出登录 */
+        function loginOut() {
+            global_dialog.confirm('确认退出账户吗？', function () {
+                global_ajax('loginOut', '', function (data) {
+                    // 登录信息清除
+                    sessionStorage.removeItem('login_user');
+                    sessionStorage.removeItem('xypm-menuIndex');
+                    localStorage.removeItem('remember_userMobile');
+                    localStorage.removeItem('remember_password');
+                    window.location.href = './login.html';
+                })
+            }, {})
+        }
+
+        /* 账户查看 */
+        function deleteThisAccount(userId) {// 删除账户
+            global_dialog.confirm('确认删除该账户吗？', function (params) {
+                global_ajax('deleteAccount', params, function (data) {
+                    global_dialog.alert('删除成功！');
+                    // 刷新列表
+                    accountQueryObject.datagrid.params['pageNo'] = 1;
+                    accountQueryObject.datagrid.query(accountQueryObject.datagrid.params);
+                })
+            }, {userId: userId})
+        }
+        function resetThisAccountPassword(userId) {// 重置密码
+            global_dialog.confirm('确认重置该账户密码吗？', function (params) {
+                global_ajax('resetAccountPassword', params, function (data) {
+                    global_dialog.alert('密码重置成功！');
+                })
+            }, {userId: userId})
+        }
+
+        /* 项目查看 */
+        function showProjectInfoDialog(projectId) {// 查看项目详情
+            $('body').removeClass('body-background');
+            if (!$('#projectQueryDetail').is(':hidden')) {
+                document.documentElement.scrollTop = document.body.scrollTop = 0;
+            }
+            if ($('#share-button').hasClass('share-checked')) {
+                $('#share-button').removeClass('share-checked');
+                $('#xy-share-dialog').hide();
+                $('#xy-share-dialog').find('ul li span.xy-share-dialog-checked').removeClass('xy-share-dialog-checked');
+            }
+            $('#projectQueryDetailProjectId').val(projectId);
+            $('#xy-index-body-content-projectInfoQuery-projectEvaluate-evaluate').val('');
+            // 发送请求获取数据
+            global_ajax('queryOneProjectInfo', {
+                projectId: projectId
+            }, function (data) {
+                for (var key in data.detailInfo) {
+                    if (key == 'pictures') {
+                        var projectQueryDetailImagesStr = '';
+                        if (data.detailInfo[key].length == 0) {
+                            projectQueryDetailImagesStr = '';
+                        } else {
+                            projectQueryDetailImagesStr = data.detailInfo[key][0].url;
+                        }
+                        $('#projectQueryDetailPic').attr('src', projectQueryDetailImagesStr);
+                    } else if (key == 'topCategory') {
+                        $('#projectQueryDetail [data-name=category]').empty().text((global_validate.stringIsEmpty(data.detailInfo['topCategory']) ? '' : data.detailInfo['topCategory'] + ' ;') + data.detailInfo['secondCategory']);
+                    } else if (key == 'recommendedMark') {
+                        $('#projectQueryDetail [data-name=recommendedMark]').empty().text(data.detailInfo['recommendedMark'] == 1 ? '是' : '否');
+                    } else if (key == 'projectId') {
+                        $('#projectQueryDetailProjectId').val(data.detailInfo['projectId']);
+                    } else if (key == 'secondCategory' || key == 'projectNumber') {
+                    } else if (key == 'appraisals') {
+                        var projectQueryDetailAppraisalsStr = '';
+                        if (data.detailInfo[key].length == 0) {
+                            projectQueryDetailAppraisalsStr += '暂无评价';
+                        }
+                        $.each(data.detailInfo[key], function (i, m) {
+                            projectQueryDetailAppraisalsStr += '<li>';
+                            projectQueryDetailAppraisalsStr += '<span>' + m.userName + '</span>';
+                            projectQueryDetailAppraisalsStr += '<span>' + m.submitTime + '</span>';
+                            projectQueryDetailAppraisalsStr += '<p>' + m.content + '</p>';
+                            projectQueryDetailAppraisalsStr += '</li>';
+                        })
+                        $('#projectQueryDetailAppraisals').empty().append(projectQueryDetailAppraisalsStr);
+                    } else if (key == 'attachments') {
+                        var noShareAttachmentStr = '';
+                        var shareAttachmentStr = '';
+                        for (var i = 0; i < data.detailInfo[key].length; i++) {
+                            var attachmentObj = data.detailInfo[key][i];
+                            if (attachmentObj.shareMark == 0) {// 不可分享，备注文件
+                                noShareAttachmentStr += '<li class="' + fileAddressToFileIcon(attachmentObj.url) + '" onclick="downloadAtt(\'' + attachmentObj.url + '\')">' + attachmentObj.attName + '</li>';
+                            } else if (attachmentObj.shareMark == 1) {// 可分享，附件
+                                shareAttachmentStr += '<li class="' + fileAddressToFileIcon(attachmentObj.url) + '" onclick="downloadAtt(\'' + attachmentObj.url + '\')">' + attachmentObj.attName + '</li>';
+                            }
+                        }
+                        $('#projectQueryDetailNoShareAttachments').empty().append(noShareAttachmentStr);
+                        $('#projectQueryDetailShareAttachments').empty().append(shareAttachmentStr);
+                    } else {
+                        $('#projectQueryDetail [data-name=' + key + ']').empty().text(data.detailInfo[key]);
+                    }
+                }
+
+                $('#projectQuery').hide();
+                $('#projectQueryDetail').show();
+                $('#accountQuery').hide();
+                $('#accountInput').hide();
+                $('#projectInput_back').hide();
+                $('#projectInput').hide();
+
+                global_ajax('queryRecommendProjectList', {
+                    projectId: projectId
+                }, function (data) {
+                    var recommendProjectLiStr = '';
+                    if (data.detailInfo.projectSummaryVOList.length == 0) {
+                        recommendProjectLiStr += '暂无相关项目推荐';
+                    }
+                    for (var i = 0; i < data.detailInfo.projectSummaryVOList.length; i++) {
+                        recommendProjectLiStr += '';
+                        var projectObj = data.detailInfo.projectSummaryVOList[i];
+                        recommendProjectLiStr += '<div class="xy-index-body-content-projectQuery-info' + (projectObj.recommendedMark == 1 ? ' xy-index-body-content-projectQuery-good' : '') + '" onclick="showProjectInfoDialog(\'' + projectObj.projectId + '\')">';
+                        recommendProjectLiStr += '<p class="xy-index-body-content-projectQuery-info-title">' + projectObj.projectName + '</p>';
+                        recommendProjectLiStr += '<ul class="xy-index-body-content-projectQuery-info-infos">';
+                        recommendProjectLiStr += '<li>项目分类：' + (global_validate.stringIsEmpty(projectObj.topCategory) ? '' : projectObj.topCategory + '；') + projectObj.secondCategory + '</li>';
+                        recommendProjectLiStr += '<li>融资阶段：' + projectObj.financingStage + '</li>';
+                        recommendProjectLiStr += '<li>建立时间：' + projectObj.buildTime + '</li>';
+                        recommendProjectLiStr += '</ul>';
+                        recommendProjectLiStr += '<img src="' + (projectObj.pictures[0] ? projectObj.pictures[0]["url"] : '') + '">';
+                        recommendProjectLiStr += '<p class="xy-index-body-content-projectQuery-info-desc">' + projectObj.summary + '</p>';
+                        recommendProjectLiStr += '</div>';
+                    }
+                    $('#projectQueryDetailRecommendProjects').empty().append(recommendProjectLiStr);
+                })
+            })
+        }
+        function issueNewAppraisal() {// 发布新的评价
+
+            // 参数获取，验证
+            var projectId = $('#projectQueryDetailProjectId').val();
+            var appraisalContent = $('#xy-index-body-content-projectInfoQuery-projectEvaluate-evaluate').val();
+            if (!global_validate.stringLessThanLength(appraisalContent, 100)) {
+                global_dialog.error('发布评论最多输入100个汉字！');
+                return;
+            }
+
+            // 提交数据，刷新评论区
+            global_ajax('issueAppraisal', {
+                projectId: projectId,
+                appraisalContent: appraisalContent,
+                anonymous: 0
+            }, function (data) {
+                global_dialog.alert('发布评论成功！');
+                $('#xy-index-body-content-projectInfoQuery-projectEvaluate-evaluate').val('');
+                // 刷新评论区
+                global_ajax('queryOneProjectInfo', {
+                    projectId: projectId
+                }, function (data) {
+                    var projectQueryDetailAppraisalsStr = '';
+                    $.each(data.detailInfo['appraisals'], function (i, m) {
+                        projectQueryDetailAppraisalsStr += '<li>';
+                        projectQueryDetailAppraisalsStr += '<span>' + m.userName + '</span>';
+                        projectQueryDetailAppraisalsStr += '<span>' + m.submitTime + '</span>';
+                        projectQueryDetailAppraisalsStr += '<p>' + m.content + '</p>';
+                        projectQueryDetailAppraisalsStr += '</li>';
+                    })
+                    $('#projectQueryDetailAppraisals').empty().append(projectQueryDetailAppraisalsStr);
+                })
+            })
+        }
+        function goBackProjectList() {// 点击返回
+            projectQueryObject.datagrid.query(projectQueryObject.datagrid.params);
+            $('body').addClass('body-background');
+            $('#homePage').hide();
+            $('#projectInput').hide();
+            $('#accountQuery').hide();
+            $('#accountInput').hide();
+            $('#projectQuery').show();
+            $('#projectQueryDetail').hide();
+        }
+
+        function editThisProject() {
+            $('body').removeClass('body-background');
+            var projectId = $('#projectQueryDetailProjectId').val();
+            global_ajax('queryOneProjectInfo', {
+                projectId: projectId
+            }, function (data) {
+                $('#projectQuery_filter_dialog').hide();
+                $('#projectQueryDetail').hide();
+                $('#homePage').hide();
+                $('#accountQuery').hide();
+                $('#accountInput').hide();
+                $('#projectQuery').hide();
+                // 清空
+                projectInputReset();
+
+                var projectObj = data.detailInfo;
+                $('#project_projectName').val(projectObj.projectName).parent().children('span').show();
+                $('#project_area').attr('data-select', projectObj.area).css('color', '#4f5354').children('span').text(projectObj.area).parent().parent().children('span').show();
+                $('#project_leader').val(projectObj.leader).parent().children('span').show();
+                $('#project_contactNumber').val(projectObj.contactNumber).parent().children('span').show();
+                $('#project_email').val(projectObj.email).parent().children('span').show();
+                $('#project_financingSize').attr('data-select', projectUpdateFinancingSize(projectObj.financingSize)).css('color', '#4f5354').children('span').text(projectObj.financingSize).parent().parent().children('span').show();
+                $('#project_financingStage').attr('data-select', projectUpdateFinancingStage(projectObj.financingStage)).css('color', '#4f5354').children('span').text(projectObj.financingStage).parent().parent().children('span').show();
+                $('#project_progress').attr('data-select', projectUpdateProgress(projectObj.progress)).css('color', '#4f5354').children('span').text(projectObj.progress).parent().parent().children('span').show();
+                $('#project_recommendedMark').attr('data-select', projectObj.recommendedMark).css('color', '#4f5354').children('span').text(projectObj.recommendedMark == 0 ? '否' : '是').parent().parent().children('span').show();
+                $('#project_summary').val(projectObj.summary);
+                $('#project_detail').val(projectObj.detail);
+
+                $('#project_category').attr('data-select', projectUpdateTopCategory(projectObj.topCategory)).attr('data-select-snd', projectUpdateSecondCategory(projectObj.secondCategory)).css('color', '#4f5354').children('span').text((global_validate.objectIsEmpty(projectObj.topCategory) ? projectObj.secondCategory : projectObj.topCategory + ' ; ' + projectObj.secondCategory)).parent().parent().children('span').show();
+
+                $('#projectPictureUpload').parent().find('img').attr('src', projectObj.pictures[0] ? projectObj.pictures[0].url : '').attr('alt', projectObj.pictures[0] ? projectObj.pictures[0].picName : '');
+                var noShareAttStr = '';
+                var shareAtt = '';
+                for (var i = 0; i < projectObj.attachments.length; i++) {
+                    if (projectObj.attachments[i].shareMark == 0) {
+                        noShareAttStr += '<li class="clearfix ' + fileAddressToFileIcon(projectObj.attachments[i].attName) + '" data-index="' + attIndex.getIndex() + '" data-attUrl="' + projectObj.attachments[i].url + '" data-attName="' + projectObj.attachments[i].attName + '" data-ok="1"><span>' + projectObj.attachments[i].attName + '</span><i onclick="removeThisAttachment(this)"></i></li>';
+                        attIndex.addIndex();
+                    } else {
+                        shareAtt += '<li class="clearfix ' + fileAddressToFileIcon(projectObj.attachments[i].attName) + '" data-index="' + attIndex.getIndex() + '" data-attUrl="' + projectObj.attachments[i].url + '" data-attName="' + projectObj.attachments[i].attName + '" data-ok="1"><span>' + projectObj.attachments[i].attName + '</span><i onclick="removeThisAttachment(this)"></i></li>';
+                        attIndex.addIndex();
+                    }
+                }
+                $('#projectAttachmentNoShareUpload').parent().prepend(noShareAttStr);
+                $('#projectAttachmentShareUpload').parent().prepend(shareAtt);
+                $('#projectInput').show();
+                $('#projectInput_goback').parent().show();
+                projectInputEventInit('update', projectId);
+            })
+        }
+
+        function projectUpdateFinancingSize(financingSize) {
+            if (financingSize == '1-5千万') {
+                return 1;
+            } else if (financingSize == '5-10千万') {
+                return 2;
+            } else if (financingSize == '10-20千万') {
+                return 3;
+            } else if (financingSize == '20千万以上') {
+                return 4;
+            }
+        }
+        function projectUpdateFinancingStage(financingStage) {
+            if (financingStage == '种子轮') {
+                return 1;
+            } else if (financingStage == '天使轮') {
+                return 2;
+            } else if (financingStage == 'A轮') {
+                return 3;
+            } else if (financingStage == 'B轮') {
+                return 4;
+            } else if (financingStage == 'C轮') {
+                return 5;
+            }
+        }
+        function projectUpdateTopCategory(topCategory) {
+            if (topCategory == '互联网资产') {
+                return 1;
+            } else if (topCategory == '交易平台') {
+                return 2;
+            } else if (topCategory == '互联网资金') {
+                return 3;
+            } else if (topCategory == '证券') {
+                return 4;
+            } else if (topCategory == '保险') {
+                return 5;
+            } else if (topCategory == 'Fintech') {
+                return 6;
+            } else if (global_validate.objectIsEmpty(topCategory)) {
+                return 30;
+            }
+        }
+        function projectUpdateProgress(progress) {
+            if (progress == '跟踪') {
+                return 1;
+            } else if (progress == '尽调') {
+                return 2;
+            } else if (progress == 'term') {
+                return 3;
+            } else if (progress == '终止') {
+                return 4;
+            } else if (progress == '投后') {
+                return 5;
+            }
+        }
+        function projectUpdateSecondCategory(secondCategory) {
+            if (secondCategory == '消费金融') {
+                return 7;
+            } else if (secondCategory == '现金贷') {
+                return 8;
+            } else if (secondCategory == '供应链') {
+                return 9;
+            } else if (secondCategory == 'ABS') {
+                return 10;
+            } else if (secondCategory == '催收') {
+                return 11;
+            } else if (secondCategory == '保理') {
+                return 12;
+            } else if (secondCategory == '租赁') {
+                return 13;
+            } else if (secondCategory == '典当') {
+                return 14;
+            } else if (secondCategory == '交易所') {
+                return 15;
+            } else if (secondCategory == '外汇') {
+                return 16;
+            } else if (secondCategory == '债券') {
+                return 17;
+            } else if (secondCategory == '贵金属') {
+                return 18;
+            } else if (secondCategory == '财富管理') {
+                return 19;
+            } else if (secondCategory == 'P2P') {
+                return 20;
+            } else if (secondCategory == '众筹') {
+                return 21;
+            } else if (secondCategory == '经济') {
+                return 22;
+            } else if (secondCategory == '投行') {
+                return 23;
+            } else if (secondCategory == '资管') {
+                return 24;
+            } else if (secondCategory == '渠道') {
+                return 25;
+            } else if (secondCategory == '产品') {
+                return 26;
+            } else if (secondCategory == '银行') {
+                return 27;
+            } else if (secondCategory == '证券') {
+                return 28;
+            } else if (secondCategory == '保险') {
+                return 29;
+            } else {
+                return '';
+            }
+        }
+
+        function projectInputReset() {
+            $('#project_projectName').val('');
+            $('#project_area').attr('data-select', '').css('color', '#c1c1c1').children('span').text('请选择项目地区').parent().parent().children('span').hide();
+            $('#project_leader').val('');
+            $('#project_contactNumber').val('');
+            $('#project_email').val('');
+            $('#project_financingSize').attr('data-select', '').css('color', '#c1c1c1').children('span').text('请选择融资规模').parent().parent().children('span').hide();
+            $('#project_financingStage').attr('data-select', '').css('color', '#c1c1c1').children('span').text('请选择融资阶段').parent().parent().children('span').hide();
+            $('#project_category').attr('data-select', '').attr('data-select-snd', '').css('color', '#c1c1c1').children('span').text('请选择项目分类').parent().parent().children('span').hide();
+            $('#project_progress').attr('data-select', '').css('color', '#c1c1c1').children('span').text('请选择项目进展').parent().parent().children('span').hide();
+            $('#project_recommendedMark').attr('data-select', '').css('color', '#c1c1c1').children('span').text('请选择是否设置为推荐项').parent().parent().children('span').hide();
+            $('#project_summary').val('');
+            $('#project_detail').val('');
+            $('#projectPictureUpload').parent().find('img').attr('src', '../resources/image/pigda.png');// 图片区域清空
+            $('#projectAttachmentNoShareUpload').parent().find('li:not(.xy-index-body-content-projectInput-addAttachment-default)').remove();
+            $('#projectAttachmentShareUpload').parent().find('li:not(.xy-index-body-content-projectInput-addAttachment-default)').remove();
+        }
+
+        // 下载附件
+        function downloadAtt(url) {
+            window.open(url);
+        }
+
+        function shareProject() {
+            if ($('#share-button').hasClass('share-checked')) {
+                $('#share-button').removeClass('share-checked');
+                $('#xy-share-dialog').hide();
+                $('#xy-share-dialog').find('ul li span.xy-share-dialog-checked').removeClass('xy-share-dialog-checked');
+            } else {
+                $('#share-button').addClass('share-checked');
+                $('#xy-share-dialog').show();
+                $('#xy-share-dialog').find('ul li span').unbind('click').click(function () {
+                    if ($(this).hasClass('xy-share-dialog-checked')) {
+                        $(this).removeClass('xy-share-dialog-checked');
+                    } else {
+                        $(this).addClass('xy-share-dialog-checked');
+                    }
+                })
+            }
+        }
+
+        function sendProject() {
+            var userGroups = [];
+            var arr = $('#xy-share-dialog').find('ul li span.xy-share-dialog-checked');
+            $.each(arr, function (i, m) {
+                userGroups.push(parseInt($(m).attr('data-value')));
+            })
+            if (userGroups.length == 0) {
+                global_dialog.error("请选择要推送的用户！");
+                return;
+            }
+            global_ajax('sharePush', {
+                projectId: $('#projectQueryDetailProjectId').val(),
+                userGroup: userGroups
+            }, function (data) {
+                global_dialog.alert("推送成功！");
+            })
+        }
+    </script>
+</head>
+<body class="body-background">
+<div class="xy-index-body">
+    <div class="xy-index-body-header">
+        <div class="xy-index-body-header-content clearfix" id="indexHeader">
+            <div class="xy-index-body-header-logo"></div>
+            <div class="xy-index-body-header-menuBtn"></div>
+            <span class="xy-index-body-header-text">曦域资本</span>
+            <span class="xy-index-body-header-text">欢迎您！</span>
+            <div class="xy-index-body-header-loginout" onclick="loginOut()"></div>
+            <span class="xy-index-body-header-text margin-null pull-right">账号：<font id="loginUserName"></font></span>
+        </div>
+    </div>
+    <div class="xy-index-body-content">
+        <div class="xy-index-body-content-accountQuery clearfix" id="accountQuery">
+            <div class="xy-index-body-content-accountQuery-totalCount">
+                <span>已生成账号名单</span><span class="xy-index-body-content-accountQuery-totalCount-num"
+                                          id="accountQuery_totalCount">215</span>
+            </div>
+            <div class="xy-model-input xy-model-input-search" id="accountQuerySearch">
+                <input type="text" placeholder="请输入关键字">
+                <i></i>
+            </div>
+            <ul>
+                <li class="xy-index-body-content-accountQuery-list-header">
+                    <div class="xy-index-body-content-accountQuery-list-header-createTime clearfix"
+                         id="accountQueryDatagridOrderByDate">
+                        <span>建立时间</span>
+                        <i data-order="0"></i>
+                    </div>
+                    <div class="xy-index-body-content-accountQuery-list-header-privilegeLevel clearfix"
+                         id="accountQueryAuthorityLevel">
+                        <span>权限级别</span>
+                        <i></i>
+                        <div class="xy-index-body-content-accountQuery-list-header-privilegeLevel-select">
+                            <span data-permissionId="0">全部</span>
+                            <span data-permissionId="4">GP</span>
+                            <span data-permissionId="2">基石LP</span>
+                            <span data-permissionId="3">一般LP</span>
+                            <span data-permissionId="5">专家、顾问</span>
+                        </div>
+                    </div>
+                    <div class="xy-index-body-content-accountQuery-list-header-name">
+                        <span>姓名</span>
+                    </div>
+                    <div class="xy-index-body-content-accountQuery-list-header-email">
+                        <span>邮箱账号</span>
+                    </div>
+                    <div class="xy-index-body-content-accountQuery-list-header-weixin">
+                        <span>微信账号</span>
+                    </div>
+                    <div class="xy-index-body-content-accountQuery-list-header-userName">
+                        <span>账号</span>
+                    </div>
+                    <div class="xy-index-body-content-accountQuery-list-header-oldPsw">
+                        <span>初始密码</span>
+                    </div>
+                    <div class="xy-index-body-content-accountQuery-list-header-resetPsw">
+                        <span>密码重置</span>
+                    </div>
+                    <div class="xy-index-body-content-accountQuery-list-header-delete">
+                        <span>删除</span>
+                    </div>
+                </li>
+                <div id="accountQuery_datagrid"></div>
+            </ul>
+            <div class="xy-model-page" id="accountQuery_datagrid_pagination">
+                <div class="xy-model-page-prev"></div>
+                <div class="xy-model-page-info">
+                    <p class="pagination-custom-pageIndex"></p>
+                    <p>/</p>
+                    <p class="pagination-custom-pageCount"></p>
+                </div>
+                <div class="xy-model-page-next"></div>
+            </div>
+        </div>
+        <div class="xy-index-body-content-accountInput clearfix" id="accountInput">
+            <ul class="clearfix">
+                <div class="xy-index-body-content-accountInput-header">
+                    <span>权限级别</span>
+                    <span>姓名</span>
+                    <span>手机号</span>
+                    <span>邮箱账号</span>
+                    <span>清除</span>
+                </div>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+                <li class="clearfix">
+							<span>
+								<div class="xy-index-body-content-accountInput-select-show" data-pid="0">请选择权限级别</div>
+								<div class="xy-index-body-content-accountInput-select">
+									<span data-pid="4">GP</span>
+									<span data-pid="2">基石LP</span>
+									<span data-pid="3">一般LP</span>
+									<span data-pid="5">专家、顾问</span>
+								</div>
+								<i></i>
+							</span>
+                    <span class="xy-model-input"><input data-name="userName" type="text" placeholder="请输入姓名"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="mobile" type="text" placeholder="请输入手机号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-model-input"><input data-name="email" type="text" placeholder="请输入邮箱账号"><span
+                            class="xy-index-body-content-accountInput-tip"></span></span>
+                    <span class="xy-index-body-content-accountInput-clear"></span>
+                </li>
+            </ul>
+            <div class="xy-index-body-content-accountInput-submit" id="accountInputBatchInput">批量录入</div>
+        </div>
+        <div class="xy-index-body-content-accountInputSuccess clearfix" id="batchImportAccountSuccessDialog">
+            <div class="xy-index-body-content-accountInputSuccess-content">
+                <h6>本次录入名单</h6>
+                <ul>
+                    <div class="xy-index-body-content-accountInputSuccess-list-header clearfix">
+                        <span>建立时间</span>
+                        <span>权限级别</span>
+                        <span>姓名</span>
+                        <span>邮箱账号</span>
+                        <span>微信账号</span>
+                        <span>账号</span>
+                        <span>初始密码</span>
+                    </div>
+                    <div id="batchImportAccountSuccessDialog_table"></div>
+                </ul>
+                <div class="xy-index-body-content-accountInputSuccess-ok" id="accountInput_success">确认</div>
+            </div>
+        </div>
+        <div class="xy-index-body-content-projectInput clearfix" id="projectInput">
+            <div class="xy-index-body-content-projectInput-baseInfo clearfix">
+                <h6 class="xy-index-body-content-projectInput-title">基本信息</h6>
+                <div class="xy-index-body-content-projectInput-inputs xy-model-input">
+                    <span>项目名称</span>
+                    <input id="project_projectName" type="text" class="xy-index-body-content-projectInput-input"
+                           placeholder="请输入项目名称">
+                </div>
+                <div class="xy-index-body-content-projectInput-inputs xy-model-input">
+                    <span>项目负责人</span>
+                    <input id="project_leader" type="text" class="xy-index-body-content-projectInput-input"
+                           placeholder="请输入项目负责人">
+                </div>
+                <div class="xy-index-body-content-projectInput-inputs xy-model-input">
+                    <span>联系电话</span>
+                    <input id="project_contactNumber" type="text" class="xy-index-body-content-projectInput-input"
+                           placeholder="请输入联系电话">
+                </div>
+                <div class="xy-index-body-content-projectInput-inputs xy-model-input">
+                    <span>邮箱账号</span>
+                    <input id="project_email" type="text" class="xy-index-body-content-projectInput-input"
+                           placeholder="请输入邮箱账号">
+                </div>
+                <div class="xy-index-body-content-projectInput-inputs">
+                    <span>项目地区</span>
+                    <div id="project_area" class="xy-index-body-content-projectInput-select" data-select="">
+                        <span>请选择项目地区</span>
+                        <i></i>
+                        <ul>
+                            <li data-select="北京">北京</li>
+                            <li data-select="上海">上海</li>
+                            <li data-select="广州">广州</li>
+                            <li data-select="深圳">深圳</li>
+                            <li data-select="南京">南京</li>
+                            <li data-select="其他地区">其他地区</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xy-index-body-content-projectInput-inputs">
+                    <span>融资规模</span>
+                    <div id="project_financingSize" class="xy-index-body-content-projectInput-select" data-select="">
+                        <span>请选择融资规模</span>
+                        <i></i>
+                        <ul>
+                            <li data-select="1">1-5千万</li>
+                            <li data-select="2">5-10千万</li>
+                            <li data-select="3">10-20千万</li>
+                            <li data-select="4">20千万以上</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xy-index-body-content-projectInput-inputs">
+                    <span>融资阶段</span>
+                    <div id="project_financingStage" class="xy-index-body-content-projectInput-select" data-select="">
+                        <span>请选择融资阶段</span>
+                        <i></i>
+                        <ul>
+                            <li data-select="1">种子轮</li>
+                            <li data-select="2">天使轮</li>
+                            <li data-select="3">A轮</li>
+                            <li data-select="4">B轮</li>
+                            <li data-select="5">C轮</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xy-index-body-content-projectInput-inputs">
+                    <span>项目进展</span>
+                    <div id="project_progress" class="xy-index-body-content-projectInput-select" data-select="">
+                        <span>请选择项目进展</span>
+                        <i></i>
+                        <ul>
+                            <li data-select="1">跟踪</li>
+                            <li data-select="2">尽调</li>
+                            <li data-select="3">term</li>
+                            <li data-select="4">终止</li>
+                            <li data-select="5">投后</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xy-index-body-content-projectInput-inputs">
+                    <span>是否设置为推荐项</span>
+                    <div id="project_recommendedMark" class="xy-index-body-content-projectInput-select" data-select="">
+                        <span>请选择是否设置为推荐项</span>
+                        <i></i>
+                        <ul>
+                            <li data-select="1">是</li>
+                            <li data-select="0">否</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xy-index-body-content-projectInput-inputs">
+                    <span>项目分类</span>
+                    <div id="project_category" class="xy-index-body-content-projectInput-select" data-select=""
+                         data-select-snd="">
+                        <span>请选择项目分类</span>
+                        <i></i>
+                        <ul>
+                            <li data-select="1" class="xy-index-body-content-projectInput-select-xmfl">
+                                <span>互联网资产</span>
+                                <div class="xy-index-body-content-projectInput-select-snd">
+                                    <span data-select-snd="7">消费金融</span>
+                                    <span data-select-snd="8">现金贷</span>
+                                    <span data-select-snd="9">供应链</span>
+                                    <span data-select-snd="10">ABS</span>
+                                    <span data-select-snd="11">催收</span>
+                                    <span data-select-snd="12">保理</span>
+                                    <span data-select-snd="13">租赁</span>
+                                    <span data-select-snd="14">典当</span>
+                                </div>
+                            </li>
+                            <li data-select="2" class="xy-index-body-content-projectInput-select-xmfl"><span>交易平台</span>
+                                <div class="xy-index-body-content-projectInput-select-snd">
+                                    <span data-select-snd="15">交易所</span>
+                                    <span data-select-snd="16">外汇</span>
+                                    <span data-select-snd="17">债券</span>
+                                    <span data-select-snd="18">贵金属</span>
+                                </div>
+                            </li>
+                            <li data-select="3" class="xy-index-body-content-projectInput-select-xmfl">
+                                <span>互联网资金</span>
+                                <div class="xy-index-body-content-projectInput-select-snd">
+                                    <span data-select-snd="19">财富管理</span>
+                                    <span data-select-snd="20">P2P</span>
+                                    <span data-select-snd="21">众筹</span>
+                                </div>
+                            </li>
+                            <li data-select="4" class="xy-index-body-content-projectInput-select-xmfl"><span>证券</span>
+                                <div class="xy-index-body-content-projectInput-select-snd">
+                                    <span data-select-snd="22">经济</span>
+                                    <span data-select-snd="23">投行</span>
+                                    <span data-select-snd="24">资管</span>
+                                </div>
+                            </li>
+                            <li data-select="5" class="xy-index-body-content-projectInput-select-xmfl"><span>保险</span>
+                                <div class="xy-index-body-content-projectInput-select-snd">
+                                    <span data-select-snd="25">渠道</span>
+                                    <span data-select-snd="26">产品</span>
+                                </div>
+                            </li>
+                            <li data-select="6" class="xy-index-body-content-projectInput-select-xmfl">
+                                <span>Fintech</span>
+                                <div class="xy-index-body-content-projectInput-select-snd">
+                                    <span data-select-snd="27">银行</span>
+                                    <span data-select-snd="28">证券</span>
+                                    <span data-select-snd="29">保险</span>
+                                </div>
+                            </li>
+                            <li data-select="30" class="xy-index-body-content-projectInput-select-xmfl">
+                                <span>支付及虚拟货币</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xy-index-body-content-projectInput-pic">
+                    <img class="projectPictureUpload" src="../resources/image/pigda.png">
+                    <span class="projectPictureUpload" id="projectPictureUpload">编辑</span>
+                </div>
+            </div>
+            <div class="xy-index-body-content-projectInput-projectDesc clearfix">
+                <h6 class="xy-index-body-content-projectInput-title">项目介绍</h6>
+                <div class="xy-index-body-content-projectInput-projectDesc-input m10">
+                    <span>项目概述</span>
+                    <textarea id="project_summary" placeholder="请输入项目概述（30字内）" class="h70"></textarea>
+                </div>
+                <div class="xy-index-body-content-projectInput-projectDesc-input">
+                    <span>项目详情</span>
+                    <textarea id="project_detail" placeholder="请输入项目详情（300字内）" class="h140"></textarea>
+                </div>
+            </div>
+            <div class="xy-index-body-content-projectInput-addAttachment clearfix">
+                <h6 class="xy-index-body-content-projectInput-title">添加附件</h6>
+                <div class="xy-index-body-content-projectInput-addAttachment-share">
+                    <span class="xy-index-body-content-projectInput-addAttachment-title">附件：</span>
+                    <ul>
+                        <li class="xy-index-body-content-projectInput-addAttachment-default"
+                            id="projectAttachmentShareUpload">添加附件
+                        </li>
+                    </ul>
+                </div>
+                <div class="xy-index-body-content-projectInput-addAttachment-noShare">
+                    <span class="xy-index-body-content-projectInput-addAttachment-title">备注文件：</span>
+                    <ul>
+                        <li class="xy-index-body-content-projectInput-addAttachment-default"
+                            id="projectAttachmentNoShareUpload">添加附件
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="xy-index-body-content-projectInput-submit"><span id="projectInput_submit">提交</span></div>
+            <div class="xy-index-body-content-projectInput-goback"><span id="projectInput_goback">取消</span></div>
+        </div>
+        <div class="xy-index-body-content-projectQuery clearfix" id="projectQuery">
+            <div class="xy-index-body-content-projectQuery-filter">筛选</div>
+            <div class="xy-model-input xy-model-input-search xy-index-body-content-projectQuery-keyword">
+                <input type="text" placeholder="请输入关键字" class="searchInputKeyword">
+                <i></i>
+            </div>
+            <div id="projectQuery_datagrid"></div>
+            <div class="xy-model-page" id="projectQuery_datagrid_pagination">
+                <div class="xy-model-page-prev"></div>
+                <div class="xy-model-page-info">
+                    <p class="pagination-custom-pageIndex"></p>
+                    <p>/</p>
+                    <p class="pagination-custom-pageCount"></p>
+                </div>
+                <div class="xy-model-page-next"></div>
+            </div>
+        </div>
+        <div class="xy-index-body-content-projectQueryDetail clearfix" id="projectQueryDetail">
+            <input type="hidden" id="projectQueryDetailProjectId">
+            <div class="xy-index-body-content-projectInfoQuery-header">
+                <div data-name="projectName"></div>
+                <div>
+                    <span onclick="editThisProject()">编辑</span>
+                    <span onclick="shareProject(this)" id="share-button">分享</span>
+                    <div class="xy-share-dialog" id="xy-share-dialog" style="display: none;">
+                        <ul>
+                            <li><span data-value="2">基石LP</span></li>
+                            <li><span data-value="3">一般LP</span></li>
+                            <li><span data-value="4">GP</span></li>
+                            <li><span data-value="5">专家、顾问</span></li>
+                        </ul>
+                        <span class="xy-share-dialog-send" id="projectSend" onclick="sendProject()">推送</span>
+                    </div>
+                    <img src="../resources/image/cha.png" width="22px" height="22px" onclick="goBackProjectList()">
+                </div>
+                <div>
+                    <img id="projectQueryDetailPic" src="">
+                </div>
+            </div>
+            <div class="xy-index-body-content-projectInfoQuery-information">
+                <span>基本信息</span>
+                <ul>
+                    <li>
+                        <div class="xy-index-body-content-projectInfoQuery-information-fuzePerson">
+                            <span>项目负责人:</span>
+                            <span data-name="leader"></span>
+                        </div>
+                        <div class="xy-index-body-content-projectInfoQuery-information-phone">
+                            <span>联系电话:</span>
+                            <span data-name="contactNumber"></span>
+                        </div>
+                        <div class="xy-index-body-content-projectInfoQuery-information-email">
+                            <span>邮箱账号:</span>
+                            <span data-name="email"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="xy-index-body-content-projectInfoQuery-information-setTime">
+                            <span>建立时间:</span>
+                            <span data-name="buildTime"></span>
+                        </div>
+                        <div class="xy-index-body-content-projectInfoQuery-information-city">
+                            <span>项目地区:</span>
+                            <span data-name="area"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="xy-index-body-content-projectInfoQuery-information-financingScale">
+                            <span>融资规模:</span>
+                            <span data-name="financingSize"></span>
+                        </div>
+                        <div class="xy-index-body-content-projectInfoQuery-information-financingStage">
+                            <span>融资阶段:</span>
+                            <span data-name="financingStage"></span>
+                        </div>
+                        <div class="xy-index-body-content-projectInfoQuery-information-projectClass">
+                            <span>项目分类:</span>
+                            <span data-name="category"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="xy-index-body-content-projectInfoQuery-information-recommendedItems">
+                            <span>是否设置为推荐项:</span>
+                            <span data-name="recommendedMark"></span>
+                        </div>
+                        <div class="xy-index-body-content-projectInfoQuery-information-projectDebriefing">
+                            <span>项目进展:</span>
+                            <span data-name="progress"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="xy-index-body-content-projectInfoQuery-project">
+                <div class="xy-index-body-content-projectInfoQuery-project-introduce">
+                    <span>项目介绍</span>
+                    <div>
+                        <span>项目概况:</span>
+                        <p data-name="summary"></p>
+                    </div>
+                    <div>
+                        <span>项目详情:</span>
+                        <p data-name="detail"></p>
+                    </div>
+                </div>
+                <div class="xy-index-body-content-projectInfoQuery-project-enclosure">
+                    <span>附件分享</span>
+                    <div>
+                        <span>附件:</span>
+                        <ul id="projectQueryDetailShareAttachments"></ul>
+                    </div>
+                    <div>
+                        <span>备注文件:</span>
+                        <ul id="projectQueryDetailNoShareAttachments"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="xy-index-body-content-projectInfoQuery-projectEvaluate">
+                <span>项目评价</span>
+                <ul id="projectQueryDetailAppraisals"></ul>
+                <div>
+                    <textarea name="" id="xy-index-body-content-projectInfoQuery-projectEvaluate-evaluate" cols="30"
+                              rows="10" style="resize:none" placeholder="请输入您的评价"></textarea>
+                    <button id="xy-index-body-content-projectInfoQuery-projectEvaluate-submit"
+                            onclick="issueNewAppraisal()">发表评论
+                    </button>
+                </div>
+            </div>
+            <div class="xy-index-body-content-projectInfoQuery-relatedProject">
+                <span>相关项目</span>
+                <ul class="xy-index-body-content-projectInfoQuery-relatedProject-list"
+                    id="projectQueryDetailRecommendProjects"></ul>
+            </div>
+        </div>
+        <div class="xy-index-body-content-projectQueryFilter clearfix" id="projectQuery_filter_dialog">
+            <div class="xy-index-body-content-projectQuery-filter">筛选</div>
+            <div class="xy-model-input xy-model-input-search xy-index-body-content-projectQuery-keyword">
+                <input type="text" placeholder="请输入关键字" class="searchInputKeyword">
+                <i></i>
+            </div>
+            <div class="xy-index-body-content-choose-contant">
+                <span class="xy-index-body-content-choose-contant-head">项目分类</span>
+                <div class="xy-index-body-content-choose-contant-big clearfix">
+                    <div class="xy-index-body-content-choose-contant-left">
+                        <div class="netZchan">
+                            <div class="xy-index-body-content-choose-contant-title">
+                                <input type="checkbox" id="choose-hlwzc"
+                                       class="xy-index-body-content-choose-contant-big-check">
+                                <label for="choose-hlwzc">互联网资产</label>
+                            </div>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" data-value="7" id="choose-xfjr"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-xfjr">消费金融</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="8" id="choose-xjd"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-xjd">现金贷</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="9" id="choose-gyl"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-gyl">供应链</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="10" id="choose-abs"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-abs">ABS</label>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" data-value="11" id="choose-cuishou"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-cuishou">催收</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="12" id="choose-bli"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-bli">保理</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="13" id="choose-zl"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-zl">租赁</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="14" id="choose-dd"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-dd">典当</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="netZchan">
+                            <div class="xy-index-body-content-choose-contant-title">
+                                <input type="checkbox" id="choose-jypt"
+                                       class="xy-index-body-content-choose-contant-big-check">
+                                <label for="choose-jypt">交易平台</label>
+                            </div>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" data-value="15" id="choose-jys"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-jys">交易所</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="16" id="choose-wh"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-wh">外汇</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="17" id="choose-zq"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-zq">债券</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="18" id="choose-gjs"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-gjs">贵金属</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="netZchan">
+                            <div class="xy-index-body-content-choose-contant-title">
+                                <input type="checkbox" id="choose-hlwzj"
+                                       class="xy-index-body-content-choose-contant-big-check">
+                                <label for="choose-hlwzj">互联网资金</label>
+                            </div>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" data-value="19" id="choose-cfgl"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-cfgl">财富管理</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="20" id="choose-p2p"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-p2p">P2P</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="21" id="choose-zc"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-zc">众筹</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="netZchan">
+                            <div class="xy-index-body-content-choose-contant-title">
+                                <input type="checkbox" id="choose-zqtitle"
+                                       class="xy-index-body-content-choose-contant-big-check">
+                                <label for="choose-zqtitle">证券</label>
+                            </div>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" data-value="22" id="choose-jj"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-jj">经济</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="23" id="choose-th"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-th">投行</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="24" id="choose-zg"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-zg">资管</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="netZchan">
+                            <div class="xy-index-body-content-choose-contant-title">
+                                <input type="checkbox" id="choose-bx"
+                                       class="xy-index-body-content-choose-contant-big-check">
+                                <label for="choose-bx">保险</label>
+                            </div>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" data-value="25" id="choose-qd"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-qd">渠道</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="26" id="choose-cp"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-cp">产品</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="xy-index-body-content-choose-contant-right">
+                        <div class="netZchan">
+                            <div class="xy-index-body-content-choose-contant-title">
+                                <input type="checkbox" id="choose-fintech"
+                                       class="xy-index-body-content-choose-contant-big-check">
+                                <label for="choose-fintech">Fintech</label>
+                            </div>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" data-value="27" id="choose-yinghang"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-yinghang">银行</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="28" id="choose-zhengquan"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-zhengquan">证券</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="29" id="choose-baoxian"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-baoxian">保险</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="netZchan">
+                            <div class="xy-index-body-content-choose-contant-title">
+                                <input type="checkbox" data-value="30" id="choose-huobi"
+                                       class="xy-index-body-content-choose-contant-big-check">
+                                <label for="choose-huobi">支付及虚拟货币</label>
+                            </div>
+                        </div>
+                        <div class="xy-index-body-content-choose-xmjz">
+                            <span class="xy-index-body-content-choose-contant-head">项目进展</span>
+                            <ul id="projectQueryFilter_xmjz">
+                                <li>
+                                    <input type="checkbox" data-value="1" id="choose-genzong"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-genzong">跟踪</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="2" id="choose-jintiao"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-jintiao">尽调</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="3" id="choose-term"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-term">term</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="4" id="choose-zhongzhi"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-zhongzhi">终止</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="5" id="choose-touhou"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-touhou">投后</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="xy-index-body-content-choose-rzjd">
+                            <span class="xy-index-body-content-choose-contant-head">融资阶段</span>
+                            <ul id="projectQueryFilter_rzjd">
+                                <li>
+                                    <input type="checkbox" data-value="1" id="choose-zhongzl"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-zhongzl">种子轮</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="2" id="choose-tshilun"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-tshilun">天使轮</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="3" id="choose-al"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-al">A轮</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="4" id="choose-bl"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-bl">B轮</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" data-value="5" id="choose-cl"
+                                           class="xy-index-body-content-choose-contant-small-check">
+                                    <label for="choose-cl">C轮</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="xy-index-body-content-choose-sure" id="projectQuery_filter_ok">确认</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="xy-index-menu" id="indexMenu">
+    <dl>
+        <dd>项目管理</dd>
+        <dt>
+            <span menu-index="1">项目录入</span>
+            <span menu-index="2">项目查看</span>
+        </dt>
+    </dl>
+    <dl>
+        <dd>账户管理</dd>
+        <dt>
+            <span menu-index="3">账户录入</span>
+            <span menu-index="4">账户查看</span>
+        </dt>
+    </dl>
+</div>
+<div class="xy-index-menu-btn" id="indexMenuBtn">
+    <div class="xy-index-body-header-menuBtn xy-index-body-header-menuBtn-checked"></div>
+    <span class="xy-index-body-header-text">曦域资本</span>
+    <span class="xy-index-body-header-text">欢迎您！</span>
+</div>
+
+<form action="/xypms/project/attachUploadToCos" method="post" enctype="multipart/form-data"
+      id="attachmentUploadNoShareForm" style="display: none;">
+    <input type="file" name="file" accept=".ppt,.pdf,.doc,.docx,.wma" onchange="submitAttachmentUploadNoShareForm()"/>
+</form>
+<form action="/xypms/project/attachUploadToCos" method="post" enctype="multipart/form-data"
+      id="attachmentUploadShareForm" style="display: none;">
+    <input type="file" name="file" accept=".ppt,.pdf,.doc,.docx,.wma" onchange="submitAttachmentUploadShareForm()"/>
+</form>
+</body>
+</html>

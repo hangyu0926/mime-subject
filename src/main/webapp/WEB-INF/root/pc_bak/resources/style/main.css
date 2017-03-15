@@ -1,0 +1,220 @@
+*{margin: 0;padding: 0;}
+body{font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;}
+img{display: block;border: 0;width: 100%;height: 100%;}
+dl, dt, dd, ul, li{list-style: none;}
+
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
+.overflow-hidden{overflow: hidden !important;}
+.datagrid-caret{margin-left: 10px;border-top: 6px solid;border-right: 6px solid transparent;border-left: 6px solid transparent;cursor: pointer;}
+.datagrid-caret.datagrid-caret-asc{border-top: 0;border-bottom: 6px solid;}
+
+.interface-left{position: absolute;top: 0;bottom: 0;left: 0;width: 220px;margin: auto;background: #999999;}
+.interface-right{position: absolute;top: 0;bottom: 0;left: 220px;right: 0;margin: auto;background: #E1EDF7;padding: 20px;overflow: auto;}
+.interface-left-logo{width: 220px;height: 100px;}
+.interface-left-menu{cursor: pointer;background: #357EBD;color: #444444;}
+.interface-left-menu dt{font-size: 20px;line-height: 2.5em;}
+.interface-left-menu dl{margin-bottom: 2px;text-align: center;}
+.interface-left-menu dl dd{height: 0;overflow: hidden;-moz-transition: height 1s;-webkit-transition: height 1s;-o-transition: height 1s;transition: height 1s;}
+.interface-left-menu dl:hover, .menu-father-check{background: #66AFE9;color: #262626;}
+.interface-left-menu dl:hover dd, .interface-left-menu dl.menu-father-check dd{display: block;}
+.interface-left-menu dl.menu-father-check dd{height: 66px;-moz-transition: height 1s;-webkit-transition: height 1s;-o-transition: height 1s;transition: height 1s;}
+.interface-left-menu dl ul li{font-size: 16px;line-height: 2em;background: #5BC0DE;margin-bottom: 2px;}
+.interface-left-menu dl ul li:hover, .interface-left-menu dl ul li.menu-son-check{background: #A6E1EC;}
+.interface-left-menu ul{margin-bottom: 0;text-align: center;}
+.interface-right-login, .interface-right-password{position: absolute;height: 280px;margin: auto;text-align: center;padding: 50px;background: #FFFFFF;border-radius: 20px;box-shadow: 10px 10px 5px #888888;}
+.interface-right-login{width: 430px;top: 0;bottom: 0;left: 0;right: 0;-moz-transition: left 2s, visibility 2s;-webkit-transition: left 2s, visibility 2s;-o-transition: left 2s, visibility 2s;transition: left 2s, visibility 2s;visibility: visible;}
+.interface-right-login-hide{left: 100%;-moz-transition: left 2s, visibility 2s;-webkit-transition: left 2s, visibility 2s;-o-transition: left 2s, visibility 2s;transition: left 2s, visibility 2s;visibility: hidden;}
+.interface-right-password{width: 380px;top: 0;bottom: 0;right: 0;left: 100%;-moz-transition: left 2s, visibility 2s;-webkit-transition: left 2s, visibility 2s;-o-transition: left 2s, visibility 2s;transition: left 2s, visibility 2s;visibility: hidden;}
+.interface-right-password-show{left: 0;-moz-transition: left 2s, visibility 2s;-webkit-transition: left 2s, visibility 2s;-o-transition: left 2s, visibility 2s;transition: left 2s, visibility 2s;visibility: visible;}
+.interface-right-login .input-group.input-group-lg{margin-bottom: 20px;}
+.interface-right-password .input-group.input-group-sm{margin-bottom: 10px;}
+.interface-right-login .input-group-addon, .interface-right-password .input-group-addon{width: 110px;}
+.interface-right-login button, .interface-right-password button{width: 6em;font-size: 16px;line-height: 20px;}
+.interface-right-login .login-tool{overflow: hidden;}
+.interface-right-login .remember-password, .interface-right-login .update-password{font-size: 12px;line-height: 20px;padding: 6px 12px;cursor: pointer;}
+.interface-right-login .remember-password input[type=checkbox]{margin: 0;margin-right: 10px;position: relative;top: 1px;width: 12px;height: 12px;}
+.interface-right-login .remember-password:hover, .interface-right-login .update-password:hover{text-decoration: underline;color: #269ABC;}
+.interface-right-password .goback-login{font-size: 12px;line-height: 20px;padding: 6px 12px;cursor: pointer;}
+.interface-right-password .goback-login:hover{text-decoration: underline;color: #269ABC;}
+
+.alert-dialog, .confirm-dialog{
+	position: fixed;top: 0;left: 0;height: 100%;width: 100%;
+	background-color: rgba(94, 110, 141, 0.9);z-index: 10000;font-size: 16px;
+	opacity: 0;visibility: hidden;
+	-webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;-moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+	-o-transition: opacity 0.3s 0s, visibility 0s 0.3s;transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+.alert-dialog.is-visible, .confirm-dialog.is-visible{
+	opacity: 1;visibility: visible;-webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+	-moz-transition: opacity 0.3s 0s, visibility 0s 0s;-o-transition: opacity 0.3s 0s, visibility 0s 0s;
+	transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+.alert-dialog .alert-dialog-message, .confirm-dialog .confirm-dialog-message{
+	position: relative;width: 90%;max-width: 400px;margin: 4em auto;
+	background: #FFFFFF;border-radius: 10px;text-align: center;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+	-webkit-transform: translateY(60px);-moz-transform: translateY(60px);
+	-ms-transform: translateY(60px);-o-transform: translateY(60px);transform: translateY(60px);
+  	/* Force Hardware Acceleration in WebKit */
+  	-webkit-backface-visibility: hidden;
+  	-webkit-transition-property: -webkit-transform;
+  	-moz-transition-property: -moz-transform;
+  	transition-property: transform;
+  	-webkit-transition-duration: 0.3s;
+  	-moz-transition-duration: 0.3s;
+  	transition-duration: 0.3s;
+}
+.alert-dialog .alert-dialog-message p, .confirm-dialog .confirm-dialog-message p{padding: 3em 1em 1.5em;}
+.alert-dialog .alert-dialog-message p .alert-dialog-message-error, .confirm-dialog .confirm-dialog-message p{color: #ff0000;}
+.alert-dialog .alert-dialog-message button{width: 100%;border-radius: 0 0 10px 10px;line-height: 2em;}
+.confirm-dialog .confirm-dialog-message button{width: 50%;line-height: 2em;}
+.confirm-dialog .confirm-dialog-message button:first-of-type{border-radius: 0 0 0 10px;}
+.confirm-dialog .confirm-dialog-message button:last-of-type{border-radius: 0 0 10px 0;}
+
+.content-header{position: absolute;top: 20px;left: 20px;right: 20px;height: 30px;line-height: 30px;}
+.content-header .company-info span{margin-right: 30px;}
+.content-header .user-info-content{position: relative;z-index: 100;}
+.content-header .user-info{margin-right: 30px;margin-left: 10px;color: #3500ff;}
+.content-header .page-title{position: absolute;top: 0;left: 0;width: 100%;text-align: center;font-size: 18px;}
+.content-body{position: absolute;top: 70px;left: 20px;right: 20px;bottom: 20px;margin: auto;}
+
+.accountQuery, .accountInput, .projectInput, .projectQuery, .homePage{display: none;}
+
+.homePage{width: 100%;height: 100%;position: relative;}
+.homePage-logo{position: absolute;max-width: 1280px;max-height: 720px;top: 0;bottom: 0;left: 0;right: 0;margin: auto;}
+
+.accountQuery{width: 100%;height: 100%;}
+.accountQuery-info{margin-top: 20px;padding-bottom: 10px;border-bottom: 2px #080808 solid;}
+.accountQuery-info-totalCount{width: 300px;font-size: 20px;height: 80px;}
+.accountQuery-info-totalCount span{line-height: 80px;}
+.accountQuery-info-totalCount .accountQuery-info-totalCount-number{margin-left: 40px;font-weight: bold;font-size: 40px;}
+.accountQuery-info-search{width: 400px;height: 80px;position: relative;}
+.accountQuery-info-search .input-group{position: absolute;bottom: 10px;}
+.accountQuery-info-search .input-group button.dropdown-toggle{width: 110px;text-align: left;}
+.accountQuery-info-search .input-group .caret{position: absolute;right: 8px;top: 15px;}
+.accountQuery-datagrid{margin-top: 20px;overflow: auto;height: 719px;position: relative;}
+.accountQuery-datagrid table{min-width: 1200px;text-align: center;background: #FFFFFF;}
+.accountQuery-datagrid table>thead>tr{background: #E6E6E6;}
+.accountQuery-datagrid table>thead>tr>th, .accountQuery-datagrid table>tbody>tr>td{text-align: center;line-height: 3em;}
+
+.accountInput{width: 100%;height: 100%;}
+.accountInput-inputDatagrid{margin-top: 20px;padding: 20px 0;border-top: 2px solid #080808;border-bottom: 2px solid #080808;}
+.accountInput-inputDatagrid table{min-width: 1200px;background: #FFFFFF;}
+.accountInput-inputDatagrid table>thead>tr{background: #E6E6E6;}
+.accountInput-inputDatagrid table>thead>tr>th, .accountInput-inputDatagrid table>tbody>tr>td{text-align: center;line-height: 3em;}
+.accountInput-inputDatagrid table>tbody>tr>td.text-left{text-align: left;}
+.accountInput-inputDatagrid table>tbody>tr>td.text-left span{color: #ff0000;}
+.accountInput-inputDatagrid table input[type=text]{width: 40%;line-height: 2em;padding-left: 10px;margin-left: 5%;margin-right: 5%;}
+.accountInput-inputDatagrid table button.dropdown-text{width: 90px;text-align: left;}
+
+.projectQuery{width: 100%;height: 100%;position: relative;}
+.projectQuery-tools{overflow: hidden;position: relative;}
+.projectQuery-tools .projectQuery-datagrid-pagination{bottom: -18px;left: 140px;}
+.projectQuery-tools .input-group{width: 370px;position: relative;top: 4px;}
+.projectQuery-datagrid{padding: 20px 0;border-top: 2px solid #080808;border-bottom: 2px solid #080808;position: absolute;top: 60px;bottom: 0;left: 0;right: 0;overflow: auto;}
+.projectQuery-datagrid ul{margin: 0;}
+.projectQuery-datagrid ul li{margin-top: 10px;border: 1px solid #285E8E;padding: 10px;overflow: hidden;position: relative;height: 112px;background: #FFFFFF;cursor: pointer;}
+.projectQuery-datagrid ul li:first-child{margin-top: 0;}
+.projectQuery-datagrid ul li:hover{background: #F5F5F5;}
+.projectQuery-datagrid ul li:hover .projectQuery-datagrid-baseInfo .projectQuery-datagrid-baseInfo-projectName{color: #285E8E;}
+.projectQuery-datagrid-coverImage{width: 160px;height: 90px;position: absolute;top: 10px;left: 10px;}
+.projectQuery-datagrid-baseInfo{line-height: 2em;font-size: 16px;position: absolute;top: 10px;left: 210px;right: 10px;margin: auto;}
+.projectQuery-datagrid-baseInfo .projectQuery-datagrid-baseInfo-projectName{font-size: 20px;font-weight: bold;width: 100%;}
+.projectQuery-datagrid-baseInfo .projectQuery-datagrid-baseInfo-createTime{margin-right: 40px;}
+.projectQuery-datagrid-baseInfo .projectQuery-datagrid-baseInfo-financingStage{margin-right: 40px;}
+.projectQuery-datagrid-baseInfo .projectQuery-datagrid-baseInfo-font, .projectQuery-datagrid-desc .projectQuery-datagrid-baseInfo-font{font-weight: bold;margin-right: 10px;}
+.projectQuery-datagrid-desc{line-height: 2em;position: absolute;left: 210px;right: 10px;bottom: 10px;margin: auto;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+
+.projectQueryFilter{width: 100%;height: 100%;background: #E1EDF7;position: absolute;top: 0;left: 0;z-index: 10000;}
+.projectQueryFilter-content{width: 80%;margin: auto;background: #ffffff;font-size: 14px;line-height: 2em;padding: 20px;}
+.projectQueryFilter-content-checkboxes input[type=checkbox]{position: relative;top: 2px;margin-right: 5px;}
+.projectQueryFilter-content-checkboxes ul{margin-bottom: 0;padding: 10px 0;}
+.projectQueryFilter-content-checkboxes ul span{margin-right: 20px;}
+.projectQueryFilter-content-checkboxes-area{position: relative;overflow: hidden;padding-left: 140px;border: 1px solid #000000;padding-right: 20px;margin-top: 20px;}
+.projectQueryFilter-content-checkboxes-area-desc{position: absolute;left: 0;top: 0;width: 120px;bottom: 0;background: #5bc0de;border-right: 1px solid #000000;}
+.projectQueryFilter-content-checkboxes-area-desc span{position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;height: 2em;text-align: center;}
+.xmfl_hlwzc, .xmfl_jypt, .xmfl_hlwzj, .xmfl_zj, .xmfl_bx, .xmfl_fintech{border: 1px #080808 solid;padding: 10px;margin: 10px 0;}
+.projectQuery_filter_ok{display: block;margin: auto;width: 110px;margin-top: 10px;}
+
+.projectQueryDetail{width: 100%;height: 100%;background: #ffffff;position: absolute;top: 0;left: 0;z-index: 10000;border-top:2px solid #000000;padding: 0 20px 20px;overflow: auto;}
+.projectQueryDetail ul, .projectQueryDetail p{margin-bottom: 0;}
+.projectQueryDetail-tools{margin-top: 20px;}
+.projectQueryDetail-tools span{font-size: 18px;margin-left: 20px;}
+.projectQueryDetail-tools button{margin-left: 20px;padding-left: 16px;padding-right: 16px;}
+.projectQueryDetail-images li{float: left;width: 22%;height: 200px;margin-bottom: 10px;margin-left: 4%;}
+.projectQueryDetail-images li:nth-child(4n+1){margin-left: 0;}
+.projectQueryDetail-infos{width: 70%;line-height: 2em;}
+.projectQueryDetail-infos span{display: inline-block;}
+.projectQueryDetail-infos span[data-name]{margin-left: 10px;}
+.projectQueryDetail-detail{line-height: 2em;}
+.projectQueryDetail-detail span[data-name]{margin-left: 10px;}
+.projectQueryDetail-appraisals, .projectQueryDetail-projects{margin-top: 10px;}
+.projectQueryDetail-appraisals-title, .projectQueryDetail-projects-title{margin-left: 20px;font-size: 18px;display: inline-block;}
+.projectQueryDetail-appraisals ul{margin-top: 10px;max-height: 830px;overflow: auto;}
+.projectQueryDetail-appraisals ul li{padding: 8px;border: 1px solid #dddddd;line-height: 2em;margin-top: 10px;}
+.projectQueryDetail-appraisals ul li:first-child{margin-top: 0;}
+.projectQueryDetail-appraisals ul li span[data-name=appraisalUserName]{margin-right: 10px;color: #008bff;}
+.projectQueryDetail-appraisals ul li span[data-name=appraisalSubmitTime]{margin-right: 10px;color: #008bff;margin-left: 10px;}
+.projectQueryDetail-appraisals-addAppraisal{font-size: 14px;height: 4.5em;margin-top: 10px;}
+.projectQueryDetail-appraisals-addAppraisal textarea{line-height: 1.5em;width: 90%;height: 4.5em;resize: none;float: left;padding: 0 8px;}
+.projectQueryDetail-appraisals-addAppraisal .projectQueryDetail-appraisals-addAppraisal-issue{float: left;background: #5bc0de;color: #efefef;line-height: 4.5em;width: 10%;text-align: center;cursor: pointer;}
+.projectQueryDetail-appraisals-addAppraisal .projectQueryDetail-appraisals-addAppraisal-issue:hover{background: #2a6496;}
+.projectQueryDetail-projects ul{margin-top: 10px;}
+.projectQueryDetail-projects ul li{margin-top: 10px;border: 1px solid #285E8E;padding: 10px;overflow: hidden;position: relative;height: 112px;background: #ffffff;cursor: pointer;}
+.projectQueryDetail-shareAttachments, .projectQueryDetail-noShareAttachments{border: 1px solid #dddddd;margin-top: 10px;}
+.projectQueryDetail-shareAttachments-title, .projectQueryDetail-noShareAttachments-title{width: 100%;line-height: 2em;margin-left: 8px;}
+.projectQueryDetail-shareAttachments-attachment, .projectQueryDetail-noShareAttachments-attachment{width: 80px;margin-right: 10px;padding: 8px;cursor: pointer;}
+.projectQueryDetail-shareAttachments-attachment img, .projectQueryDetail-noShareAttachments-attachment img{margin-bottom: 5px;}
+.projectQueryDetail-shareAttachments-attachment span, .projectQueryDetail-noShareAttachments-attachment span{width: 100%;line-height: 1.5em;font-size: 12px;display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+.projectQueryDetail-shareAttachments-attachment:hover span, .projectQueryDetail-noShareAttachments-attachment:hover span{text-decoration: underline;}
+
+.accountInput-addSuccess{width: 100%;height: 100%;background: rgba(0, 0, 0, 0.6);position: absolute;top: 0;left: 0;z-index: 10000;}
+.accountInput-addSuccess-content{width: 80%;margin: auto;margin-top: 40px;background: #ffffff;border-radius: 20px;padding-bottom: 30px;position: relative;min-height: 700px;}
+.accountInput-addSuccess-content-header{font-size: 20px;line-height: 1.5em;width: 100%;text-align: center;padding-top: 30px;margin-bottom: 20px;}
+.accountInput-addSuccess-content table th, .accountInput-addSuccess-content table td{text-align: center;}
+.accountInput-addSuccess-content-success{display: block;width: 110px;margin: auto;position: absolute;bottom: 30px;left: 0;right: 0;}
+
+.projectInput{border-top:2px #080808 solid;}
+.projectInput table{width: 100%;line-height: 3em;}
+.projectInput table input[type=text]{line-height: 2em;width: 300px;padding: 0 10px}
+.projectInput table input[type=text].w100{width: 100%;}
+.projectInput .dropdown-toggle{position: relative;width: 160px;text-align: left;padding-left: 30px;}
+.projectInput .dropdown-toggle .caret{position: absolute;right: 10px;top: 12px;border-top: 6px solid;border-right: 6px solid transparent;border-left: 6px solid transparent;}
+.projectInput-projectInfo-detail{line-height: 3em;}
+.projectInput textarea{padding: 8px 10px;line-height: 20px;width: 100%;resize: none;height: 100px;}
+.projectInput-projectInfo-pictures{line-height: 1.5em;margin-bottom: 10px;}
+.projectInput-projectInfo-pictures-uploadArea{padding: 8px 10px;width: 100%;height: 80px;border: 1px #080808 solid;margin-top: 10px;}
+.projectInput-projectInfo-pictures-uploadArea-icon{width: 64px;height: 64px;background: url("../image/icon_add.png");background-size: 64px 64px;cursor: pointer;float: left;}
+.projectInput-projectInfo-pictures-uploadArea-pic{width: 64px;height: 64px;float: left;margin-left: 20px;cursor: pointer;position: relative;}
+.projectInput-projectInfo-pictures-uploadArea-pic span{position: absolute;display: inline-block;width: 100%;line-height: 1.5em;font-size: 12px;padding: 0 5px;background: rgba(0, 0, 0, 0.6);color: #ffffff;text-align: center;overflow: hidden;text-overflow: ellipsis;bottom: 0;left: 0;}
+.projectInput-projectInfo-pictures-uploadArea-pic i{display: inline-block;width: 24px;height:24px;position: absolute;right: 0;top: 0;background: url("../image/icon_del.png");background-size: 24px 24px;}
+.projectInput .dropdown-menu .divider{margin: 2px 0;}
+.projectInput-projectInfo-attachment{width: 64px;height: 64px;float: left;margin-left: 20px;cursor: pointer;position: relative;}
+.projectInput-projectInfo-attachment-percent{width: 0;height: 64px;position: absolute;left: 0;top: 0;background: rgba(0, 0, 0, 0.4);}
+.projectInput-projectInfo-attachment-percentText{width: 64px;height: 64px;position: absolute;left: 0;top: 0;line-height: 64px;font-size: 18px;color: #5bc0de;text-align: center;}
+.projectInput-projectInfo-attachment i{display: inline-block;width: 24px;height:24px;position: absolute;right: 0;top: 0;background: url("../image/icon_del.png");background-size: 24px 24px;}
+
+.pagination-custom{position: absolute;bottom: 0px;left: 0;}
+.pagination-custom ul li{float: left;margin-right: 15px;color: #000000;}
+.pagination-custom ul li:first-child, .pagination-custom ul li:last-child{background: #FFFFFF;border: 1px solid #DDDDDD;cursor: pointer;color: #428bca;}
+.pagination-custom ul li:first-child, .pagination-custom ul li:first-child .pagination-custom-disabled{border-radius: 8px 0 0 8px;}
+.pagination-custom ul li:last-child, .pagination-custom ul li:last-child .pagination-custom-disabled{border-radius: 0 8px 8px 0;}
+.pagination-custom ul li:first-child:hover, .pagination-custom ul li:last-child:hover{background: #F5F5F5;}
+.pagination-custom span{line-height: 1.42857143;padding: 6px 14px;font-size: 16px;display: inline-block;}
+.pagination-custom span input.pagination-custom-pageIndex{width: 40px;color: #000000;padding-left: 10px;}
+.pagination-custom-disabled{background: #DDDDDD;color: #9D9D9D;}
+
+.icon-delete{display: inline-block;width: 20px;height: 20px;background: url(../image/delete.png);cursor: pointer;position: relative;top: 4px;}
+button.icon-add{position: relative;width: 150px;line-height: 2em;}
+button.icon-add:before{content: "";position: absolute;display: block;width: 26px;height: 26px;background: url(../image/add.png);top: 6px;background-size: 26px 26px;}
+button.icon-down{position: relative;width: 100px;line-height: 2em;padding-right: 30px;}
+button.icon-down:before{content: "";position: absolute;display: block;width: 20px;height: 20px;background: url(../image/down.png);top: 10px;left: 65px;background-size: 20px 20px;}
+button.icon-up{position: relative;width: 100px;line-height: 2em;padding-right: 30px;}
+button.icon-up:before{content: "";position: absolute;display: block;width: 20px;height: 20px;background: url(../image/up.png);top: 10px;left: 65px;background-size: 20px 20px;}
+
+.recommend-project{position: relative;}
+.recommend-project:before{content: "";display: block;width: 60px;height:60px;background: url("../image/good_bottom.png");background-size: 60px 60px;position: absolute;top: 5px;left: 0;z-index: 100;}
+.recommend-project:after{content: "";display: block;width: 40px;height:40px;background: url("../image/good.png");background-size: 40px 40px;position: absolute;top: 0;left: 10px;z-index: 101;}

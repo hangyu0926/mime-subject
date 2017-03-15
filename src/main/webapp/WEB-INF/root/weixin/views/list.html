@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="black" name="apple-mobile-web-app-status-bar-style">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta name="format-detection" content="email=no">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="x5-orientation" content="portrait">
+	<title>项目列表</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="../resources/javascript/mui.min.js"></script>
+	<script type="text/javascript" src="../resources/javascript/main.js"></script>
+	<script type="text/javascript" src="../resources/javascript/list.js"></script>
+	<link type="text/css" rel="stylesheet" href="../resources/style/mui.min.css">   
+	<link type="text/css" rel="stylesheet" href="../resources/style/list.css">
+</head>    
+<body scroll="no"> 
+	<header class="xy-projecterList-head" id="head">
+		<div class="xy-projecterCon-head-search" id="headSearch">
+			<input type="text" class="projectSearch" name="projectSearch" id="projectSearch" placeholder="请输入关键字">
+			<span class="" id="iconSearch"></span>
+			<span class="mui-icon mui-icon-clear" id="iconClear"></span> 
+			<div class="projectSearch-submit" id="projectSearchSubmit">搜索</div>
+		</div>
+		<div class="xy-projecterCon-head-choice">
+			<ul class="xy-projecterCon-head-filter-title" id="projectChoice">
+				<li class="xy-projecterCon-head-choice-title-financingStage">
+					<span class="financingStage choiceSelected" dataIndex="1">融资阶段</span>
+				</li>
+				<li class="xy-projecterCon-head-choice-title-projectDebriefing">
+					<span class="projectDebriefing" dataIndex="2">项目进展</span>
+				</li>
+				<li class="xy-projecterCon-head-choice-title-filter" id="projectFilter">
+					<span class="filter" dataIndex="3">筛选</span>
+				</li>
+			</ul>
+
+			<ul class="xy-projecterCon-head-choice-content" id="xy-projecterCon-head-choice-content">
+				<li class="xy-projecterCon-head-choice-content-financingStage hide" id="xy-projecterCon-head-choice-content-financingStage">
+					<div class="" dataIndex="0">全部</div>
+					<div class="" dataIndex="1">种子轮</div>
+					<div class="" dataIndex="2">天使轮</div>
+					<div class="" dataIndex="3">A轮</div>
+					<div class="" dataIndex="4">B轮</div>
+					<div class="" dataIndex="5">C轮</div>
+				</li>
+				<li class="xy-projecterCon-head-choice-content-financingStage hide" id="xy-projecterCon-head-choice-content-projectDebriefing">
+					<div class="" dataIndex="0">全部</div>
+					<div class="" dataIndex="1">跟踪</div>
+					<div class="" dataIndex="2">尽调</div>
+					<div class="" dataIndex="3">term</div>
+					<div class="" dataIndex="4">终止</div>
+					<div class="" dataIndex="5">投后</div>
+				</li>
+			</ul>
+		</div>
+	</header>
+	<div class="xy-projecterList-content" id="projecterListContent">
+		<div class=" mui-scroll-wrapper" id="scrollWrapperContent">
+			<div class="xy-projecterList-content-box mui-scroll" id="xy-projecterList-content-box">
+				<div class="xy-projecterList-recomment hide" id="xy-projecterList-recomment" >
+					<span class="xy-projecterList-recommend-head">- 推荐 -</span>
+					<ul class="xy-projecterList-recommend-list">
+					</ul>
+				</div>
+				<div class="xy-projecterList-recomment hide" id="xy-projecterList-standard">
+					<ul class="xy-projecterList-recommend-list">
+					</ul>
+				</div>
+				<div class="noResult" id="noResult">
+					<h4>无结果</h4>
+					<span>请重新选择筛选条件</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="xy-projecterList-leftMenu" id="projectListLeftMenu">
+		<div class="xy-projecterList-bombBox" id="projectListBombBox">
+			<div class="mui-scroll-wrapper" id="scrollWrapperChoice">
+				<div class="xy-projecterList-bombBo-box mui-scroll" id="projectListBombBox-box">
+					<div class="xy-projecterList-bombBox-head" id="bombBoxHead">
+						<span class="xy-projecterList-bombBox-head-clear" id="clearProjecterOption">清除</span>
+						<span class="xy-projecterList-bombBox-head-filter">筛选</span>
+						<span class="xy-projecterList-bombBox-head-determine choiceSelected" id="bombBoxDetermine">确定</span>
+					</div>
+					<ul class="xy-projecterList-bombBox-option" id="projecterListOption">
+						<li class="xy-projecterList-bombBox-head-option-assets">
+							<h4 class="xy-projecterList-bombBox-head-option-assets-title" >互联网资产</h4>
+							<ul class="xy-projecterList-bombBox-head-option-assets-content clearfix">
+								<li dataIndex="7">消费金融</li>
+								<li dataIndex="8">现金贷</li>
+								<li dataIndex="9">供应链</li>
+								<li dataIndex="10">ABS</li>
+								<li dataIndex="11">催收</li>
+								<li dataIndex="12">保理</li>
+								<li dataIndex="13">租赁</li>
+								<li dataIndex="14">典当</li>
+							</ul>
+						</li>
+
+						<li class="xy-projecterList-bombBox-head-option-platform">
+							<h4 class="xy-projecterList-bombBox-head-option-platform-title">交易平台</h4>
+							<ul class="xy-projecterList-bombBox-head-option-platform-content clearfix">
+								<li dataIndex="15">交易所</li>
+								<li dataIndex="16">外汇</li>
+								<li dataIndex="17">债券</li>
+								<li dataIndex="18">贵金属</li>
+							</ul>
+						</li>
+
+						<li class="xy-projecterList-bombBox-head-option-capital">
+							<h4 class="xy-projecterList-bombBox-head-option-capital-title">互联网资金</h4>
+							<ul class="xy-projecterList-bombBox-head-option-capital-content clearfix">
+								<li dataIndex="19">财富管理</li>
+								<li dataIndex="20">P2P</li>
+								<li dataIndex="21">众筹</li>
+							</ul>
+						</li>
+
+						<li class="xy-projecterList-bombBox-head-option-negotiableSecurities">
+							<h4 class="xy-projecterList-bombBox-head-option-negotiableSecurities-title">证券</h4>
+							<ul class="xy-projecterList-bombBox-head-option-negotiableSecurities-content clearfix">
+								<li dataIndex="22">经纪</li>
+								<li dataIndex="23">投行</li>
+								<li dataIndex="24">资管</li>
+							</ul>
+						</li>
+
+						<li class="xy-projecterList-bombBox-head-option-insurance">
+							<h4 class="xy-projecterList-bombBox-head-option-insurance-title">保险</h4>
+							<ul class="xy-projecterList-bombBox-head-option-insurance-content clearfix">
+								<li dataIndex="25">渠道</li>
+								<li dataIndex="26">产品</li>
+							</ul>
+						</li>
+
+						<li class="xy-projecterList-bombBox-head-option-fintch">
+							<h4 class="xy-projecterList-bombBox-head-option-fintch-title">Fintch</h4>
+							<ul class="xy-projecterList-bombBox-head-option-fintch-content clearfix">
+								<li dataIndex="27">银行</li>
+								<li dataIndex="28">证券</li>
+								<li dataIndex="29">保险</li>
+							</ul>
+						</li>
+
+						<li class="xy-projecterList-bombBox-head-option-payment">
+							<h4 class="xy-projecterList-bombBox-head-option-fintch-title">支付及虚拟货币</h4>
+							<ul class="xy-projecterList-bombBox-head-option-fintch-content clearfix">
+								<li dataIndex="30">支付及虚拟货币</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	    <div class="backdrop hide" id="bgBackdrop"></div>
+	</div>
+
+	<div class="backdropTwo hide" id="bgBackdropTwo"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
