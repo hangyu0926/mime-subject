@@ -9,13 +9,6 @@ $(function() {
 	    $(".leftMenu").css("height", winHeight);
     })
 /**
-*菜单选项展示
-*/
-    var menuFirst = window.sessionStorage.getItem("menuState").split("&")[0];
-    var menuSecond = window.sessionStorage.getItem("menuState").split("&")[1];
-    $(".leftMenu>ul>li").eq(menuFirst).addClass("active");
-    $(".leftMenu>ul>li:eq("+menuFirst+") li").eq(menuSecond).addClass("active");
-/**
 *点击菜单时使其子菜单展示出来
 */
     $(".leftMenu>ul>li").on("click", function(e) {
