@@ -1,11 +1,14 @@
 package cn.nanmi.msts.web.service;
 
+import cn.nanmi.msts.web.dao.entities.OrderEntity;
 import cn.nanmi.msts.web.model.BiddingDTO;
+import cn.nanmi.msts.web.model.BiddingDetailDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.PreBiddingDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import org.apache.ibatis.annotations.Param;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 /**
@@ -36,4 +39,11 @@ public interface IStockService {
      * @return
      */
     PreBiddingDTO getPreBidding(String orderNo);
+
+    /**
+     * 查询订单详情
+     * @param orderNo
+     * @return
+     */
+    BiddingDetailDTO getOrderDetail(String orderNo);
 }

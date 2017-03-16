@@ -1,16 +1,15 @@
 package cn.nanmi.msts.web;
 
 
+import cn.nanmi.msts.web.dao.OrderMapper;
+import cn.nanmi.msts.web.model.BiddingDetailDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 单元测试<br>
@@ -26,8 +25,12 @@ import java.util.List;
 @Transactional
 public class BaseJunit4Test {
 
+    @Resource
+    private OrderMapper orderMapper;
+
     @Test
     public void test() {
+        BiddingDetailDTO a = orderMapper.getOrderDetail("AAAAA");
     }
 
     @Test

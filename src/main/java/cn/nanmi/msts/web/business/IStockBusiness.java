@@ -1,9 +1,9 @@
 package cn.nanmi.msts.web.business;
 
-import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
+import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 
 public interface IStockBusiness {
@@ -28,4 +28,11 @@ public interface IStockBusiness {
      * @return
      */
     CSResponse getPreBidding(String orderNo);
+
+    /**
+     * 竞拍标的
+     * @param bidStockVO
+     * @return
+     */
+    CSResponse bidStock(BidStockVO bidStockVO,UserDTO user);
 }

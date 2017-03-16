@@ -47,10 +47,35 @@
     </insert>
 
     <select id="getPreBidding" resultType="cn.nanmi.msts.web.model.PreBiddingDTO">
-        SELECT SR.MIN_MAKEUP AS maxMakeUp,SR.MAX_MAKEUP AS minMakeUp,UO.MAX_BIDDING_PRICE AS nowPrice
+        SELECT SR.MIN_MAKEUP AS minMakeUp,SR.MAX_MAKEUP AS maxMakeUp,UO.MAX_BIDDING_PRICE AS nowPrice
         FROM USER_ORDER UO
         LEFT JOIN SYSTEM_RULES SR
         ON SR.RULE_ID = UO.SYSTEM_RULE_ID
         WHERE UO.ORDER_NO = #{orderNo}
     </select>
+
+    <select id="getOrderDetail" resultType="cn.nanmi.msts.web.model.BiddingDetailDTO">
+        SELECT
+          ORDER_NO AS orderNo,
+          STOCKS_AMT AS stockAmt,
+          INITIAL_PRICE AS initialPrice,
+          ORDER_STATE AS orderStatus,
+          SELLER_ID AS sellerId,
+          MAX_BIDDING_PRICE AS maxBiddingPrice,
+          MAX_BIDDER AS maxBidder,
+          SELLER_CONFIRM AS sellerConfirm,
+          BUYER_CONFIRM AS buyerConfirm,
+          UO.CREATE_TIME AS createTime,
+          SALE_TIME AS saleTime,
+          EXPIRE_TIME AS expireTime,
+          SYSTEM_RULE_ID AS sysRuleId,
+          REMARKS AS remarks,
+          SR.MIN_MAKEUP AS minMakeUp,
+          SR.MAX_MAKEUP AS maxMakeUp
+        FROM USER_ORDER UO
+        LEFT JOIN SYSTEM_RULES SR
+        ON SR.RULE_ID = UO.SYSTEM_RULE_ID
+        WHERE ORDER_NO = #{orderNo}
+    </select>
+
 </mapper>

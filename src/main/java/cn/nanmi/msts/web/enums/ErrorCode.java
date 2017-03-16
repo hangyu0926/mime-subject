@@ -57,8 +57,6 @@ public enum ErrorCode {
     USER_IS_INIT("9016","登录成功，您是第一次登录该系统，请立即修改密码！"),
 
 
-    WX_EXIST("9021","您的微信号已经绑定其他账号或重复存在，请联系管理员"),
-    WX_AUTH_ERROR("9020","微信授权失败"),
     PC_PERMISSION_ERROR("9030","您没有权限执行该操作！"),
     /**
      * 角色
@@ -96,26 +94,20 @@ public enum ErrorCode {
 	PARAMETER_IS_NULL("8000","获取不到请求参数"),
 	PROJECT_OPERATE_SUCCESS("8001","操作成功"),
 	PROJECT_OPERATE_FAIL("8002","操作失败"),
-	UPLOAD_SUCCESS("8003","上传成功"),
-	UPLOAD_FAIL("8004","上传失败"),
-	PICTURE_TYPE_FAIL("8005","图片格式错误"),
-	ATTACHMENT_TYPE_FAIL("8006","附件格式错误"),
-	DEL_FILE_SUCCESS("8007","删除文件成功"),
-	DEL_FILE_FAIL("8008","删除文件失败"),
-	PICTURE_IS_NULL("8009","请选择图片上传"),
-	ATTACHMENT_IS_NULL("8010","请选择附件上传"),
-	ATTACHMENT_SIZE_ZERO("8011","空文件"),
-	UPLOAD_BIG_FAIL("8012","文件上传限制为500M以内"),
 	SEND_EMAIL_IS_NULL("8013","不存在该文件"),
 	SEND_FAIL("8014","发送失败"),
-    WEI_XIN_ACCESS_TOKEN_INVALID("8015","微信推送失败，请重试"),
     NO_PERMISSION ("8016","对不起，没有相应权限"),
-    USER_GROUP_IS_NULL("8017","您选中的用户组推送人数为空"),
+
+
     /**
-     * 项目相关错误码50*
+     * 订单相关错误码50*
      */
-    NOT_FIND_PROJECTID("5001","没有找到该项目信息"),
-    PROJECT_APPRAISAL_TOO_LONG("5002","输入的评价内容过长，请少于100个汉字");
+    NOT_FIND_BIDDING("5001","没有找到竞拍订单"),
+    YOUR_PRICE_LOWER("5002","您的出价低于当前竞价"),
+    LOWER_MIN_MAKEUP("5003","您的加价低于最低限制"),
+    GREATER_MAX_MAKEUP("5004","您的加价高于最高限制"),
+    INVALID_ORDER("5005","订单状态无效"),
+    FORBID_BIDDING_YOURSELF("5010","不能竞拍自己的标的");
 
 	
     /**

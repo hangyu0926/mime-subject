@@ -3,11 +3,11 @@ package cn.nanmi.msts.web.web.controller;
 import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.core.ConstantHelper;
 import cn.nanmi.msts.web.enums.ErrorCode;
-import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSPageResponse;
 import cn.nanmi.msts.web.response.CSResponse;
+import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -91,18 +91,21 @@ public class StockController {
     /**
      *  竞拍标的
      * @param request
-     * @param queryVO
+     * @param bidStockVO
      * @return
      */
     @RequestMapping(value = "/bidding",method = RequestMethod.POST)
     @ResponseBody
-    public CSResponse bidStock(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
-        if(queryVO == null ){
+    public CSResponse bidStock(HttpServletRequest request,@RequestBody BidStockVO bidStockVO){
+        if(bidStockVO == null ){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+        if(StringUtils.isBlank(bidStockVO.getOrderNo()) || bidStockVO.getBiddingPrice()<=0){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
+
+
+
         return null;
     }
 
