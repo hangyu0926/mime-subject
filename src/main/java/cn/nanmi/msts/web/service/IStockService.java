@@ -1,9 +1,8 @@
 package cn.nanmi.msts.web.service;
 
 import cn.nanmi.msts.web.model.BiddingListDTO;
-
+import cn.nanmi.msts.web.response.CSResponse;
 import java.util.List;
-
 /**
  * Created with cn.nanmi.msts.web.service.
  * User: jiangbin
@@ -12,6 +11,12 @@ import java.util.List;
  */
 public interface IStockService {
 
+    /**
+     *  发布订单
+     * @param biddingListDTO
+     * @return
+     */
+    CSResponse releaseOrder(BiddingListDTO biddingListDTO);
     /**
      * 查询竞拍列表（分页)
      * @param startPage

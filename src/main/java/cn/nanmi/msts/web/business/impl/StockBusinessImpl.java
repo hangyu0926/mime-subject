@@ -31,4 +31,9 @@ public class StockBusinessImpl implements IStockBusiness {
 
         return null;
     }
+
+    public CSResponse releaseOrder(BiddingListDTO biddingListDTO){
+
+        return null;
+    }
 }

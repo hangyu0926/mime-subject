@@ -1,5 +1,6 @@
 package cn.nanmi.msts.web.business;
 
+import cn.nanmi.msts.web.model.BiddingListDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
@@ -13,4 +14,10 @@ public interface IStockBusiness {
      */
     CSResponse getBiddingList(BiddingListQueryVO queryVO,UserDTO user);
 
+    /**
+     *  发布订单
+     * @param biddingListDTO
+     * @return
+     */
+    CSResponse releaseOrder(BiddingListDTO biddingListDTO);
 }

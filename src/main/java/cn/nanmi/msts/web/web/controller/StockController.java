@@ -3,6 +3,7 @@ package cn.nanmi.msts.web.web.controller;
 import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.core.ConstantHelper;
 import cn.nanmi.msts.web.enums.ErrorCode;
+import cn.nanmi.msts.web.model.BiddingListDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSPageResponse;
 import cn.nanmi.msts.web.response.CSResponse;
@@ -104,5 +105,22 @@ public class StockController {
         return null;
     }
 
+    /**
+     *  发布订单
+     * @param request
+     * @param biddingListDTO
+     * @return
+     */
+    @RequestMapping(value = "releaseOrder")
+    @ResponseBody
+    public CSResponse releaseOrder(HttpServletRequest request,BiddingListDTO biddingListDTO){
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        if(user == null){
+            return new CSResponse(ErrorCode.SESSION_ERROR);
+        }
+
+        return null;
+    }
 
 }
