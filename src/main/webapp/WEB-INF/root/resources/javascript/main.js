@@ -3,12 +3,7 @@
 *global_route ：项目路径
 */
 var global_dir = "";
-var global_route = {
-    'login': '/user/login',// 用户登录
-    'passModify':'/user/modifyPassword',//修改密码
-    '':''//注册
-
-};
+var global_route = {};
 /**
 *global_ajax
 *urlKey： 发送请求地址下标

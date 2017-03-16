@@ -1,0 +1,201 @@
+@charset "utf-8";
+
+.contentRight > ul {
+	width: 100%;
+	height: auto;
+}
+.contentRight > ul > li {
+	width: 100%;
+	height: 200px;
+	border: 1px solid #b9b9bf;
+	border-radius: 6px;
+	color: #1e282c;
+	font-size: 14px;
+}
+.contentRight > ul > li + li {
+	margin-top: 40px;
+}
+
+
+.contentRight > ul > li > div.orderInfo {
+	width: 100%;
+	height: 120px;
+	padding: 15px 30px;
+	border-bottom: 1px solid #b9b9bf;
+}
+.contentRight > ul > li > div.orderInfo > div {
+	width: 100%;
+	height: 45px;
+}
+.contentRight > ul > li > div.orderInfo > div > span {
+	display: inline-block;
+	padding-right: 20px;
+	line-height: 45px;
+	cursor: default;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(1) {
+	width: 25%;
+}
+.contentRight > ul > li > div.orderInfo > div:nth-child(1) > span:nth-child(1) {
+	font-weight: bold;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(2) {
+	width: 15%;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(3) {
+	width: 20%;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(4) {
+	width: 18%;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(5) {
+	width: 20%;
+}
+
+
+.contentRight > ul > li > div.resultInfo {
+	width: 100%;
+	height: 79px;
+	position: relative;
+}
+.contentRight > ul > li > div.resultInfo > div.auditIdea {
+	width: 100%;
+	height: 100%;
+	padding-right: 420px;
+	padding-top: 23px;
+}
+.contentRight > ul > li > div.resultInfo > div.auditIdea > span {
+	display: block;
+	text-align: center;
+	line-height: 34px;
+	cursor: default;
+	color: #ff6b6b;
+	font-size: 16px;
+}
+
+
+.contentRight > ul > li > div.resultInfo > div.audit-btn {
+	position: absolute;
+	right: 0;
+	width: 320px;
+	height: 100%;
+	padding-top: 23px;
+	margin-right: 100px;
+}
+.contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-true {
+	float: left;
+	width: 120px;
+	line-height: 32px;
+	margin-left: 30px;
+	color: #5093e1;
+	text-align: center;
+	border-radius: 6px;
+	border: 1px solid #5093e1;
+	cursor: pointer;
+}
+.contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-true:hover {
+	background: #5093e1;
+    color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

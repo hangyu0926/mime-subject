@@ -100,7 +100,7 @@ ul {
 	background: #393f4f;
 	position: fixed;
 	left: 0;
-
+    z-index: 5;
 }
 .contentBox > .leftMenu > ul {
 	width: 100%;
@@ -142,7 +142,7 @@ ul {
 }
 .contentBox > .leftMenu > ul > li.forme.active{
 	background: #ff6b6b;
-	height: 240px;
+	height: 320px;
 }
 .contentBox > .leftMenu > ul > li > ul.secondMenu{
 	width: 100%;
@@ -181,7 +181,12 @@ ul {
 	background: #fff;
 
 }
-
+@media screen and (max-width: 1300px) {
+	.contentBox > .contentRight {
+		width: 1300px;
+		overflow-y: auto;
+	}
+}
 /**
 *修改密码模态框
 */

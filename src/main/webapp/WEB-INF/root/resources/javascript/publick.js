@@ -11,10 +11,10 @@ $(function() {
 /**
 *菜单选项展示
 */
-    // var menuFirst = window.sessionStorage.getItem("menuState").split("&")[0];
-    // var menuSecond = window.sessionStorage.getItem("menuState").split("&")[1];
-    // $(".leftMenu>ul>li").eq(menuFirst).addClass("active");
-    // $(".leftMenu>ul>li:eq("+menuFirst+") li").eq(menuSecond).addClass("active");
+    var menuFirst = window.sessionStorage.getItem("menuState").split("&")[0];
+    var menuSecond = window.sessionStorage.getItem("menuState").split("&")[1];
+    $(".leftMenu>ul>li").eq(menuFirst).addClass("active");
+    $(".leftMenu>ul>li:eq("+menuFirst+") li").eq(menuSecond).addClass("active");
 /**
 *点击菜单时使其子菜单展示出来
 */
@@ -34,7 +34,8 @@ $(function() {
 *阻止模态框弹出时出现滚动条
 */
     $(".modal").on("show.bs.modal", function(){
-        $(this).css("overflow", "hidden");
+        $(this).css("overflow-y", "auto");
+        $("body").css({"overflow": "auto", "margin-right": "0px"});
     })
 
 
