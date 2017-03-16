@@ -1,6 +1,7 @@
 package cn.nanmi.msts.web.business.impl;
 
 import cn.nanmi.msts.web.business.IStockBusiness;
+import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
@@ -21,7 +22,11 @@ public class StockBusinessImpl implements IStockBusiness {
     private IStockService stockService;
 
     @Override
-    public CSResponse getBiddingList(BiddingListQueryVO queryVO) {
+    public CSResponse getBiddingList(BiddingListQueryVO queryVO,UserDTO user) {
+
+
+
+
         return null;
     }
 }

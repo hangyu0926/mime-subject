@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nanmi.xypms.web.dao.OrderMapper">
+    <resultMap id="biddingListMap" type="cn.nanmi.msts.web.model.BiddingListDTO">
+        <result column="ORDER_NO" javaType="String" property="orderNo"></result>
+        <result column="STOCKS_AMT" javaType="Double" property="stockAmt"></result>
+        <result column="INITIAL_PRICE" javaType="Double" property="initialPrice"></result>
+        <result column="SELLER_ID" javaType="Long" property="sellerId"></result>
+        <result column="MAX_BIDDING_PRICE" javaType="Double" property="maxBiddingPrice"></result>
+        <result column="MAX_BIDDING_BUYER" javaType="Long" property="maxBidder"></result>
+        <result column="SALE_TIME" javaType="Date" property="saleTime"></result>
+        <result column="EXPIRE_TIME" javaType="Date" property="expireTime"></result>
+    </resultMap>
+
+    <select id="getBiddingList" resultMap="biddingListMap">
+
+
+
+    </select>
+
+</mapper>
