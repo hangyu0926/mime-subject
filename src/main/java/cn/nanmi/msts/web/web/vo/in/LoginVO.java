@@ -11,12 +11,12 @@ import java.io.Serializable;
  public class LoginVO implements Serializable {
 
     private static final long serialVersionUID = 1582247013154121081L;
-    private String userMobile;
+    private String userMail;
     private String password;
 
     public LoginVO(){}
-    public LoginVO(String userMobile, String password){
-        this.userMobile = userMobile;
+    public LoginVO(String userMail,String password){
+        this.userMail = userMail;
         this.password = password;
     }
 
@@ -28,19 +28,12 @@ import java.io.Serializable;
         this.password = password;
     }
 
-    public String getUserMobile() {
-        return userMobile;
+    public String getUserMail() {
+        return userMail;
     }
 
-    public void setUserMobile(String userMobile) {
-        this.userMobile = userMobile;
+    public void setUserMail(String userMail) {
+        this.userMail = userMail;
     }
 
-    @Override
-    public String toString() {
-        return "LoginVO{" +
-                "userMobile='" + userMobile + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }

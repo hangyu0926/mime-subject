@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.nanmi.xypms.web.dao.UserMapper">
-    <resultMap id="userMap" type="cn.nanmi.msts.web.model.ModelDTO">
+<mapper namespace="cn.nanmi.msts.web.dao.UserMapper">
+    <resultMap id="userMap" type="cn.nanmi.msts.web.model.UserDTO">
         <result column="USER_ID" javaType="Long" property="userId"></result>
-        <result column="USER_MOBILE" javaType="String" property="userMobile"></result>
+        <result column="MOBILE_NO" javaType="String" property="userMobile"></result>
         <result column="USER_NAME" javaType="String" property="userName"></result>
-        <result column="MAIL_ADD" javaType="String" property="mailAddress"></result>
+        <result column="LOGIN_NAME" javaType="String" property="mailAddress"></result>
         <result column="LOGIN_PASS" javaType="String" property="loginPass"></result>
-        <result column="USER_WECHAT" javaType="String" property="userWechat"></result>
-        <result column="INIT_PASS" javaType="String" property="initPass"></result>
-        <result column="INIT_PASS_MD5" javaType="String" property="initPassMd5"></result>
-        <result column="PERMISSION_ID" javaType="Integer" property="permissionId"></result>
+        <result column="PERMISSION" javaType="Integer" property="permissionId"></result>
         <result column="DEL_FLAG" javaType="Integer" property="deleteFlag"></result>
-        <result column="DEL_MAN" javaType="Long" property="deleteMan"></result>
-        <result column="DEL_TIME" javaType="Date" property="deleteTime"></result>
         <result column="CREATE_MAN" javaType="Long" property="createMan"></result>
         <result column="CREATE_TIME" javaType="Date" property="createTime"></result>
-        <result column="PERMISSION_NAME" javaType="String" property="permissionName"></result>
-        <result column="WX_USER_ID" javaType="String" property="wxUserId"></result>
+        <result column="STOCKS_AMT" javaType="Integer" property="totalStock"></result>
+        <result column="STOCKS_SALE_AMT" javaType="Integer" property="availableStock"></result>
+        <result column="FROZEN_STOCKS" javaType="Integer" property="frozenStock"></result>
+
     </resultMap>
 
     <!-- 根据用户名查找用户 -->
     <select id="getUserByMobile" resultMap="userMap" parameterType="String">
-    	select u.USER_ID,u.LOGIN_PASS,u.USER_NAME,u.USER_MOBILE,u.MAIL_ADD ,u.INIT_PASS ,u.INIT_PASS_MD5,u.USER_WECHAT,u.PERMISSION_ID  ,u.DEL_FLAG ,u.DEL_MAN ,u.DEL_TIME ,u.CREATE_MAN ,u.CREATE_TIME  ,p.PERMISSION_NAME,u.WX_USER_ID
-    	from USER u
-        left join PERMISSIONS p on u.PERMISSION_ID=p.PERMISSION_ID
-        where USER_MOBILE=#{mobile} AND DEL_FLAG=0
+    	select USER_ID,MOBILE_NO,USER_NAME,LOGIN_NAME,LOGIN_PASS,PERMISSION,DEL_FLAG,CREATE_MAN,CREATE_TIME,STOCKS_AMT,STOCKS_SALE_AMT,FROZEN_STOCKS
+    	from USER
+        where USER_NAME=#{mail} AND DEL_FLAG=0
     </select>
 
     <select id="getUsersByUserGroups" resultType="java.lang.String">
@@ -43,23 +39,97 @@
     <update id="modifyPwdByUserID">
         UPDATE USER SET LOGIN_PASS=#{password} WHERE USER_ID=#{userID}
     </update>
-    <!-- 检查微信号重复 -->
-    <select id="checkWXId" resultType="java.lang.Integer">
-        SELECT COUNT(1) FROM USER WHERE WX_USER_ID=#{wxUserId} AND DEL_FLAG=0
+
+
+
+
+    <insert id="addUser" parameterType="cn.nanmi.msts.web.web.vo.in.AddUserVO">
+        INSERT INTO USER
+        (
+          MOBILE_NO,USER_NAME,LOGIN_NAME,LOGIN_PASS,PERMISSION,DEL_FLAG,CREATE_MAN,CREATE_TIME,STOCKS_AMT,STOCKS_SALE_AMT,FROZEN_STOCKS
+        )
+        VALUES
+        (
+        #{userMobile},
+        #{userName},
+        #{userMailAdd},
+        'e10adc3949ba59abbe56e057f20f883e',
+        2,
+        0,
+        1,
+        NOW(),
+         #{totalStock},
+         #{availableStock},
+         0
+        )
+    </insert>
+
+    <select id="getEmployeeTotalNum"
+            resultType="java.lang.Long">
+        SELECT COUNT(1) FROM USER WHERE DEL_FLAG=0 AND PERMISSION_ID!=1
+    </select>
+
+    <select id="getEmployeeNum" parameterType="cn.nanmi.msts.web.web.vo.in.GetUserPageListVO"
+            resultType="java.lang.Long">
+        SELECT COUNT(1) FROM USER  WHERE DEL_FLAG=0 AND PERMISSION_ID!=1
+        <if test="permissionId != null and permissionId != 0">
+            AND PERMISSION_ID=#{permissionId}
+        </if>
+        <if test="keyWords != null and keyWords != '' ">
+            AND (USER_MOBILE LIKE '%${keyWords}%'
+            OR USER_NAME LIKE '%${keyWords}%'
+            OR USER_WECHAT LIKE '%${keyWords}%'
+            OR MAIL_ADD LIKE '%${keyWords}%')
+        </if>
+    </select>
+
+    <select id="getEmployeeListByVO" parameterType="cn.nanmi.msts.web.web.vo.in.GetUserPageListVO"
+            resultType="cn.nanmi.msts.web.web.vo.out.UserModelVO">
+        SELECT
+        USER_ID AS userId,
+        MOBILE_NO AS userMobile,
+        USER_NAME AS userName,
+        LOGIN_NAME AS userMailAdd,
+        PERMISSION AS permissionId,
+        STOCKS_AMT AS totalStock,
+        STOCKS_SALE_AMT AS availableStock
+        FROM USER
+        WHERE DEL_FLAG=0 AND PERMISSION_ID!=1
+
+        <if test="keyWords != null and keyWords != '' ">
+            AND (u.USER_MOBILE LIKE '%${keyWords}%'
+            OR u.USER_NAME LIKE '%${keyWords}%'
+            OR u.MAIL_ADD LIKE '%${keyWords}%')
+        </if>
+         ORDER BY u.CREATE_TIME DESC,u.USER_ID ASC
+        limit #{startPage},#{pageSize}
     </select>
 
 
-    <!-- 绑定wx -->
-    <update id="bindWXCount">
-        UPDATE USER SET WX_USER_ID=#{wxUserId},USER_WECHAT=#{wxUserId} WHERE USER_ID=#{userID}
+    <update id="deleteEmployee">
+        UPDATE USER SET
+        DEL_FLAG=1,
+        DEL_MAN=#{curUserId},
+        DEL_TIME=NOW()
+        WHERE USER_ID=#{userId}
     </update>
 
-    <!-- 根据用户名查找用户 -->
-    <select id="getUserByWXId" resultMap="userMap" parameterType="String">
-        select u.USER_ID,u.LOGIN_PASS,u.USER_NAME,u.USER_MOBILE,u.MAIL_ADD ,u.INIT_PASS ,u.INIT_PASS_MD5,u.USER_WECHAT,u.PERMISSION_ID  ,u.DEL_FLAG ,u.DEL_MAN ,u.DEL_TIME ,u.CREATE_MAN ,u.CREATE_TIME  ,p.PERMISSION_NAME,u.WX_USER_ID
-        from USER u
-        left join PERMISSIONS p on u.PERMISSION_ID=p.PERMISSION_ID
-        where WX_USER_ID=#{wxUserId} AND DEL_FLAG=0
+    <update id="resetUserPassword">
+        UPDATE USER SET
+        LOGIN_PASS=NULL
+        WHERE USER_ID=#{userId}
+    </update>
+
+
+    <!--public Long getEmployeeNumByWorkId(String workId);-->
+    <select id="getEmployeeNumByMobile" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM USER WHERE USER_MOBILE=#{mobile} AND DEL_FLAG=0
+
     </select>
+    <!--public Long getEmployeeNumByEmail(String email);-->
+    <select id="getEmployeeNumByEmail" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM USER WHERE MAIL_ADD=#{email} AND DEL_FLAG=0
+    </select>
+
 
 </mapper>

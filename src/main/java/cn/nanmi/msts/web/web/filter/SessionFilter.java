@@ -1,7 +1,7 @@
 package cn.nanmi.msts.web.web.filter;
 
 import cn.nanmi.msts.web.core.ConstantHelper;
-import cn.nanmi.msts.web.model.ModelDTO;
+import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.utils.JsonUtil;
 import cn.nanmi.msts.web.enums.ErrorCode;
 import cn.nanmi.msts.web.response.CSResponse;
@@ -51,7 +51,7 @@ public class SessionFilter implements javax.servlet.Filter {
         httpServletRequest.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json;charset=UTF-8");
         HttpSession session = httpServletRequest.getSession();
-        ModelDTO user = (ModelDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         String requestURI = httpServletRequest.getRequestURI();
         logger.info(JsonUtil.formatLog(httpServletRequest, "start " + " request", "\"" + requestURI + "\""));
 //        //同个session再次打开登录页时，重定向到主页
@@ -111,7 +111,6 @@ public class SessionFilter implements javax.servlet.Filter {
     private boolean isWeb(String url) {
         if (url.contains("user")
                 || url.contains("permission")
-                || url.contains("employee")
                 || url.contains("project")
                 ) {
             return false;

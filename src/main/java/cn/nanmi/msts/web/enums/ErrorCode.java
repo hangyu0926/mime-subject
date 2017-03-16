@@ -47,12 +47,16 @@ public enum ErrorCode {
     DOUBLE_PASSWORD_ERROR("9009","新密码与确认密码不一致"),
     PASSWORD_FORMAT_ERROR("9010","密码不符合要求，请重新输入"),
 
+
     //9011 - session 超时
     SESSION_ERROR("9011","用户信息获取失败，请登录后再试"),
     SESSION_SAME_ERROR("9012","非法登录请求，请刷新该页面或登出另一个账号后重试"),
     SESSION_REPEAT_ERROR("9013","非法登录请求，请先登出当前账号"),
     STATUS_ERROR("9014","修改状态无效，与原状态相同"),
     USER_IS_DISABLE("9015","该账号已经被禁用，请联系管理员"),
+    USER_IS_INIT("9016","登录成功，您是第一次登录该系统，请立即修改密码！"),
+
+
     WX_EXIST("9021","您的微信号已经绑定其他账号或重复存在，请联系管理员"),
     WX_AUTH_ERROR("9020","微信授权失败"),
     PC_PERMISSION_ERROR("9030","您没有权限执行该操作！"),
