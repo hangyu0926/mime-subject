@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository("OrderMapper")
 public interface OrderMapper {
-    List<BiddingListDTO> getBiddingList(@Param("startPage") int startPage,@Param("pageSize") int pageSize);
+    List<BiddingDTO> getBiddingList(@Param("startPage") int startPage,@Param("pageSize") int pageSize,@Param("userId") Long userId);
 
     CSResponse releaseOrder(OrderDTO orderDTO);
 }

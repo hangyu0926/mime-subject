@@ -1,6 +1,6 @@
 package cn.nanmi.msts.web.business;
 
-import cn.nanmi.msts.web.model.BiddingListDTO;
+import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;

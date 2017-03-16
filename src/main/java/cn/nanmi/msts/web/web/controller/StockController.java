@@ -3,7 +3,7 @@ package cn.nanmi.msts.web.web.controller;
 import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.core.ConstantHelper;
 import cn.nanmi.msts.web.enums.ErrorCode;
-import cn.nanmi.msts.web.model.BiddingListDTO;
+import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSPageResponse;
@@ -35,7 +35,7 @@ public class StockController {
      * @param queryVO
      * @return
      */
-    @RequestMapping(value = "biddingList")
+    @RequestMapping(value = "/biddingList")
     @ResponseBody
     public CSResponse getBiddingList(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
         if(queryVO == null ){
@@ -123,7 +123,7 @@ public class StockController {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
 
-        return stockBusiness.releaseOrder(orderDTO);
+        return null;
     }
 
 }

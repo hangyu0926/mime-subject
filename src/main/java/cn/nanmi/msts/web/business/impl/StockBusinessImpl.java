@@ -29,9 +29,15 @@ public class StockBusinessImpl implements IStockBusiness {
 
     @Override
     public CSResponse getBiddingList(BiddingListQueryVO queryVO,UserDTO user) {
-        List<BiddingVO> biddingVOList = new ArrayList<>();
+        int page = queryVO.getPageNo();
+        int pageSize = queryVO.getPageSize();
+        page = page - 1;
+        int startPage = page * pageSize ;
         Long bidderId = user.getUserId();
-        List<BiddingDTO> biddingList = stockService.getBiddingList(queryVO.getPageNo(),queryVO.getPageSize());
+
+        List<BiddingVO> biddingVOList = new ArrayList<>();
+
+        List<BiddingDTO> biddingList = stockService.getBiddingList(startPage,pageSize,bidderId);
 
         if(biddingList != null && biddingList.size()>0){
             for(BiddingDTO biddingDTO :biddingList){

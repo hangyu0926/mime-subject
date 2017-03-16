@@ -25,5 +25,5 @@ public interface IStockService {
      * @param pageSize
      * @return
      */
-    List<BiddingDTO> getBiddingList(int startPage,int pageSize);
+    List<BiddingDTO> getBiddingList(int startPage,int pageSize,Long userId);
 }

@@ -34,6 +34,7 @@
         ON UU.USER_ID = UO.SELLER_ID
 		WHERE UO.ORDER_STATE IN (3,4)
 		AND UO.EXPIRE_TIME > NOW()
+		AND UO.SELLER_ID != #{userId}
 		ORDER BY UO.SALE_TIME DESC
 		LIMIT #{startPage},#{pageSize}
     </select>
