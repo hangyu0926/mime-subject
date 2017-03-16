@@ -49,42 +49,33 @@
 	height: 79px;
 	position: relative;
 }
-.contentRight > ul > li > div.resultInfo > div.auditIdea {
-	width: 100%;
-	height: 100%;
-	padding-right: 420px;
-	padding-top: 23px;
-}
-.contentRight > ul > li > div.resultInfo > div.auditIdea > span {
+
+.contentRight > ul > li > div.resultInfo > span.infoTip {
 	display: block;
 	text-align: center;
-	line-height: 34px;
+	line-height: 79px;
 	cursor: default;
 	color: #ff6b6b;
 	font-size: 16px;
 }
 
-
-.contentRight > ul > li > div.resultInfo > div.audit-btn {
+.contentRight > ul > li > div.resultInfo > span.goToAuction {
 	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
 	right: 0;
-	width: 320px;
-	height: 100%;
-	padding-top: 23px;
-	margin-right: 100px;
-}
-.contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-true {
-	float: left;
+	margin: auto;
 	width: 120px;
+	height: 34px;
 	line-height: 32px;
-	margin-left: 30px;
 	color: #5093e1;
 	text-align: center;
-	border-radius: 6px;
 	border: 1px solid #5093e1;
+	border-radius: 6px;
 	cursor: pointer;
 }
-.contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-true:hover {
+.contentRight > ul > li > div.resultInfo > span.goToAuction:hover {
 	background: #5093e1;
     color: #fff;
 }
