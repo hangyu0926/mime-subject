@@ -1,5 +1,7 @@
 package cn.nanmi.msts.web.web.vo.out;
 
+import cn.nanmi.msts.web.model.BiddingDTO;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,10 +26,19 @@ public class BiddingVO implements Serializable {
     private Date saleTime;
     //结束时间
     private Date expireTime;
-    //竞价状态
+    //竞价状态(1-可以竞价，2-当前最高竞价人，不可竞价)
     private Integer biddingState;
 
-    public BiddingVO() {
+    public BiddingVO(BiddingDTO biddingDTO) {
+        if(biddingDTO !=null){
+           this.orderNo = biddingDTO.getOrderNo();
+           this.stockAmt = biddingDTO.getStockAmt();
+           this.initPrice = biddingDTO.getInitialPrice();
+           this.nowPrice = biddingDTO.getMaxBiddingPrice();
+           this.sellerName = biddingDTO.getSellerName();
+           this.saleTime = biddingDTO.getSaleTime();
+           this.expireTime = biddingDTO.getExpireTime();
+        }
     }
 
     public String getOrderNo() {

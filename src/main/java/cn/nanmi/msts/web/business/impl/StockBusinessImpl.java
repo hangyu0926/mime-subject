@@ -1,15 +1,18 @@
 package cn.nanmi.msts.web.business.impl;
 
 import cn.nanmi.msts.web.business.IStockBusiness;
-import cn.nanmi.msts.web.model.BiddingListDTO;
+import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
+import cn.nanmi.msts.web.web.vo.out.BiddingListVO;
+import cn.nanmi.msts.web.web.vo.out.BiddingVO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,11 +29,23 @@ public class StockBusinessImpl implements IStockBusiness {
 
     @Override
     public CSResponse getBiddingList(BiddingListQueryVO queryVO,UserDTO user) {
+        List<BiddingVO> biddingVOList = new ArrayList<>();
+        Long bidderId = user.getUserId();
+        List<BiddingDTO> biddingList = stockService.getBiddingList(queryVO.getPageNo(),queryVO.getPageSize());
 
-        List<BiddingListDTO> biddingList = stockService.getBiddingList(queryVO.getPageNo(),queryVO.getPageSize());
-
-
-        return null;
+        if(biddingList != null && biddingList.size()>0){
+            for(BiddingDTO biddingDTO :biddingList){
+                BiddingVO biddingVO = new BiddingVO(biddingDTO);
+                if(biddingDTO.getMaxBidder().equals(bidderId)){
+                    biddingVO.setBiddingState(2);
+                }else{
+                    biddingVO.setBiddingState(1);
+                }
+                biddingVOList.add(biddingVO);
+            }
+        }
+        BiddingListVO biddingListVO = new BiddingListVO(biddingVOList);
+        return new CSResponse(biddingListVO);
     }
 
     public CSResponse releaseOrder(OrderDTO orderDTO){

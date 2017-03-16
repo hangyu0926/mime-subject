@@ -9,7 +9,7 @@ import java.util.Date;
  * Date: 2017/3/16
  * Time: 10:44
  */
-public class BiddingListDTO implements Serializable{
+public class BiddingDTO implements Serializable{
     //订单编号
     private String orderNo;
     //订单股权数
@@ -27,7 +27,7 @@ public class BiddingListDTO implements Serializable{
     //订单到期时间
     private Date expireTime;
 
-    public BiddingListDTO() {
+    public BiddingDTO() {
     }
 
     public String getOrderNo() {

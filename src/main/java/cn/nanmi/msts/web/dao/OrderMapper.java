@@ -1,7 +1,7 @@
 package cn.nanmi.msts.web.dao;
 
 
-import cn.nanmi.msts.web.model.BiddingListDTO;
+import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import org.apache.ibatis.annotations.Param;

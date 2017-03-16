@@ -44,8 +44,10 @@ public class StockController {
         if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+//        HttpSession session = request.getSession();
+//        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        UserDTO user = new UserDTO();
+        user.setUserId(2L);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }

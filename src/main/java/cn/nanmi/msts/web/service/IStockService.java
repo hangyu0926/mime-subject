@@ -1,9 +1,10 @@
 package cn.nanmi.msts.web.service;
 
-import cn.nanmi.msts.web.model.BiddingListDTO;
+import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import java.util.List;
+
 /**
  * Created with cn.nanmi.msts.web.service.
  * User: jiangbin
@@ -24,5 +25,5 @@ public interface IStockService {
      * @param pageSize
      * @return
      */
-    List<BiddingListDTO> getBiddingList(int startPage,int pageSize);
+    List<BiddingDTO> getBiddingList(int startPage,int pageSize);
 }
