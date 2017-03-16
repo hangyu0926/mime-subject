@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
-    <meta http-equiv="X-UA-compatible" content="IE=edge">
-    <title>待审核订单</title>
-    <link rel="stylesheet" href="../resources/style/bootstrap.min.css">
+	<meta charset="UTF-8">
+	<title>竞拍配置</title>
+	<link rel="stylesheet" href="../resources/style/bootstrap.min.css">
     <link rel="stylesheet" href="../resources/style/publick.css">
-    <link rel="stylesheet" type="text/css" href="../resources/style/auditOrder/auditorder.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/alert.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/auction/auction.css">
     <script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../resources/javascript/validate.js"></script>
     <script type="text/javascript" src="../resources/javascript/bootstrap.min.js"></script>
     <script type="text/javascript" src="../resources/javascript/main.js"></script>
     <script type="text/javascript" src="../resources/javascript/publick.js"></script>
-    <script type="text/javascript" src="../resources/javascript/auditOrder/auditOrder.js"></script>
+    <!-- <script type="text/javascript" src="../resources/javascript/auction/auditOrder.js"></script> -->
 </head>
-
 <body>
-    <nav class="nav-head">
+	<nav class="nav-head">
         <div class="nav-head-LOGO">米么股权系统</div>
         <div class="nav-head-right">
             <span class="nav-head-logout">退出</span>
@@ -54,29 +52,32 @@
         </div>
         <div class="contentRight">
             <form class="form-horizontal" role="form" onsubmit="return false;">
-                <div class="account-add-email">
-                    <label for="account-email">邮箱</label>
-                    <input type="email" name="" id="account-email" required>
+                <div class="auction">
+                    <label for="auction-starting">起拍单价(元)</label>
+                    <input type="text" name="" id="auction-starting" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" required>
                 </div>
-                <div class="account-add-name">
-                    <label for="account-name">姓名</label>
-                    <input type="text" name="" id="account-name" required>
+                <div class="auction">
+                    <label for="auction-max">最大单价(元)</label>
+                    <input type="text" name="" id="auction-max" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" required>
                 </div>
-                <div class="account-add-name">
-                    <label for="account-phone">手机</label>
-                    <input type="text" name="" id="account-phone" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" oninput="if(value.length>11)value=value.slice(0,11)" required>
+                <div class="auction">
+                    <label for="auction-day">竞拍周期(天)</label>
+                    <input type="text" name="" id="auction-day" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" oninput="if(value.length>11)value=value.slice(0,11)" required>
                 </div>
-                <div class="account-add-gushu">
-                    <label for="account-gushu">股权数</label>
-                    <input type="text" name="" id="account-gushu" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" required>
+                <div class="auction">
+                    <label for="auction-yunxu">允许撤销时间(天)</label>
+                    <input type="text" name="" id="auction-yunxu" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" required>
                 </div>
-                <div class="account-add-ksgushu">
-                    <label for="account-ksgushu"><span>可售股权数<span><span style="font-size: 12px">(不填默认全部)</span></label>
-                    <input type="text" name="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="account-ksgushu" required>
+                <div class="auction">
+                    <label for="auction-min"><span>每次最小加价(元)<span></label>
+                    <input type="text" name="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="auction-min" required>
                 </div>
-                <div class="account-add-sure">
-                    <button onclick="accountAdd()">提交</button>
-                    <button onclick="accountReset()">重置</button>
+                <div class="auction">
+                    <label for="auction-maxmoney"><span>每次最大加价(元)<span></label>
+                    <input type="text" name="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="auction-maxmoney" required>
+                </div>
+                <div class="auction-add-sure">
+                    <button onclick="accountAdd()">立即生效</button>
                 </div>
         </div>
         </form>
@@ -103,8 +104,7 @@
                         </div>
                     </div>
                     <div class="form-group row" style="margin-bottom:0;">
-                        <label 
-                        for="nowPwd" class="col-md-3">确认密码：</label>
+                        <label for="nowPwd" class="col-md-3">确认密码：</label>
                         <div class="col-md-8">
                             <input type="password" name="nowPwd" id="nowPwd" class="form-control" placeholder="新密码">
                         </div>
@@ -120,5 +120,4 @@
         </div>
     </div>
 </body>
-
 </html>

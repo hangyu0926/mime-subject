@@ -1,34 +1,21 @@
-$(function() {
-/**
-*发布审核和撤销审核页面的隐藏和实现
-*/
-    $(".content-title>span").on("click", function(e) {
-        var index = $(this).index();
-    	$(this).addClass("active").siblings().removeClass("active");
-    	if(index == 0) {
-    		$(".issuedAudit").removeClass("hide");
-    		$(".cancelAudit").addClass("hide");
-    	} else if(index == 1) {
-    		$(".issuedAudit").addClass("hide");
-    		$(".cancelAudit").removeClass("hide");
-    	}
-    })
+String.prototype.trim = function() {
+  return  this.replace(/^\s+|\s+$/g, '');
+};
+;function accountAdd(){
+	if($("#account-email").val().trim().length==0 || $("#account-name").val().trim().length==0 || $("#account-phone").val().trim().length==0 ||$("#account-gushu").val().trim().length==0 ||$("#account-ksgushu").val().trim().length==0){
+		alert("aa");
+		return;
+	};
+	if(!global_validate.stringIsEmail($("#account-email").val().trim())){
+		alert("bb")
+		return
+	};
+	if(!global_validate.stringIsMobile($("#account-phone").val().trim())){
+		alert("cc");
+		return
+	}
+};
 
+;function accountReset(){
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-})
+};

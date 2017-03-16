@@ -1,0 +1,80 @@
+.table-bordered>thead>tr>th, .table-bordered>thead>tr>td{
+	border-bottom-width: 0px;
+}
+#accountTable,#accountTable th{
+	text-align: center;
+}
+#accountTable{
+	min-width: 1000px;
+}
+.accounttableOutside{
+	overflow: auto;
+	margin-top: 20px;
+}
+#accountTable th,#accountTable td{
+	height: 50px;
+	line-height: 50px;
+}
+#accountTable th{
+	background-color:#eff5fa;
+	color: #5a6378; 
+	font-size: 16px;
+}
+#accountTable td{
+	font-size: 14px;
+	color: #5a6378;
+}
+.contentRight .account_toolbar{
+	width: 400px;
+	margin: 0 auto;
+	margin-top: 20px;
+	text-align: center;
+	font-size: 14px;
+}
+.account_next{
+	display: inline-block;
+	width: 50px;
+	height: 30px;
+	line-height: 30px;
+	background-color: #f5f5f5;
+    border-radius: 6px;
+    cursor: pointer;
+    /* color: white; */
+}
+.account_next:hover{
+	background-color: #5093e1;
+	color: #fff;
+}
+.modal-backdrop{
+	background-color: #fff;
+}
+.accounttableSearch{
+	text-align: right;
+}
+.accounttableSearch span{
+	display: inline-block;
+    width: 50px;
+    height: 30px;
+    background-color: #5093e1;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 6px;
+    color: #fff;
+    cursor:pointer;
+}
+.accounttableSearch span:hover{
+	background-color: #0076ff;
+}
+.accounttableSearch input{
+	height: 30px;
+    vertical-align: middle;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    border: 1px solid #b9b9bf;
+    padding-left: 5px;
+}
+.account_toolbar span:nth-of-type(2){
+	margin-right: 60px;
+}

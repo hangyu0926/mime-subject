@@ -1,0 +1,29 @@
+.contentRight .auction{
+	height: 50px;
+}
+.auction label{
+	width: 180px;
+    font-size: 16px;
+    color: #888;
+    padding-right: 10px;
+}
+.auction input {
+    width: 300px;
+    height: 30px;
+}
+.auction-add-sure button{
+	width: 100px;
+    height: 30px;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    margin: 0 auto;
+    display: inherit;
+}
+.auction-add-sure button:hover{
+	background-color: #ff6b6b;
+	color: #fff;
+}
+.auction-add-sure{
+	width: 485px;
+}

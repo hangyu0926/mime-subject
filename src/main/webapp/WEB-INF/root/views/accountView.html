@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel="stylesheet" href="../resources/style/bootstrap.min.css">
+    <link rel="stylesheet" href="../resources/style/publick.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/alert.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/accountView/accountView.css">
     <script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../resources/javascript/bootstrap.min.js"></script>
     <script type="text/javascript" src="../resources/javascript/main.js"></script>
     <script type="text/javascript" src="../resources/javascript/publick.js"></script>
-    <script type="text/javascript" src="../resources/javascript/auditOrder/auditOrder.js"></script>
-    <link rel="stylesheet" href="../resources/style/bootstrap.min.css">
-    <link rel="stylesheet" href="../resources/style/publick.css">
-    <link rel="stylesheet" type="text/css" href="../resources/style/auditOrder/auditorder.css">
+    <script type="text/javascript" src="../resources/javascript/dialog.js"></script>
+    <script type="text/javascript" src="../resources/javascript/accountView/accountView.js"></script>
 </head>
 
 <body>
@@ -51,6 +52,89 @@
             </ul>
         </div>
         <div class="contentRight">
+            <div class="accounttableSearch">
+                <input type="text" id="accountSearch" name="">
+                <span onclick="accountSearch()">搜索</span>
+            </div>
+            <div class="accounttableOutside">
+                <table class="table table-bordered  ul-table-box table-condensed" id="accountTable">
+                    <thead>
+                        <tr>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>手机号</th>
+                            <th>股权数</th>
+                            <th>可售股权数</th>
+                            <th>重置</th>
+                            <th>删除</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountTbody">
+                        <tr>
+                            <td>丽丽</td>
+                            <td>2425422179@qq.com</td>
+                            <td>13272777222</td>
+                            <td>34</td>
+                            <td>555</td>
+                            <td>重置密码</td>
+                            <td>删除</td>
+                        </tr>
+                        <tr>
+                            <td>丽丽</td>
+                            <td>2425422179@qq.com</td>
+                            <td>13272777222</td>
+                            <td>34</td>
+                            <td>555</td>
+                            <td>重置密码</td>
+                            <td>删除</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="account_toolbar">
+                <span>第<font class="account_toolbar_page">1</font>页</span>
+                <span>共<font class="account_toolbar_totalCount"></font>页</span>
+                <span class="account_next" id="account_pre" onclick="accountPre()" >上一页</span>
+                <span class="account_next" id="account_next" onclick="accountNext()">下一页</span>
+            </div>
+        </div>
+        <!-- 模态框 -->
+        <div class="modal fade" id="changePwd-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <p class="modal-title text-center">用户密码修改</p>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label for="originPwd" class="col-md-3">旧密码：</label>
+                            <div class="col-md-8">
+                                <input type="password" name="originPwd" id="originPwd" class="form-control" placeholder="原来的密码">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="nowPwd" class="col-md-3">新密码：</label>
+                            <div class="col-md-8">
+                                <input type="password" name="nowPwd" id="nowPwd" class="form-control" placeholder="新密码">
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0;">
+                            <label for="nowPwd" class="col-md-3">确认密码：</label>
+                            <div class="col-md-8">
+                                <input type="password" name="nowPwd" id="nowPwd" class="form-control" placeholder="新密码">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div>
+                            <button type="button" id="modifyPassword" class="btn btn-primary">确认</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 </body>
+
 </html>

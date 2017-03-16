@@ -1,10 +1,10 @@
+String.prototype.trim = function() {
+  return  this.replace(/^\s+|\s+$/g, '');
+};
 ;function doCheckregister(){
 	$("#loginIn").hide();
 	$("#findPass").hide();
 	$("#register").show();
-	// global_dialog.error("哈哈",function(){
-	// 		closeAlertDialog();
-	// 	});
 };
 ;function doChecklogin(){
 	$("#register").hide();
@@ -15,6 +15,9 @@
 ;function doLogin(){
 	var userName=$("#login_username").val();
 	var userPassword=$("#login_password").val();
+	if(!global_validate.stringIsEmail($("#account-email").val().trim())){
+		return
+	};
 	userPassword = hex_md5(userPassword);
 	global_ajax("login",{
 		"userMobile":userName,
@@ -23,7 +26,7 @@
 		window.location.href="";
 	},"post",function(data){
 		global_dialog.error(data.desc,function(){
-			closeAlertDialog()
+			closeAlertDialog();
 		});
 	})
 };
