@@ -18,10 +18,10 @@
     </resultMap>
 
     <!-- 根据用户名查找用户 -->
-    <select id="getUserByMobile" resultMap="userMap" parameterType="String">
+    <select id="getUserByMail" resultMap="userMap" parameterType="String">
     	select USER_ID,MOBILE_NO,USER_NAME,LOGIN_NAME,LOGIN_PASS,PERMISSION,DEL_FLAG,CREATE_MAN,CREATE_TIME,STOCKS_AMT,STOCKS_SALE_AMT,FROZEN_STOCKS
     	from USER
-        where USER_NAME=#{mail} AND DEL_FLAG=0
+        where LOGIN_NAME=#{mail} AND DEL_FLAG=0
     </select>
 
     <select id="getUsersByUserGroups" resultType="java.lang.String">

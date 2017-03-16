@@ -40,8 +40,8 @@
 
     <insert id="releaseOrder" parameterType="cn.nanmi.msts.web.model.OrderDTO" >
         insert into USER_ORDER (ORDER_ID, ORDER_NO, STOCKS_AMT,
-        INITIAL_PRICE, ORDER_STATE, SELLER_ID,CREATE_TIME，SYSTEM_RULE_ID)
-        values (#{orderId,jdbcType=long}, #{orderNo,jdbcType=String}, #{stockAmt,jdbcType=Double}, #{initialPrice,jdbcType=Double},
-         1, #{sellerId,jdbcType=Long}, now()，1)
+        INITIAL_PRICE, ORDER_STATE, SELLER_ID,CREATE_TIME,SYSTEM_RULE_ID)
+        values (#{orderId}, #{orderNo}, #{stockAmt}, #{initialPrice},
+         1, #{sellerId}, now(),1)
     </insert>
 </mapper>
