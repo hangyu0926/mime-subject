@@ -5,17 +5,22 @@
         <result column="ORDER_NO" javaType="String" property="orderNo"></result>
         <result column="STOCKS_AMT" javaType="Double" property="stockAmt"></result>
         <result column="INITIAL_PRICE" javaType="Double" property="initialPrice"></result>
-        <result column="SELLER_ID" javaType="Long" property="sellerId"></result>
+        <result column="USER_NAME" javaType="String" property="sellerName"></result>
         <result column="MAX_BIDDING_PRICE" javaType="Double" property="maxBiddingPrice"></result>
-        <result column="MAX_BIDDING_BUYER" javaType="Long" property="maxBidder"></result>
+        <result column="MAX_BIDDER" javaType="Long" property="maxBidder"></result>
         <result column="SALE_TIME" javaType="Date" property="saleTime"></result>
         <result column="EXPIRE_TIME" javaType="Date" property="expireTime"></result>
     </resultMap>
 
     <select id="getBiddingList" resultMap="biddingListMap">
-
-
-
+        SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,UU.USER_NAME,MAX_BIDDING_PRICE,MAX_BIDDER,SALE_TIME,EXPIRE_TIME
+        FROM USER_ORDER UO
+        LEFT JOIN USER UU
+        ON UU.USER_ID = UO.SELLER_ID
+		WHERE UO.ORDER_STATE IN (3,4)
+		AND UO.EXPIRE_TIME > NOW()
+		ORDER BY UO.SALE_TIME DESC
+		LIMIT #{startPage},#{pageSize}
     </select>
 
 </mapper>

@@ -1,6 +1,7 @@
 package cn.nanmi.msts.web.business.impl;
 
 import cn.nanmi.msts.web.business.IStockBusiness;
+import cn.nanmi.msts.web.model.BiddingListDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IStockService;
@@ -8,6 +9,7 @@ import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 股权相关business
@@ -24,7 +26,7 @@ public class StockBusinessImpl implements IStockBusiness {
     @Override
     public CSResponse getBiddingList(BiddingListQueryVO queryVO,UserDTO user) {
 
-
+        List<BiddingListDTO> biddingList = stockService.getBiddingList(queryVO.getPageNo(),queryVO.getPageSize());
 
 
         return null;
