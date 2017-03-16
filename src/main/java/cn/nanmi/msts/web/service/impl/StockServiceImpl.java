@@ -1,6 +1,7 @@
 package cn.nanmi.msts.web.service.impl;
 
 import cn.nanmi.msts.web.model.OrderDTO;
+import cn.nanmi.msts.web.model.PreBiddingDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.dao.OrderMapper;
 import cn.nanmi.msts.web.model.BiddingDTO;
@@ -28,5 +29,10 @@ public class StockServiceImpl implements IStockService {
     @Override
     public List<BiddingDTO> getBiddingList(int startPage,int pageSize,Long userId) {
         return orderMapper.getBiddingList(startPage,pageSize,userId);
+    }
+
+    @Override
+    public PreBiddingDTO getPreBidding(String orderNo) {
+        return orderMapper.getPreBidding(orderNo);
     }
 }

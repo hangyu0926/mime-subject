@@ -45,4 +45,12 @@
         values (#{orderId}, #{orderNo}, #{stockAmt}, #{initialPrice},
          1, #{sellerId}, now(),1)
     </insert>
+
+    <select id="getPreBidding" resultType="cn.nanmi.msts.web.model.PreBiddingDTO">
+        SELECT SR.MIN_MAKEUP AS maxMakeUp,SR.MAX_MAKEUP AS minMakeUp,UO.MAX_BIDDING_PRICE AS nowPrice
+        FROM USER_ORDER UO
+        LEFT JOIN SYSTEM_RULES SR
+        ON SR.RULE_ID = UO.SYSTEM_RULE_ID
+        WHERE UO.ORDER_NO = #{orderNo}
+    </select>
 </mapper>

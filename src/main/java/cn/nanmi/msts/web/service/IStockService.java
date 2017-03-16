@@ -2,7 +2,10 @@ package cn.nanmi.msts.web.service;
 
 import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
+import cn.nanmi.msts.web.model.PreBiddingDTO;
 import cn.nanmi.msts.web.response.CSResponse;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -26,4 +29,11 @@ public interface IStockService {
      * @return
      */
     List<BiddingDTO> getBiddingList(int startPage,int pageSize,Long userId);
+
+    /**
+     * 查询准备竞拍参数
+     * @param orderNo
+     * @return
+     */
+    PreBiddingDTO getPreBidding(String orderNo);
 }

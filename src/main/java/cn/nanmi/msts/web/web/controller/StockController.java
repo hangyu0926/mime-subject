@@ -9,6 +9,7 @@ import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSPageResponse;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpSession;
  * Time: 14:38
  */
 @Controller
-@RequestMapping(value = "/stocks", method = RequestMethod.POST, produces = { "application/json;charset=UTF-8" })
+@RequestMapping(value = "/stocks",  produces = { "application/json;charset=UTF-8" })
 public class StockController {
 
     @Resource
@@ -35,7 +36,7 @@ public class StockController {
      * @param queryVO
      * @return
      */
-    @RequestMapping(value = "/biddingList")
+    @RequestMapping(value = "/biddingList",method = RequestMethod.POST)
     @ResponseBody
     public CSResponse getBiddingList(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
         if(queryVO == null ){
@@ -58,7 +59,7 @@ public class StockController {
      * @param queryVO
      * @return
      */
-    @RequestMapping(value = "myBidding")
+    @RequestMapping(value = "/myBidding",method = RequestMethod.POST)
     @ResponseBody
     public CSResponse getMyBidding(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
         if(queryVO == null ){
@@ -71,12 +72,29 @@ public class StockController {
     }
 
     /**
+     * 准备竞拍
+     * @param request
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping(value = "/preBidding",method = RequestMethod.GET)
+    @ResponseBody
+    public CSResponse preBidding(HttpServletRequest request,String orderNo){
+        if(StringUtils.isBlank(orderNo)){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        return stockBusiness.getPreBidding(orderNo);
+    }
+
+
+    /**
      *  竞拍标的
      * @param request
      * @param queryVO
      * @return
      */
-    @RequestMapping(value = "bidding")
+    @RequestMapping(value = "/bidding",method = RequestMethod.POST)
     @ResponseBody
     public CSResponse bidStock(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
         if(queryVO == null ){

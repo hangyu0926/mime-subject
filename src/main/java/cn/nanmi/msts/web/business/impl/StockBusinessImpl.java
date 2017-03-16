@@ -3,12 +3,14 @@ package cn.nanmi.msts.web.business.impl;
 import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
+import cn.nanmi.msts.web.model.PreBiddingDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 import cn.nanmi.msts.web.web.vo.out.BiddingListVO;
 import cn.nanmi.msts.web.web.vo.out.BiddingVO;
+import cn.nanmi.msts.web.web.vo.out.PreBiddingVO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -57,5 +59,15 @@ public class StockBusinessImpl implements IStockBusiness {
     public CSResponse releaseOrder(OrderDTO orderDTO){
 
         return stockService.releaseOrder(orderDTO);
+    }
+
+    @Override
+    public CSResponse getPreBidding(String orderNo) {
+
+        PreBiddingDTO preBiddingDTO = stockService.getPreBidding(orderNo);
+
+        PreBiddingVO preBiddingVO = new PreBiddingVO(preBiddingDTO);
+
+        return new CSResponse(preBiddingVO);
     }
 }

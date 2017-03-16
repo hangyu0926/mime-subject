@@ -21,4 +21,11 @@ public interface IStockBusiness {
      * @return
      */
     CSResponse releaseOrder(OrderDTO orderDTO);
+
+    /**
+     * 查询准备竞拍参数
+     * @param orderNo
+     * @return
+     */
+    CSResponse getPreBidding(String orderNo);
 }
