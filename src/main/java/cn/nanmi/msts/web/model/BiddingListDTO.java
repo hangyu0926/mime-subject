@@ -26,6 +26,12 @@ public class BiddingListDTO implements Serializable{
     private Long maxBidder;
     //订单到期时间
     private Date expireTime;
+    //订单创建时间
+    private Date createTime;
+    //订单状态
+    private Long orderState;
+    //系统规则
+    private Long systemRuleId;
 
     public BiddingListDTO() {
     }
@@ -92,5 +98,29 @@ public class BiddingListDTO implements Serializable{
 
     public void setExpireTime(Date expireTime) {
         this.expireTime = expireTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getOrderState() {
+        return orderState;
+    }
+
+    public void setOrderState(Long orderState) {
+        this.orderState = orderState;
+    }
+
+    public Long getSystemRuleId() {
+        return systemRuleId;
+    }
+
+    public void setSystemRuleId(Long systemRuleId) {
+        this.systemRuleId = systemRuleId;
     }
 }
