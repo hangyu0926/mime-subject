@@ -1,32 +1,28 @@
 @charset "utf-8";
 .contentRight > .content-title {
 	width: 100%;
-	height: 34px;
+	height: 50px;
 	border-bottom: 1px solid #5a6378;
 }
 .contentRight > .content-title > span {
 	display: block;
-	float: left;
-    padding: 0 30px;
+	float: right;
+    width: 120px;
+    height: 34px;
+    text-align: center;
     line-height: 34px;
     font-size: 14px;
     color: #fff;
-    border-radius: 6px 6px 0 0;
+    border: none;
+    border-radius: 6px;
     background: #5a6378;
     cursor: pointer;
 }
+
 .contentRight > .content-title > span:hover {
-	background: #6e7689;
-}
-.contentRight > .content-title > span.active {
 	background: #ff6b6b;
 }
-.contentRight > .content-title > span:first-child {
-	margin-left: 30px;
-}
-.contentRight > .content-title > span + span {
-	margin-left: 3px;
-}
+
 
 
 .contentRight > ul {
@@ -58,20 +54,39 @@
 }
 .contentRight > ul > li > div.orderInfo > div {
 	width: 100%;
-	height: 45px;
+	height: 90px;
 }
 .contentRight > ul > li > div.orderInfo > div > span {
 	display: table;
-	width: 20%;
 	float: left;
 	padding-right: 20px;
 	line-height: 45px;
-	cursor: default;
 	white-space: nowrap;
+	cursor: default;
 }
-
 .contentRight > ul > li > div.orderInfo > div > span:nth-child(1) {
+	width: 20%;
+}
+.contentRight > ul > li > div.orderInfo > div:nth-child(1) > span:nth-child(1) {
 	font-weight: bold;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(2) {
+	width: 20%;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(3) {
+	width: 20%;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(4) {
+	width: 20%;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(5) {
+	width: 20%;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(6) {
+	width: 20%;
+}
+.contentRight > ul > li > div.orderInfo > div > span:nth-child(7) {
+	width: 20%;
 }
 
 
@@ -86,26 +101,13 @@
 	padding-right: 420px;
 	padding-top: 23px;
 }
-.contentRight > ul > li > div.resultInfo > div.auditIdea > input {
-	display: block;
-	float: right;
-	width: 30%;
-	height: 34px;
-    line-height: 34px;
-    border: none;
-    box-shadow: none;
-    border-bottom: 1px solid #b9b9bf;
-    background: transparent;
-    position: relative;
-}
-.contentRight > ul > li > div.resultInfo > div.auditIdea > input:focus {
-    border-bottom: 2px solid #f90;
-}
 .contentRight > ul > li > div.resultInfo > div.auditIdea > span {
-	float: right;
-	width: 120px;
+	display: block;
+	text-align: center;
 	line-height: 34px;
 	cursor: default;
+	color: #ff6b6b;
+	font-size: 16px;
 }
 
 
@@ -129,33 +131,9 @@
 	cursor: pointer;
 }
 .contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-true:hover {
-	background: #7fb3f0;
-    color: #fff;
-}
-.contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-true.active {
 	background: #5093e1;
     color: #fff;
 }
-.contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-false {
-	float: left;
-	width: 140px;
-	line-height: 32px;
-	margin-left: 30px;
-	color: #5093e1;
-	text-align: center;
-	border-radius: 6px;
-	border: 1px solid #5093e1;
-	cursor: pointer;
-}
-.contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-false:hover {
-	background: #7fb3f0;
-    color: #fff;
-}
-.contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-false.active {
-	background: #5093e1;
-    color: #fff;
-}
-
 
 
 

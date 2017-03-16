@@ -217,7 +217,9 @@ ul {
 #changePwd-modal .btn {
 	padding: 6px 40px;
 }
-
+.modal-backdrop {
+	z-index: 10;
+}
 
 
 
