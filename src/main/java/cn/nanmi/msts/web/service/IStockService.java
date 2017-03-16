@@ -1,6 +1,7 @@
 package cn.nanmi.msts.web.service;
 
 import cn.nanmi.msts.web.model.BiddingListDTO;
+import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import java.util.List;
 /**
@@ -13,10 +14,10 @@ public interface IStockService {
 
     /**
      *  发布订单
-     * @param biddingListDTO
+     * @param orderDTO
      * @return
      */
-    CSResponse releaseOrder(BiddingListDTO biddingListDTO);
+    CSResponse releaseOrder(OrderDTO orderDTO);
     /**
      * 查询竞拍列表（分页)
      * @param startPage

@@ -12,6 +12,21 @@
         <result column="EXPIRE_TIME" javaType="Date" property="expireTime"></result>
     </resultMap>
 
+    <resultMap id="orderListMap" type="cn.nanmi.msts.web.model.OrderDTO">
+        <result column="ORDER_NO" javaType="String" property="orderNo"></result>
+        <result column="STOCKS_AMT" javaType="Double" property="stockAmt"></result>
+        <result column="INITIAL_PRICE" javaType="Double" property="initialPrice"></result>
+        <result column="ORDER_STATE" javaType="int" property="orderState"></result>
+        <result column="SELLER_ID" javaType="Long" property="sellerId"></result>
+        <result column="USER_NAME" javaType="String" property="sellerName"></result>
+        <result column="MAX_BIDDING_PRICE" javaType="Double" property="maxBiddingPrice"></result>
+        <result column="MAX_BIDDER" javaType="Long" property="maxBidder"></result>
+        <result column="CREATE_TIME" javaType="Date" property="createTime"></result>
+        <result column="SALE_TIME" javaType="Date" property="saleTime"></result>
+        <result column="EXPIRE_TIME" javaType="Date" property="expireTime"></result>
+        <result column="SYSTEM_RULE_ID" javaType="Long" property="systemRuleId"></result>
+    </resultMap>
+
     <select id="getBiddingList" resultMap="biddingListMap">
         SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,UU.USER_NAME,MAX_BIDDING_PRICE,MAX_BIDDER,SALE_TIME,EXPIRE_TIME
         FROM USER_ORDER UO
@@ -23,4 +38,10 @@
 		LIMIT #{startPage},#{pageSize}
     </select>
 
+    <insert id="releaseOrder" parameterType="cn.nanmi.msts.web.model.OrderDTO" >
+        insert into USER_ORDER (ORDER_ID, ORDER_NO, STOCKS_AMT,
+        INITIAL_PRICE, ORDER_STATE, SELLER_ID,CREATE_TIME，SYSTEM_RULE_ID)
+        values (#{orderId,jdbcType=long}, #{orderNo,jdbcType=String}, #{stockAmt,jdbcType=Double}, #{initialPrice,jdbcType=Double},
+         1, #{sellerId,jdbcType=Long}, now()，1)
+    </insert>
 </mapper>

@@ -2,6 +2,7 @@ package cn.nanmi.msts.web.business.impl;
 
 import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.model.BiddingListDTO;
+import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IStockService;
@@ -32,8 +33,8 @@ public class StockBusinessImpl implements IStockBusiness {
         return null;
     }
 
-    public CSResponse releaseOrder(BiddingListDTO biddingListDTO){
+    public CSResponse releaseOrder(OrderDTO orderDTO){
 
-        return null;
+        return stockService.releaseOrder(orderDTO);
     }
 }

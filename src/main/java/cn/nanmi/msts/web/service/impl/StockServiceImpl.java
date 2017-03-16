@@ -1,6 +1,7 @@
 package cn.nanmi.msts.web.service.impl;
 
 import cn.nanmi.msts.web.model.BiddingListDTO;
+import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IStockService;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,10 @@ import java.util.List;
 public class StockServiceImpl implements IStockService {
     @Resource
     private OrderMapper orderMapper;
-    public CSResponse releaseOrder(BiddingListDTO biddingListDTO){
 
-        return null;
+    public CSResponse releaseOrder(OrderDTO orderDTO){
+
+        return orderMapper.releaseOrder(orderDTO);
     }
     @Override
     public List<BiddingListDTO> getBiddingList(int startPage,int pageSize) {
