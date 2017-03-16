@@ -66,20 +66,17 @@
 
     <select id="getEmployeeTotalNum"
             resultType="java.lang.Long">
-        SELECT COUNT(1) FROM USER WHERE DEL_FLAG=0 AND PERMISSION_ID!=1
+        SELECT COUNT(1) FROM USER WHERE DEL_FLAG=0 AND PERMISSION!=1
     </select>
 
     <select id="getEmployeeNum" parameterType="cn.nanmi.msts.web.web.vo.in.GetUserPageListVO"
             resultType="java.lang.Long">
-        SELECT COUNT(1) FROM USER  WHERE DEL_FLAG=0 AND PERMISSION_ID!=1
-        <if test="permissionId != null and permissionId != 0">
-            AND PERMISSION_ID=#{permissionId}
-        </if>
+        SELECT COUNT(1) FROM USER  WHERE DEL_FLAG=0 AND PERMISSION!=1
         <if test="keyWords != null and keyWords != '' ">
-            AND (USER_MOBILE LIKE '%${keyWords}%'
+            AND (MOBILE_NO LIKE '%${keyWords}%'
             OR USER_NAME LIKE '%${keyWords}%'
             OR USER_WECHAT LIKE '%${keyWords}%'
-            OR MAIL_ADD LIKE '%${keyWords}%')
+            OR LOGIN_NAME LIKE '%${keyWords}%')
         </if>
     </select>
 
@@ -94,41 +91,39 @@
         STOCKS_AMT AS totalStock,
         STOCKS_SALE_AMT AS availableStock
         FROM USER
-        WHERE DEL_FLAG=0 AND PERMISSION_ID!=1
+        WHERE DEL_FLAG=0 AND PERMISSION!=1
 
         <if test="keyWords != null and keyWords != '' ">
-            AND (u.USER_MOBILE LIKE '%${keyWords}%'
-            OR u.USER_NAME LIKE '%${keyWords}%'
-            OR u.MAIL_ADD LIKE '%${keyWords}%')
+            AND (MOBILE_NO LIKE '%${keyWords}%'
+            OR USER_NAME LIKE '%${keyWords}%'
+            OR LOGIN_NAME LIKE '%${keyWords}%')
         </if>
-         ORDER BY u.CREATE_TIME DESC,u.USER_ID ASC
+         ORDER BY USER_ID ASC
         limit #{startPage},#{pageSize}
     </select>
 
 
     <update id="deleteEmployee">
         UPDATE USER SET
-        DEL_FLAG=1,
-        DEL_MAN=#{curUserId},
-        DEL_TIME=NOW()
+        DEL_FLAG=1
         WHERE USER_ID=#{userId}
     </update>
 
     <update id="resetUserPassword">
         UPDATE USER SET
-        LOGIN_PASS=NULL
+        LOGIN_PASS='e10adc3949ba59abbe56e057f20f883e'
         WHERE USER_ID=#{userId}
     </update>
 
 
     <!--public Long getEmployeeNumByWorkId(String workId);-->
     <select id="getEmployeeNumByMobile" resultType="java.lang.Long">
-        SELECT COUNT(1) FROM USER WHERE USER_MOBILE=#{mobile} AND DEL_FLAG=0
+        SELECT COUNT(1) FROM USER WHERE MOBILE_NO=#{mobile} AND DEL_FLAG=0
 
     </select>
     <!--public Long getEmployeeNumByEmail(String email);-->
     <select id="getEmployeeNumByEmail" resultType="java.lang.Long">
-        SELECT COUNT(1) FROM USER WHERE MAIL_ADD=#{email} AND DEL_FLAG=0
+        SELECT COUNT(1) FROM USER WHERE LOGIN_NAME=#{email} AND DEL_FLAG=0
     </select>
 
 

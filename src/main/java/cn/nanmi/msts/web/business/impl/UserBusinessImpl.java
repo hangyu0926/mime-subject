@@ -220,7 +220,7 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
             LOGGER.info("resetUserPassword employee session 超时");
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        if(curUser.getPermissionId()!=1&&curUser.getPermissionId()!=4){
+        if(curUser.getPermissionId()!=1){
             return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
         }
         userService.resetUserPassword(userId);
