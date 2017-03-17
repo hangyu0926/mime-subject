@@ -2,14 +2,14 @@
 *global_dir   ：根目录地址
 *global_route ：项目路径
 */
-var global_dir = "";
+var global_dir = "/msts";
 var global_route = {
-    'login': '/user/login',// 用户登录
-    'passModify':'/user/modifyPassword',//修改密码
-    'getUserList':'/user/getUserList',//获取用户信息
-    'resetUserPassword':'/user/resetUserPassword',//修改用户密码
-    'deleteUser':'/user/deleteUser',//删除用户
-    'getUserList':'/user/getUserList',//获取用户列表
+    "releaseAuditList":"/stocks/releaseAuditList",//待审核订单-发布审核
+    "backoutAuditList":"/stocks/backoutAuditList",//待审核订单-撤销审核
+    "releaseAudit": "/stocks/releaseAudit",//发布审核通过/不通过
+    "confirmOrder":"/stocks/confirmOrder",//确认订单
+    "myBidding":"/stocks/myBidding",//我的竞拍
+    "biddingList":"/stocks/biddingList"//竞拍列表
 };
 /**
 *global_ajax

@@ -27,7 +27,7 @@ $(function() {
 *阻止模态框弹出时出现滚动条
 */
     $(".modal").on("show.bs.modal", function(){
-        $(this).css("overflow-y", "auto");
+        $(this).css("overflow-y", "hidden");
         $("body").css({"overflow": "auto", "margin-right": "0px"});
     })
 

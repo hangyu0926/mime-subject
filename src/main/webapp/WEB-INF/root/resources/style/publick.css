@@ -206,16 +206,24 @@ ul {
 .modal-footer {
 	margin-top: 0;
 }
-.modal-footer > div{
+.modal-footer > div {
 	display: table;
 	margin-left: auto;
 	margin-right: auto;
 }
-.modal-footer .btn + .btn{
+.modal-footer .btn + .btn {
 	margin-left: 20px;
 }
-#changePwd-modal .btn {
-	padding: 6px 40px;
+#changePwd-modal .btn,
+#releaseNewInfo .btn {
+	width: 120px;
+}
+#releaseNewInfo .title-tip {
+    line-height: 34px;
+    font-weight: normal;
+    font-size: 14px;
+    text-align: left;
+    color: #999;
 }
 .modal-backdrop {
 	z-index: 10;
