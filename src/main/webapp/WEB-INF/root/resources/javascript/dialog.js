@@ -7,17 +7,17 @@ function Dialog(){
         + '<span  onclick="" class="btn btn-default btn-sm">确定</button>'
         + '</span>'
         + '</div>';
-    var confirmDialog = ''
-        + '<div class="confirm-dialog" id="confirmDialog">'
-        + '<div class="confirm-dialog-message">'
-        + '<p id="confirm-dialog-message"></p>'
-        + '<button type="button" onclick="closeConfirmDialog()" class="btn btn-default btn-sm">取消</button>'
-        + '<button type="button" class="btn btn-default btn-sm confirm-dialog-button-ok">确定</button>'
-        + '</div>'
-        + '</div>';
-    $('body').append(alertDialog + confirmDialog);
+    // var confirmDialog = ''
+    //     + '<div class="confirm-dialog" id="confirmDialog">'
+    //     + '<div class="confirm-dialog-message">'
+    //     + '<p id="confirm-dialog-message"></p>'
+    //     + '<button type="button" onclick="closeConfirmDialog()" class="btn btn-default btn-sm">取消</button>'
+    //     + '<button type="button" class="btn btn-default btn-sm confirm-dialog-button-ok">确定</button>'
+    //     + '</div>'
+    //     + '</div>';
+    $('body').append(alertDialog);
     window.closeAlertDialog = function(){
-        $('#alertDialog').removeClass('is-visible');
+        $('#alertDialog').hide();
     };
     window.closeConfirmDialog = function(){
         $('#confirmDialog').removeClass('is-visible');
@@ -27,7 +27,7 @@ function Dialog(){
         alert: function(msg, callBack){
             // isAutoClose = !!isAutoClose && typeof isAutoClose == 'boolean' ? isAutoClose : true;
             $('#alert-dialog-message').html(msg);
-            $('#alertDialog').addClass('is-visible');
+            $('#alertDialog').show();
             // if(window.dialogTime && typeof window.dialogTime == 'number'){
             //     clearTimeout(window.dialogTime);
             // }

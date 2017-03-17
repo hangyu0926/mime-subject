@@ -13,17 +13,6 @@ function Validate(){
             }
             return false;
         },
-        stringMoreThanLength: function(str, len, isEqual){
-            var stringCanEqual = true;
-            if(this.objectIsEmpty(isEqual) && typeof isEqual == 'boolean'){
-                stringCanEqual = isEqual;
-            }
-            if(stringCanEqual){
-                return !this.stringIsEmpty(str) && str.length >= len;
-            }else{
-                return !this.stringIsEmpty(str) && str.length > len;
-            }
-        },
         stringIsMobile: function(str){
             var mobileReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
             return mobileReg.test(str);
@@ -33,7 +22,7 @@ function Validate(){
             return emailReg.test(str) && str.length <= 100;
         },
         passwordIsOk: function(str){
-            var passwordReg = /^[A-Za-z0-9]{6,18}$/;
+            var passwordReg = /^\d{6}$/;
             return passwordReg.test(str);
         }
     };

@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <title>新增账户</title>
     <link rel="stylesheet" href="../resources/style/bootstrap.min.css">
     <link rel="stylesheet" href="../resources/style/publick.css">
     <link rel="stylesheet" type="text/css" href="../resources/style/alert.css">
-    <link rel="stylesheet" type="text/css" href="../resources/style/accountView/accountView.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/auditOrder/auditorder.css">
     <script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../resources/javascript/validate.js"></script>
+    <script type="text/javascript" src="../resources/javascript/dialog.js"></script>
     <script type="text/javascript" src="../resources/javascript/bootstrap.min.js"></script>
     <script type="text/javascript" src="../resources/javascript/main.js"></script>
     <script type="text/javascript" src="../resources/javascript/publick.js"></script>
-    <script type="text/javascript" src="../resources/javascript/dialog.js"></script>
-    <script type="text/javascript" src="../resources/javascript/validate.js"></script>
     <script type="text/javascript" src="../resources/javascript/md5.js"></script>
-    <script type="text/javascript" src="../resources/javascript/accountView/accountView.js"></script>
+    <script type="text/javascript" src="../resources/javascript/auditOrder/auditOrder.js"></script>
 </head>
+
 <body>
     <nav class="nav-head">
         <div class="nav-head-LOGO">米么股权系统</div>
@@ -26,7 +29,7 @@
         </div>
     </nav>
     <div class="contentBox">
-        <div class="leftMenu">
+           <div class="leftMenu">
             <ul>
                 <li class="accountManagement">
                     <span>账户管理</span>
@@ -53,52 +56,33 @@
             </ul>
         </div>
         <div class="contentRight">
-            <div class="accounttableSearch">
-                <input type="text" id="accountSearch" name="">
-                <span onclick="accountSearch()">搜索</span>
-            </div>
-            <div class="accounttableOutside">
-                <table class="table table-bordered  ul-table-box table-condensed" id="accountTable">
-                    <thead>
-                        <tr>
-                            <th>用户名</th>
-                            <th>邮箱</th>
-                            <th>手机号</th>
-                            <th>股权数</th>
-                            <th>可售股权数</th>
-                            <th>重置</th>
-                            <th>删除</th>
-                        </tr>
-                    </thead>
-                    <tbody id="accountTbody">
-                        <!-- <tr>
-                            <td>丽丽</td>
-                            <td>2425422179@qq.com</td>
-                            <td>13272777222</td>
-                            <td>34</td>
-                            <td>555</td>
-                            <td>重置密码</td>
-                            <td>删除</td>
-                        </tr>
-                        <tr>
-                            <td>丽丽</td>
-                            <td>2425422179@qq.com</td>
-                            <td>13272777222</td>
-                            <td>34</td>
-                            <td>555</td>
-                            <td>重置密码</td>
-                            <td>删除</td>
-                        </tr> -->
-                    </tbody>
-                </table>
-            </div>
-            <div class="account_toolbar">
-                <span>第<font class="account_toolbar_page">1</font>页</span>
-                <span>共<font class="account_toolbar_totalCount"></font>页</span>
-                <span class="account_next" id="account_pre" onclick="accountPre()">上一页</span>
-                <span class="account_next" id="account_next" onclick="accountNext()">下一页</span>
-            </div>
+            <form class="form-horizontal" role="form" onsubmit="return false;" >
+                <div class="account-add-email">
+                    <label for="account-email">邮箱</label>
+                    <input type="text" name="" id="account-email" required>
+                </div>
+                <div class="account-add-name">
+                    <label for="account-name">姓名</label>
+                    <input type="text" name="" id="account-name" required>
+                </div>
+                <div class="account-add-name">
+                    <label for="account-phone">手机</label>
+                    <input type="text" name="" id="account-phone"  required>
+                </div>
+                <div class="account-add-gushu">
+                    <label for="account-gushu">股权数</label>
+                    <input type="text" name="" id="account-gushu" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" required>
+                </div>
+                <div class="account-add-ksgushu">
+                    <label for="account-ksgushu"><span>可售股权数<span><span style="font-size: 12px">(不填默认全部)</span></label>
+                    <input type="text" name="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="account-ksgushu">
+                </div>
+                <div class="account-add-sure">
+                    <button onclick="accountAdd()">提交</button>
+                    <button onclick="accountReset()">重置</button>
+                </div>
         </div>
+        </form>
     </div>
     <!-- 模态框修改密码-->
     <div class="modal fade" id="changePwd-modal">

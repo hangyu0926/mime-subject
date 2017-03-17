@@ -6,10 +6,10 @@
     <title>登录</title>
     <link rel="stylesheet" type="text/css" href="../resources/style/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../resources/style/login/login.css">
-    <link rel="stylesheet" type="text/css" href="../resources/style/dialog.css">
     <link rel="stylesheet" type="text/css" href="../resources/style/alert.css">
     <script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../resources/javascript/md5.js"></script>
+    <script type="text/javascript" src="../resources/javascript/main.js"></script>
     <script type="text/javascript" src="../resources/javascript/validate.js"></script>
     <script type="text/javascript" src="../resources/javascript/dialog.js"></script>
 </head>
@@ -26,7 +26,7 @@
         </div>
         <div class="input-group input-group-lg">
             <span class="input-group-addon" style="width:90px">密码</span>
-            <input class="form-control" id="login_password" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" oninput="if(value.length>6)value=value.slice(0,6)" style="width:230px" type="email" placeholder="请输入密码" required>
+            <input class="form-control" id="login_password" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" oninput="if(value.length>6)value=value.slice(0,6)" style="width:230px" type="password" placeholder="请输入密码" required>
             <!-- <span class="subject-login-find" onclick="findPass()">找回密码</span> -->
         </div>
         <div class="login-bottom">

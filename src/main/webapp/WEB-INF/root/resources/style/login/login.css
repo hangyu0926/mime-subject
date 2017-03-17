@@ -31,7 +31,7 @@ body {
 
 }
 .subject-login{
-    padding-right: 0;
+    /* padding-right: 0; */
 }
 .subject-login .subject-login-header,.subject-login-header {
   width: 250px;
@@ -73,9 +73,10 @@ font-size: 12px;
 }
 .login-bottom{
   text-align: center;
-  padding-right: 60px;
+  /* padding-right: 60px; */
 }
 .subject-login div:nth-of-type(3),.register-login div:nth-of-type(3){
+  width: 320px;
   margin-top: 20px;
 }
 .register-login-bottom button{

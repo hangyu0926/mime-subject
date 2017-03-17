@@ -15,15 +15,18 @@ String.prototype.trim = function() {
 ;function doLogin(){
 	var userName=$("#login_username").val();
 	var userPassword=$("#login_password").val();
-	if(!global_validate.stringIsEmail($("#account-email").val().trim())){
+	if($("#login_username").val().trim().length==0 || $("#login_password").val().trim().length==0){
+		return
+	}
+	if(!global_validate.stringIsEmail($("#login_username").val().trim())){
 		return
 	};
 	userPassword = hex_md5(userPassword);
 	global_ajax("login",{
-		"userMobile":userName,
+		"userMail":userName,
 		"password":userPassword
 	},function(data){
-		window.location.href="";
+		window.location.href="/views/goToAuction.html";
 	},"post",function(data){
 		global_dialog.error(data.desc,function(){
 			closeAlertDialog();
@@ -36,28 +39,7 @@ String.prototype.trim = function() {
 	$("#register").hide();
 	$("#findPass").show();
 }
-//修改密码
-;function doModifypass(){
-	var user=$("#find_username").val();
-	var oldPass=$("#find_passwordOld").val();
-	var newPass=$("#find_passwordNew").val();
-	var newAgain=$("#find_passwordNewagain").val();
-	if(newPass==newAgain){
-		
-	}else{
-		global_dialog.error("两次不一样");
-		return;
-	};
-	global_ajax("passModify",{
-		"userMobile":user,
-		"oldPassword":oldPass,
-		"newPassword":newPass
-	},function(data){
-		global_dialog.error("修改成功");
-	},"post",function(data){
-		global_dialog.error(data.desc);
-	})
-};
+
 //注册
 ;function doRegister(){
 	var username=$("#register_username").val();

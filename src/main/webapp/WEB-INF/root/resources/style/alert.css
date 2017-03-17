@@ -1,9 +1,9 @@
 .alert-dialog, .confirm-dialog{
     position: fixed;top: 0;left: 0;height: 100%;width: 100%;
     background-color: rgba(0, 0, 0, .4);z-index: 10000;font-size: 16px;
-    opacity: 0;visibility: hidden;
-    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;-moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
-    -o-transition: opacity 0.3s 0s, visibility 0s 0.3s;transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    display: none;
+    /* -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;-moz-transition: opacity 0.3s 0s, visibility 0s 0.3s; */
+    /* -o-transition: opacity 0.3s 0s, visibility 0s 0.3s;transition: opacity 0.3s 0s, visibility 0s 0.3s; */
 }
 .alert-dialog.is-visible, .confirm-dialog.is-visible{
     opacity: 1;visibility: visible;-webkit-transition: opacity 0.3s 0s, visibility 0s 0s;

@@ -1,3 +1,8 @@
+@media screen and (max-width: 1300px)
+.contentBox > .contentRight {
+    width: auto;
+    /* overflow-y: auto; */
+}
 .table-bordered>thead>tr>th, .table-bordered>thead>tr>td{
 	border-bottom-width: 0px;
 }
@@ -46,7 +51,7 @@
 	color: #fff;
 }
 .modal-backdrop{
-	background-color: #fff;
+	/* background-color: #fff; */
 }
 .accounttableSearch{
 	text-align: right;
