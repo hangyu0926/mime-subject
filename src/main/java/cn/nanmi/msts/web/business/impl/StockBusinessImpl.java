@@ -72,8 +72,15 @@ public class StockBusinessImpl implements IStockBusiness {
     }
 
     public void releaseOrder(OrderDTO orderDTO){
-
          stockService.releaseOrder(orderDTO);
+
+        //新增用户流水
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.setUserId(orderDTO.getSellerId());
+        transactionEntity.setOrderNo(orderDTO.getOrderNo());
+        transactionEntity.setTransAmt(orderDTO.getInitialPrice());
+        transactionEntity.setTransType(2);
+        transactionService.addTransRecord(transactionEntity);
     }
 
     public CSResponse getMyOrder(BiddingListQueryVO queryVO,Long userId){
@@ -87,8 +94,17 @@ public class StockBusinessImpl implements IStockBusiness {
     }
 
     public void backoutOrder(String orderNo){
-
         stockService.backoutOrder(orderNo);
+
+        BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderNo);
+
+        //新增用户流水
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.setUserId(biddingDetailDTO.getSellerId());
+        transactionEntity.setOrderNo(biddingDetailDTO.getOrderNo());
+        transactionEntity.setTransAmt(biddingDetailDTO.getMaxBiddingPrice());
+        transactionEntity.setTransType(3);
+        transactionService.addTransRecord(transactionEntity);
     }
 
     @Override

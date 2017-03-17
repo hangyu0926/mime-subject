@@ -51,9 +51,9 @@
 
     <insert id="releaseOrder" parameterType="cn.nanmi.msts.web.model.OrderDTO" >
         insert into USER_ORDER (ORDER_ID, ORDER_NO, STOCKS_AMT,
-        INITIAL_PRICE, ORDER_STATE, SELLER_ID,CREATE_TIME,SYSTEM_RULE_ID,EXPIRE_TIME)
+        INITIAL_PRICE, ORDER_STATE, SELLER_ID,CREATE_TIME,SYSTEM_RULE_ID,EXPIRE_TIME,MAX_BIDDING_PRICE)
         values (#{orderId}, #{orderNo}, #{stockAmt}, #{initialPrice},
-         1, #{sellerId}, now(),#{systemRuleId},date_add(now(), interval #{biddingPeriod} hour))
+         1, #{sellerId}, now(),#{systemRuleId},date_add(now(), interval #{biddingPeriod} hour),#{initialPrice})
     </insert>
 
     <select id="getMyOrder" resultMap="orderListMap">
