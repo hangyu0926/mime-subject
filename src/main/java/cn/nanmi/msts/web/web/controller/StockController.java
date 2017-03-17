@@ -172,11 +172,11 @@ public class StockController {
         if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-      /*  HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
-        if(user == null){
-            return new CSResponse(ErrorCode.SESSION_ERROR);
-        }*/
+
+
+
+
+
 
         Long userId = 1L;
                 //Long.valueOf(request.getParameter("userId").toString());
@@ -191,5 +191,24 @@ public class StockController {
     @ResponseBody
     public void backoutOrder(HttpServletRequest request,@RequestBody Map map){
         stockBusiness.backoutOrder(map.get("orderNo").toString());
+    }
+
+    /**
+     *  待确认订单（分页)
+     * @param request
+     * @param queryVO
+     * @return
+     */
+    @RequestMapping(value = "beConfirmedList")
+    @ResponseBody
+    public CSResponse beConfirmedList(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
+        if(queryVO == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        return stockBusiness.beConfirmedList(queryVO);
     }
 }

@@ -139,4 +139,14 @@ public class StockBusinessImpl implements IStockBusiness {
     public SystemRules getSystemRules(){
         return stockService.getSystemRules();
     }
+
+    public CSResponse beConfirmedList(BiddingListQueryVO queryVO){
+        int page = queryVO.getPageNo();
+        int pageSize = queryVO.getPageSize();
+        int startPage = (page - 1) * pageSize ;
+        List<OrderDTO> orderDTOList = stockService.beConfirmedList(startPage,pageSize);
+
+        OrderListVO   orderListVO = new OrderListVO(orderDTOList);
+        return new CSResponse(orderListVO);
+    }
 }

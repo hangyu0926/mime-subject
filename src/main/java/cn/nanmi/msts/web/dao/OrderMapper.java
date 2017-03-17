@@ -26,4 +26,6 @@ public interface OrderMapper {
     void backoutOrder(@Param("orderNo")String orderNo);
 
     SystemRules getSystemRules();
+
+    List<OrderDTO> beConfirmedList(@Param("startPage")int startPage, @Param("pageSize")int pageSize);
 }

@@ -37,6 +37,9 @@ public class OrderDTO implements Serializable {
     //规则竞拍周期
     private int biddingPeriod;
 
+    //该订单的竞价轮数
+    private int buyerCounts;
+
     public long getOrderId() {
         return orderId;
     }
@@ -147,5 +150,13 @@ public class OrderDTO implements Serializable {
 
     public void setBiddingPeriod(int biddingPeriod) {
         this.biddingPeriod = biddingPeriod;
+    }
+
+    public int getBuyerCounts() {
+        return buyerCounts;
+    }
+
+    public void setBuyerCounts(int buyerCounts) {
+        this.buyerCounts = buyerCounts;
     }
 }

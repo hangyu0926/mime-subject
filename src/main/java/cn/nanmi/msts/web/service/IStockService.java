@@ -69,4 +69,11 @@ public interface IStockService {
      * @return
      */
     SystemRules getSystemRules();
+
+    /**
+     * 待确认订单（分页)
+     *
+     * @return
+     */
+    List<OrderDTO> beConfirmedList(int startPage,int pageSize);
 }

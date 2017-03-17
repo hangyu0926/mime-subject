@@ -60,4 +60,8 @@ public class StockServiceImpl implements IStockService {
     public SystemRules getSystemRules(){
         return orderMapper.getSystemRules();
     }
+
+    public List<OrderDTO> beConfirmedList(int startPage,int pageSize){
+        return orderMapper.beConfirmedList(startPage,pageSize);
+    }
 }

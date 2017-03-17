@@ -56,4 +56,11 @@ public interface IStockBusiness {
      * @return
      */
     SystemRules getSystemRules();
+
+    /**
+     * 待确认订单（分页)
+     * @param queryVO
+     * @return
+     */
+    CSResponse beConfirmedList(BiddingListQueryVO queryVO);
 }
