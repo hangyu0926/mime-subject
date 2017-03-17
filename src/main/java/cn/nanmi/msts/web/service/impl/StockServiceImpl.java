@@ -2,6 +2,7 @@ package cn.nanmi.msts.web.service.impl;
 
 import cn.nanmi.msts.web.dao.OrderMapper;
 import cn.nanmi.msts.web.model.*;
+import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IStockService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
@@ -70,5 +71,9 @@ public class StockServiceImpl implements IStockService {
     @Override
     public void updateOrderBidding(Double biddingPrice, Long bidderId, String orderNo) {
          orderMapper.updateOrderBidding(biddingPrice,bidderId,orderNo);
+    }
+
+    public JumpReleaseOrderDTO jumpReleaseOrder(Long userId) {
+        return orderMapper.jumpReleaseOrder(userId);
     }
 }

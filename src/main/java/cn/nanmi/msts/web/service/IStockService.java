@@ -1,6 +1,8 @@
 package cn.nanmi.msts.web.service;
 
 import cn.nanmi.msts.web.model.*;
+import cn.nanmi.msts.web.response.CSResponse;
+
 import java.util.List;
 
 /**
@@ -86,4 +88,9 @@ public interface IStockService {
      * @param orderNo
      */
     void updateOrderBidding(Double biddingPrice,Long bidderId,String orderNo);
+
+    /**
+     * 跳转我的发布页
+     */
+    JumpReleaseOrderDTO jumpReleaseOrder(Long userId);
 }

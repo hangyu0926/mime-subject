@@ -130,4 +130,11 @@
       AND ORDER_STATE IN (3,4)
       AND EXPIRE_TIME > NOW()
     </update>
+
+    <select id="jumpReleaseOrder" resultType="cn.nanmi.msts.web.model.JumpReleaseOrderDTO">
+        SELECT UU.STOCKS_SALE_AMT AS stocksSaleAmt,SR.MIN_STOCK_PRICE AS minStockPrice,SR.MAX_STOCK_PRICE AS maxStockPrice
+        FROM USER UU, SYSTEM_RULES SR
+        WHERE UU.USER_ID = #{userId}
+         ORDER BY SR.CREATE_TIME desc limit 1
+    </select>
 </mapper>

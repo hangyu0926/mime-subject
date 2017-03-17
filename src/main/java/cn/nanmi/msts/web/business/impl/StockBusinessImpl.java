@@ -192,4 +192,11 @@ public class StockBusinessImpl implements IStockBusiness {
         OrderListVO   orderListVO = new OrderListVO(orderDTOList);
         return new CSResponse(orderListVO);
     }
+
+    public CSResponse jumpReleaseOrder(Long userId) {
+
+        JumpReleaseOrderDTO jumpReleaseOrderDTO = stockService.jumpReleaseOrder(userId);
+
+        return new CSResponse(jumpReleaseOrderDTO);
+    }
 }

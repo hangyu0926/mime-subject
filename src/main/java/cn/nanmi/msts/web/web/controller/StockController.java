@@ -216,4 +216,17 @@ public class StockController {
 
         return stockBusiness.beConfirmedList(queryVO);
     }
+
+    /**
+     * 跳转我的发布页
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "jumpReleaseOrder")
+    @ResponseBody
+    public CSResponse jumpReleaseOrder(HttpServletRequest request){
+        Long userId = 1L;
+
+        return stockBusiness.jumpReleaseOrder(userId);
+    }
 }

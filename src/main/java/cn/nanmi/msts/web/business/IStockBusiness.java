@@ -63,4 +63,9 @@ public interface IStockBusiness {
      * @return
      */
     CSResponse beConfirmedList(BiddingListQueryVO queryVO);
+
+    /**
+     * 跳转我的发布页
+     */
+    CSResponse jumpReleaseOrder(Long userId);
 }
