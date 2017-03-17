@@ -133,7 +133,7 @@ public class StockBusinessImpl implements IStockBusiness {
      */
     private void takeBidding(BidStockVO bidStockVO,Long userId){
         //todo 更新订单表,状态、最高出价、最高出价人
-
+        
 
 
         //新增用户状态，新增或更新用户ID、订单号、金额、操作类型

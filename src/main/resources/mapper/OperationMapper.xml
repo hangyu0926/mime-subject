@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nanmi.msts.web.dao.OperationMapper">
+
+    <select id="addOperation" parameterType="cn.nanmi.msts.web.dao.entities.OperationEntity">
+      REPLACE INTO USER_OPERATION_STATUS (USER_ID,ORDER_NO,OPERATION_TYPE,OPERATION_TIME,OPERATION_AMT)
+      VALUE (#{userId},#{orderNo},#{operationType},NOW(),#{operationPrice})
+    </select>
+
+</mapper>
