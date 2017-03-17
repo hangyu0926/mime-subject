@@ -78,4 +78,8 @@
         WHERE ORDER_NO = #{orderNo}
     </select>
 
+    <!-- 定时更新 -->
+    <update id="updateStatus" >
+        UPDATE USER_ORDER  SET  ORDER_STATE=6 WHERE date(EXPIRE_TIME) = curdate()-1 AND (ORDER_STATE=3 OR ORDER_STATE=4);
+    </update>
 </mapper>

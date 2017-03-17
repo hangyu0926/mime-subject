@@ -46,4 +46,12 @@ public interface IStockService {
      * @return
      */
     BiddingDetailDTO getOrderDetail(String orderNo);
+
+    /**
+     * 更新订单状态
+     * @return
+     */
+    void updateStatus();
+
+
 }

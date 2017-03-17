@@ -20,4 +20,6 @@ public interface OrderMapper {
     PreBiddingDTO getPreBidding(@Param("orderNo") String orderNo);
 
     BiddingDetailDTO getOrderDetail(@Param("orderNo") String orderNo);
+
+   void  updateStatus();
 }

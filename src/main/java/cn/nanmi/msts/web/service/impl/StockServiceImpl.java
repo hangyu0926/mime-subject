@@ -42,4 +42,11 @@ public class StockServiceImpl implements IStockService {
     public BiddingDetailDTO getOrderDetail(String orderNo) {
         return orderMapper.getOrderDetail(orderNo);
     }
+
+    @Override
+    public void updateStatus() {
+         orderMapper.updateStatus();
+    }
+
+
 }
