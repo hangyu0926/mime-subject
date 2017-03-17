@@ -135,22 +135,21 @@ public class StockController {
     /**
      *  发布订单
      * @param request
-     * @param orderDTO
      * @return
      */
     @RequestMapping(value = "releaseOrder")
     @ResponseBody
-    public void releaseOrder(HttpServletRequest request, OrderDTO orderDTO){
+    public void releaseOrder(HttpServletRequest request, @RequestBody Map map){
       /*  HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }*/
 
-        orderDTO = new OrderDTO();
+        OrderDTO orderDTO = new OrderDTO();
         orderDTO.setOrderNo(UUID.randomUUID().toString().replace("-", ""));
-        orderDTO.setStockAmt((double) 50);
-        orderDTO.setInitialPrice((double) 100);
+        orderDTO.setStockAmt(Double.valueOf(map.get("stockAmt").toString()));
+        orderDTO.setInitialPrice(Double.valueOf(map.get("initialPrice").toString()));
         orderDTO.setSellerId((long) 1);
 
         SystemRules systemRules = stockBusiness.getSystemRules();
