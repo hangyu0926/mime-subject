@@ -1,12 +1,9 @@
 package cn.nanmi.msts.web.service.impl;
 
 import cn.nanmi.msts.web.dao.entities.OrderEntity;
-import cn.nanmi.msts.web.model.BiddingDetailDTO;
-import cn.nanmi.msts.web.model.OrderDTO;
-import cn.nanmi.msts.web.model.PreBiddingDTO;
+import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.dao.OrderMapper;
-import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 import org.springframework.stereotype.Service;
@@ -58,5 +55,9 @@ public class StockServiceImpl implements IStockService {
     public void backoutOrder(String orderNo){
 
         orderMapper.backoutOrder(orderNo);
+    }
+
+    public SystemRules getSystemRules(){
+        return orderMapper.getSystemRules();
     }
 }

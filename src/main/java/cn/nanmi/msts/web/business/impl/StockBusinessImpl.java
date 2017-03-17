@@ -135,4 +135,8 @@ public class StockBusinessImpl implements IStockBusiness {
         //todo 新增用户状态
         //todo 新增用户流水
     }
+
+    public SystemRules getSystemRules(){
+        return stockService.getSystemRules();
+    }
 }

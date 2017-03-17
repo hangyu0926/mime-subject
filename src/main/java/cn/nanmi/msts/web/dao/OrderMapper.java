@@ -1,10 +1,7 @@
 package cn.nanmi.msts.web.dao;
 
 
-import cn.nanmi.msts.web.model.BiddingDTO;
-import cn.nanmi.msts.web.model.BiddingDetailDTO;
-import cn.nanmi.msts.web.model.OrderDTO;
-import cn.nanmi.msts.web.model.PreBiddingDTO;
+import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +24,6 @@ public interface OrderMapper {
     List<OrderDTO> getMyOrder(@Param("startPage")int startPage, @Param("pageSize")int pageSize, @Param("userId") Long userId);
 
     void backoutOrder(@Param("orderNo")String orderNo);
+
+    SystemRules getSystemRules();
 }

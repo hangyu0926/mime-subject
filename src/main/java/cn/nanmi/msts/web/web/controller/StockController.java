@@ -4,6 +4,7 @@ import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.core.ConstantHelper;
 import cn.nanmi.msts.web.enums.ErrorCode;
 import cn.nanmi.msts.web.model.OrderDTO;
+import cn.nanmi.msts.web.model.SystemRules;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSPageResponse;
 import cn.nanmi.msts.web.response.CSResponse;
@@ -150,6 +151,9 @@ public class StockController {
         orderDTO.setInitialPrice((double) 100);
         orderDTO.setSellerId((long) 1);
 
+        SystemRules systemRules = stockBusiness.getSystemRules();
+        orderDTO.setSystemRuleId(systemRules.getRuleId());
+        orderDTO.setBiddingPeriod(systemRules.getBiddingPeriod());
          stockBusiness.releaseOrder(orderDTO);
     }
 

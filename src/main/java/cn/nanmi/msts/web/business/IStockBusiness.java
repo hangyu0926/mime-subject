@@ -1,6 +1,7 @@
 package cn.nanmi.msts.web.business;
 
 import cn.nanmi.msts.web.model.OrderDTO;
+import cn.nanmi.msts.web.model.SystemRules;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
@@ -49,4 +50,10 @@ public interface IStockBusiness {
      * @return
      */
     CSResponse bidStock(BidStockVO bidStockVO,UserDTO user);
+
+    /**
+     * 获取当前规则
+     * @return
+     */
+    SystemRules getSystemRules();
 }

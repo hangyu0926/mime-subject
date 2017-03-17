@@ -41,9 +41,9 @@
 
     <insert id="releaseOrder" parameterType="cn.nanmi.msts.web.model.OrderDTO" >
         insert into USER_ORDER (ORDER_ID, ORDER_NO, STOCKS_AMT,
-        INITIAL_PRICE, ORDER_STATE, SELLER_ID,CREATE_TIME,SYSTEM_RULE_ID)
+        INITIAL_PRICE, ORDER_STATE, SELLER_ID,CREATE_TIME,SYSTEM_RULE_ID,EXPIRE_TIME)
         values (#{orderId}, #{orderNo}, #{stockAmt}, #{initialPrice},
-         1, #{sellerId}, now(),1)
+         1, #{sellerId}, now(),#{systemRuleId},date_add(now(), interval #{biddingPeriod} hour))
     </insert>
 
     <select id="getMyOrder" resultMap="orderListMap">
@@ -98,4 +98,8 @@
     <update id="updateStatus" >
         UPDATE USER_ORDER  SET  ORDER_STATE=6 WHERE date(EXPIRE_TIME) = curdate()-1 AND (ORDER_STATE=3 OR ORDER_STATE=4);
     </update>
+
+    <select id="getSystemRules" resultType="cn.nanmi.msts.web.model.SystemRules">
+        select RULE_ID as ruleId,BIDDING_PERIOD as biddingPeriod from SYSTEM_RULES ORDER BY CREATE_TIME desc limit 1
+    </select>
 </mapper>

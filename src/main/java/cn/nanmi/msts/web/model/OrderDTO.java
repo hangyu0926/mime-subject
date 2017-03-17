@@ -1,11 +1,12 @@
 package cn.nanmi.msts.web.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by hangyu on 2017/3/16.
  */
-public class OrderDTO {
+public class OrderDTO implements Serializable {
     //订单id
     private long orderId;
     //订单编号
@@ -32,6 +33,9 @@ public class OrderDTO {
     private Date expireTime;
     //系统规则
     private Long systemRuleId;
+
+    //规则竞拍周期
+    private int biddingPeriod;
 
     public long getOrderId() {
         return orderId;
@@ -135,5 +139,13 @@ public class OrderDTO {
 
     public void setSystemRuleId(Long systemRuleId) {
         this.systemRuleId = systemRuleId;
+    }
+
+    public int getBiddingPeriod() {
+        return biddingPeriod;
+    }
+
+    public void setBiddingPeriod(int biddingPeriod) {
+        this.biddingPeriod = biddingPeriod;
     }
 }

@@ -1,10 +1,7 @@
 package cn.nanmi.msts.web.service;
 
 import cn.nanmi.msts.web.dao.entities.OrderEntity;
-import cn.nanmi.msts.web.model.BiddingDTO;
-import cn.nanmi.msts.web.model.BiddingDetailDTO;
-import cn.nanmi.msts.web.model.OrderDTO;
-import cn.nanmi.msts.web.model.PreBiddingDTO;
+import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.response.CSResponse;
 import org.apache.ibatis.annotations.Param;
 
@@ -67,5 +64,9 @@ public interface IStockService {
      */
     void updateStatus();
 
-
+    /**
+     * 获取当前规则
+     * @return
+     */
+    SystemRules getSystemRules();
 }
