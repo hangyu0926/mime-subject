@@ -2,11 +2,13 @@ package cn.nanmi.msts.web.business.impl;
 
 import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.dao.entities.OperationEntity;
+import cn.nanmi.msts.web.dao.entities.TransactionEntity;
 import cn.nanmi.msts.web.enums.ErrorCode;
 import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IOperationService;
 import cn.nanmi.msts.web.service.IStockService;
+import cn.nanmi.msts.web.service.ITransactionService;
 import cn.nanmi.msts.web.utils.MathUtil;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
@@ -15,6 +17,9 @@ import cn.nanmi.msts.web.web.vo.out.BiddingVO;
 import cn.nanmi.msts.web.web.vo.out.OrderListVO;
 import cn.nanmi.msts.web.web.vo.out.PreBiddingVO;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -33,6 +38,8 @@ public class StockBusinessImpl implements IStockBusiness {
     private IStockService stockService;
     @Resource
     private IOperationService operationService;
+    @Resource
+    private ITransactionService transactionService;
 
     @Override
     public CSResponse getBiddingList(BiddingListQueryVO queryVO,UserDTO user) {
@@ -111,22 +118,22 @@ public class StockBusinessImpl implements IStockBusiness {
             //不能竞拍自己的标的
             return new CSResponse(ErrorCode.FORBID_BIDDING_YOURSELF);
         }
-        Double bidMakeup =  MathUtil.sub(biddingDetailDTO.getMaxBiddingPrice(),myPrice);
+        Double bidMakeup =  MathUtil.sub(myPrice,biddingDetailDTO.getMaxBiddingPrice());
         if(bidMakeup <= 0 ){
             //您的出价低于当前竞价
             return new CSResponse(ErrorCode.YOUR_PRICE_LOWER);
         }
-        if(bidMakeup<=biddingDetailDTO.getMinMakeUp()){
+        if(bidMakeup<biddingDetailDTO.getMinMakeUp()){
             //您的加价低于最低限制
             return new CSResponse(ErrorCode.LOWER_MIN_MAKEUP);
         }
-        if(bidMakeup>=biddingDetailDTO.getMaxMakeUp()){
+        if(bidMakeup>biddingDetailDTO.getMaxMakeUp()){
             //您的加价高于最高限制
             return new CSResponse(ErrorCode.GREATER_MAX_MAKEUP);
         }
-
-        takeBidding(bidStockVO,user.getUserId());
-
+        synchronized(orderNo){
+            takeBidding(bidStockVO,user.getUserId());
+        }
         return new CSResponse();
     }
 
@@ -134,19 +141,26 @@ public class StockBusinessImpl implements IStockBusiness {
      * 竞拍订单操作
      * @param bidStockVO
      */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void takeBidding(BidStockVO bidStockVO,Long userId){
         //更新订单表,最高出价、最高出价人
         stockService.updateOrderBidding(bidStockVO.getBiddingPrice(),userId,bidStockVO.getOrderNo());
 
-        //新增用户状态，新增或更新用户ID、订单号、金额、操作类型
+        //用户状态表，新增或更新用户ID、订单号、金额、操作类型
         OperationEntity operationEntity = new OperationEntity();
         operationEntity.setUserId(userId);
         operationEntity.setOrderNo(bidStockVO.getOrderNo());
         operationEntity.setOperationPrice(bidStockVO.getBiddingPrice());
         operationEntity.setOperationType(1);
-
         operationService.addOperation(operationEntity);
-        //todo 新增用户流水
+
+        //新增用户流水
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.setUserId(userId);
+        transactionEntity.setOrderNo(bidStockVO.getOrderNo());
+        transactionEntity.setTransAmt(bidStockVO.getBiddingPrice());
+        transactionEntity.setTransType(1);
+        transactionService.addTransRecord(transactionEntity);
     }
 
     public SystemRules getSystemRules(){

@@ -103,7 +103,7 @@ public enum ErrorCode {
      * 订单相关错误码50*
      */
     NOT_FIND_BIDDING("5001","没有找到竞拍订单"),
-    YOUR_PRICE_LOWER("5002","您的出价低于当前竞价"),
+    YOUR_PRICE_LOWER("5002","您的出价必须大于当前竞价"),
     LOWER_MIN_MAKEUP("5003","您的加价低于最低限制"),
     GREATER_MAX_MAKEUP("5004","您的加价高于最高限制"),
     INVALID_ORDER("5005","订单状态无效"),
