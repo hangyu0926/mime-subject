@@ -19,4 +19,10 @@ $(function() {
 
 
 
-})
+});
+//刚进来修改密码
+;function doFirstModify(){
+	var newPass=$("#firstnowPwd").val().trim();
+	var mewPassagain=$("#firstnowPwdagain").val().trim();
+	doModifypass(newPass,mewPassagain);
+}

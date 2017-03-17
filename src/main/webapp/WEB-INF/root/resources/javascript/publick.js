@@ -31,18 +31,90 @@ $(function() {
         $("body").css({"overflow": "auto", "margin-right": "0px"});
     })
 
+});
 
+// 修改密码
+;function doModifypass(str1, str2, str3) {
+  //判空
+  if (str3 == undefined) {
+    if (str1.length == 0 || str2.length == 0) {
+      global_dialog.error("请填写完整", function() {
+        closeAlertDialog();
+      });
+      return
+    };
+  } else {
+    if (str1.length == 0 || str2.length == 0 || str3 == 0) {
+      global_dialog.error("请填写完整", function() {
+        closeAlertDialog();
+      });
+      return
+    };
+  };
+  //密码格式正不正确
+  if (str3 == undefined) {
+    if (!global_validate.passwordIsOk(str1) || !global_validate.passwordIsOk(str2) ) {
+      global_dialog.error("密码格式不正确", function() {
+        closeAlertDialog();
+      });
+      return
+    };
+  }else{
+    if (!global_validate.passwordIsOk(str1) || !global_validate.passwordIsOk(str2) || !global_validate.passwordIsOk(str3)) {
+      global_dialog.error("密码格式不正确", function() {
+        closeAlertDialog();
+      });
+      return
+    };
+  };
+//两次输入一致判断
+  if (str1 == str2) {
 
+  } else {
+    global_dialog.error("两次输入不一致", function() {
+      closeAlertDialog();
+    });
+    return
+  };
 
+  if (str3 == undefined) {
+    str3 = '';
+    str2=hex_md5(str2);
+  }else{
+    str3=hex_md5(str3);
+    str2=hex_md5(str2);
+  }
+  
+  global_ajax("passModify", {
+    "oldPassword": str3,
+    "newPassword": str2
+  }, function(data) {
+    global_dialog.error("修改成功", function() {
+      closeAlertDialog();
+    });
+  }, "post", function(data) {
+    global_dialog.error(data.desc, function() {
+      closeAlertDialog();
+    });
+  });
+};
 
-
-
-
-
-
-
-
-
-
-
-})
+//不是第一次进来
+;function doNotfirst(){
+  var oldPass=$("#originPwd").val().trim();
+  var newPass=$("#nowPwd").val().trim();
+  var newAgain=$("#nowPwdagain").val().trim();
+  doModifypass(newPass,newAgain,oldPass);
+}
+// 清空修改密码框
+;function doClear() {
+  $("#originPwd").val("");
+  $("#nowPwd").val("");
+  $("#nowPwdagain").val("");
+};
+//登出
+;function doLoginout() {
+  global_ajax("logout", {}, function(data) {
+    window.location.href = "login.html";
+  })
+};
