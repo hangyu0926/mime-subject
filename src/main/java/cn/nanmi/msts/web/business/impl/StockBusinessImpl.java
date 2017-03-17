@@ -10,6 +10,7 @@ import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 import cn.nanmi.msts.web.web.vo.out.BiddingListVO;
 import cn.nanmi.msts.web.web.vo.out.BiddingVO;
+import cn.nanmi.msts.web.web.vo.out.OrderListVO;
 import cn.nanmi.msts.web.web.vo.out.PreBiddingVO;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
@@ -59,9 +60,24 @@ public class StockBusinessImpl implements IStockBusiness {
         return new CSResponse(biddingListVO);
     }
 
-    public CSResponse releaseOrder(OrderDTO orderDTO){
+    public void releaseOrder(OrderDTO orderDTO){
 
-        return stockService.releaseOrder(orderDTO);
+         stockService.releaseOrder(orderDTO);
+    }
+
+    public CSResponse getMyOrder(BiddingListQueryVO queryVO,Long userId){
+        int page = queryVO.getPageNo();
+        int pageSize = queryVO.getPageSize();
+        int startPage = (page - 1) * pageSize ;
+        List<OrderDTO> orderDTOList = stockService.getMyOrder(startPage,pageSize,userId);
+
+        OrderListVO   orderListVO = new OrderListVO(orderDTOList);
+        return new CSResponse(orderListVO);
+    }
+
+    public void backoutOrder(String orderNo){
+
+        stockService.backoutOrder(orderNo);
     }
 
     @Override

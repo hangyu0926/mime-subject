@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * 股权相关Controller
@@ -135,14 +137,55 @@ public class StockController {
      */
     @RequestMapping(value = "releaseOrder")
     @ResponseBody
-    public CSResponse releaseOrder(HttpServletRequest request, OrderDTO orderDTO){
-        HttpSession session = request.getSession();
+    public void releaseOrder(HttpServletRequest request, OrderDTO orderDTO){
+      /*  HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
-        }
+        }*/
 
-        return null;
+        orderDTO = new OrderDTO();
+        orderDTO.setOrderNo(UUID.randomUUID().toString().replace("-", ""));
+        orderDTO.setStockAmt((double) 50);
+        orderDTO.setInitialPrice((double) 100);
+        orderDTO.setSellerId((long) 1);
+
+         stockBusiness.releaseOrder(orderDTO);
     }
 
+    /**
+     *  我的发布（分页)
+     * @param request
+     * @param queryVO
+     * @return
+     */
+    @RequestMapping(value = "getMyOrder")
+    @ResponseBody
+    public CSResponse getMyOrder(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
+        if(queryVO == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+      /*  HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        if(user == null){
+            return new CSResponse(ErrorCode.SESSION_ERROR);
+        }*/
+
+        Long userId = 1L;
+                //Long.valueOf(request.getParameter("userId").toString());
+        return stockBusiness.getMyOrder(queryVO,userId);
+    }
+
+    /**
+     * 撤销订单
+     * @param request
+     */
+    @RequestMapping(value = "backoutOrder")
+    @ResponseBody
+    public void backoutOrder(HttpServletRequest request,@RequestBody Map map){
+        stockBusiness.backoutOrder(map.get("orderNo").toString());
+    }
 }

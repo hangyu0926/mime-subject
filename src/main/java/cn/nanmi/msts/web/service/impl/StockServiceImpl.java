@@ -8,6 +8,7 @@ import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.dao.OrderMapper;
 import cn.nanmi.msts.web.model.BiddingDTO;
 import cn.nanmi.msts.web.service.IStockService;
+import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 import org.springframework.stereotype.Service;
 import cn.nanmi.msts.web.dao.OrderMapper;
 import javax.annotation.Resource;
@@ -24,9 +25,9 @@ public class StockServiceImpl implements IStockService {
     @Resource
     private OrderMapper orderMapper;
 
-    public CSResponse releaseOrder(OrderDTO orderDTO){
+    public void releaseOrder(OrderDTO orderDTO){
 
-        return orderMapper.releaseOrder(orderDTO);
+         orderMapper.releaseOrder(orderDTO);
     }
     @Override
     public List<BiddingDTO> getBiddingList(int startPage,int pageSize,Long userId) {
@@ -49,4 +50,13 @@ public class StockServiceImpl implements IStockService {
     }
 
 
+
+    public List<OrderDTO> getMyOrder(int startPage,int pageSize, Long userId){
+        return orderMapper.getMyOrder(startPage,pageSize,userId);
+    }
+
+    public void backoutOrder(String orderNo){
+
+        orderMapper.backoutOrder(orderNo);
+    }
 }

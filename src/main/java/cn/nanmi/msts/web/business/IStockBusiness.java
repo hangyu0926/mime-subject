@@ -20,7 +20,21 @@ public interface IStockBusiness {
      * @param orderDTO
      * @return
      */
-    CSResponse releaseOrder(OrderDTO orderDTO);
+    void releaseOrder(OrderDTO orderDTO);
+
+    /**
+     * 我的发布
+     * @param queryVO
+     * @param userId
+     * @return
+     */
+    CSResponse getMyOrder(BiddingListQueryVO queryVO,Long userId);
+
+    /**
+     * 撤销订单
+     * @param orderNo
+     */
+    void backoutOrder(String orderNo);
 
     /**
      * 查询准备竞拍参数

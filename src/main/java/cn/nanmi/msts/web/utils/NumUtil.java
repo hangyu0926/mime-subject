@@ -15,4 +15,5 @@ public class NumUtil {
         bd = bd.setScale(scale, roundingMode);
         return bd.doubleValue();
     }
+
 }
