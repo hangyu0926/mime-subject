@@ -1,13 +1,9 @@
 package cn.nanmi.msts.web.service.impl;
 
-import cn.nanmi.msts.web.dao.entities.OrderEntity;
+import cn.nanmi.msts.web.dao.OrderMapper;
 import cn.nanmi.msts.web.model.*;
-import cn.nanmi.msts.web.response.CSResponse;
-import cn.nanmi.msts.web.dao.OrderMapper;
 import cn.nanmi.msts.web.service.IStockService;
-import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 import org.springframework.stereotype.Service;
-import cn.nanmi.msts.web.dao.OrderMapper;
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -28,7 +24,7 @@ public class StockServiceImpl implements IStockService {
     }
     @Override
     public List<BiddingDTO> getBiddingList(int startPage,int pageSize,Long userId) {
-        return orderMapper.getBiddingList(startPage,pageSize,userId);
+        return orderMapper.getBiddingList(startPage, pageSize, userId);
     }
 
     @Override

@@ -1,9 +1,11 @@
 package cn.nanmi.msts.web.business.impl;
 
 import cn.nanmi.msts.web.business.IStockBusiness;
+import cn.nanmi.msts.web.dao.entities.OperationEntity;
 import cn.nanmi.msts.web.enums.ErrorCode;
 import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.response.CSResponse;
+import cn.nanmi.msts.web.service.IOperationService;
 import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.utils.MathUtil;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
@@ -13,9 +15,6 @@ import cn.nanmi.msts.web.web.vo.out.BiddingVO;
 import cn.nanmi.msts.web.web.vo.out.OrderListVO;
 import cn.nanmi.msts.web.web.vo.out.PreBiddingVO;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -32,6 +31,8 @@ public class StockBusinessImpl implements IStockBusiness {
 
     @Resource
     private IStockService stockService;
+    @Resource
+    private IOperationService operationService;
 
     @Override
     public CSResponse getBiddingList(BiddingListQueryVO queryVO,UserDTO user) {
@@ -121,7 +122,7 @@ public class StockBusinessImpl implements IStockBusiness {
             return new CSResponse(ErrorCode.GREATER_MAX_MAKEUP);
         }
 
-        takeBidding(bidStockVO);
+        takeBidding(bidStockVO,user.getUserId());
 
         return new CSResponse();
     }
@@ -130,9 +131,19 @@ public class StockBusinessImpl implements IStockBusiness {
      * 竞拍订单操作
      * @param bidStockVO
      */
-    private void takeBidding(BidStockVO bidStockVO){
-        //todo 更新订单表
-        //todo 新增用户状态
+    private void takeBidding(BidStockVO bidStockVO,Long userId){
+        //todo 更新订单表,状态、最高出价、最高出价人
+
+
+
+        //新增用户状态，新增或更新用户ID、订单号、金额、操作类型
+        OperationEntity operationEntity = new OperationEntity();
+        operationEntity.setUserId(userId);
+        operationEntity.setOrderNo(bidStockVO.getOrderNo());
+        operationEntity.setOperationPrice(bidStockVO.getBiddingPrice());
+        operationEntity.setOperationType(1);
+
+        operationService.addOperation(operationEntity);
         //todo 新增用户流水
     }
 

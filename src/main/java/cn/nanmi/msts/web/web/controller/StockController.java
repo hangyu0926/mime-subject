@@ -106,10 +106,12 @@ public class StockController {
         if(StringUtils.isBlank(bidStockVO.getOrderNo()) || bidStockVO.getBiddingPrice()<=0){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-
-
-
-        return null;
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        if(user == null){
+            return new CSResponse(ErrorCode.SESSION_ERROR);
+        }
+        return stockBusiness.bidStock(bidStockVO,user);
     }
 
     /**
