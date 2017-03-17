@@ -3,6 +3,7 @@ package cn.nanmi.msts.web.service.impl;
 import cn.nanmi.msts.web.dao.OrderMapper;
 import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.service.IStockService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,6 +26,11 @@ public class StockServiceImpl implements IStockService {
     @Override
     public List<BiddingDTO> getBiddingList(int startPage,int pageSize,Long userId) {
         return orderMapper.getBiddingList(startPage, pageSize, userId);
+    }
+
+    @Override
+    public Long getBiddingListCount(Long userId) {
+        return orderMapper.getBiddingListCount(userId);
     }
 
     @Override
@@ -59,5 +65,10 @@ public class StockServiceImpl implements IStockService {
 
     public List<OrderDTO> beConfirmedList(int startPage,int pageSize){
         return orderMapper.beConfirmedList(startPage,pageSize);
+    }
+
+    @Override
+    public void updateOrderBidding(Double biddingPrice, Long bidderId, String orderNo) {
+         orderMapper.updateOrderBidding(biddingPrice,bidderId,orderNo);
     }
 }

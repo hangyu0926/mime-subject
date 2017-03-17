@@ -1,11 +1,6 @@
 package cn.nanmi.msts.web.service;
 
-import cn.nanmi.msts.web.dao.entities.OrderEntity;
 import cn.nanmi.msts.web.model.*;
-import cn.nanmi.msts.web.response.CSResponse;
-import org.apache.ibatis.annotations.Param;
-
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 /**
@@ -29,6 +24,13 @@ public interface IStockService {
      * @return
      */
     List<BiddingDTO> getBiddingList(int startPage,int pageSize,Long userId);
+
+    /**
+     * 竞拍列表总页数
+     * @param userId
+     * @return
+     */
+    Long getBiddingListCount(Long userId);
 
     /**
      * 我的发布
@@ -76,4 +78,12 @@ public interface IStockService {
      * @return
      */
     List<OrderDTO> beConfirmedList(int startPage,int pageSize);
+
+    /**
+     * 修改订单竞拍出价
+     * @param biddingPrice
+     * @param bidderId
+     * @param orderNo
+     */
+    void updateOrderBidding(Double biddingPrice,Long bidderId,String orderNo);
 }

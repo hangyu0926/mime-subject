@@ -13,6 +13,8 @@ import java.util.List;
 public interface OrderMapper {
     List<BiddingDTO> getBiddingList(@Param("startPage") int startPage,@Param("pageSize") int pageSize,@Param("userId") Long userId);
 
+    Long getBiddingListCount(@Param("userId") Long userId);
+
     PreBiddingDTO getPreBidding(@Param("orderNo") String orderNo);
 
     BiddingDetailDTO getOrderDetail(@Param("orderNo") String orderNo);
@@ -28,4 +30,6 @@ public interface OrderMapper {
     SystemRules getSystemRules();
 
     List<OrderDTO> beConfirmedList(@Param("startPage")int startPage, @Param("pageSize")int pageSize);
+
+    void updateOrderBidding(@Param("biddingPrice")Double biddingPrice,@Param("bidderId")Long bidderId,@Param("orderNo")String orderNo);
 }

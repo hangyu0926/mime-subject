@@ -10,11 +10,18 @@ import java.util.List;
  * Time: 15:06
  */
 public class BiddingListVO implements Serializable{
-
+    private Long totalCount;
     List<BiddingVO> biddingVOList;
 
-    public BiddingListVO(List<BiddingVO> biddingVOList) {
-        this.biddingVOList = biddingVOList;
+    public BiddingListVO() {
+    }
+
+    public Long getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(Long totalCount) {
+        this.totalCount = totalCount;
     }
 
     public List<BiddingVO> getBiddingVOList() {

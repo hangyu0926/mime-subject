@@ -43,9 +43,8 @@ public class StockBusinessImpl implements IStockBusiness {
         Long bidderId = user.getUserId();
 
         List<BiddingVO> biddingVOList = new ArrayList<>();
-
+        //分页查询
         List<BiddingDTO> biddingList = stockService.getBiddingList(startPage,pageSize,bidderId);
-
         if(biddingList != null && biddingList.size()>0){
             for(BiddingDTO biddingDTO :biddingList){
                 BiddingVO biddingVO = new BiddingVO(biddingDTO);
@@ -57,7 +56,11 @@ public class StockBusinessImpl implements IStockBusiness {
                 biddingVOList.add(biddingVO);
             }
         }
-        BiddingListVO biddingListVO = new BiddingListVO(biddingVOList);
+        //总页数
+        Long count = stockService.getBiddingListCount(bidderId);
+        BiddingListVO biddingListVO = new BiddingListVO();
+        biddingListVO.setBiddingVOList(biddingVOList);
+        biddingListVO.setTotalCount(count);
         return new CSResponse(biddingListVO);
     }
 
@@ -132,9 +135,8 @@ public class StockBusinessImpl implements IStockBusiness {
      * @param bidStockVO
      */
     private void takeBidding(BidStockVO bidStockVO,Long userId){
-        //todo 更新订单表,状态、最高出价、最高出价人
-
-
+        //更新订单表,最高出价、最高出价人
+        stockService.updateOrderBidding(bidStockVO.getBiddingPrice(),userId,bidStockVO.getOrderNo());
 
         //新增用户状态，新增或更新用户ID、订单号、金额、操作类型
         OperationEntity operationEntity = new OperationEntity();
