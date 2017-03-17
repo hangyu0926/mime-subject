@@ -2,10 +2,12 @@ package cn.nanmi.msts.web.service.impl;
 
 import cn.nanmi.msts.web.dao.OperationMapper;
 import cn.nanmi.msts.web.dao.entities.OperationEntity;
+import cn.nanmi.msts.web.model.MyBiddingDTO;
 import cn.nanmi.msts.web.service.IOperationService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -22,5 +24,15 @@ public class OperationServiceImpl implements IOperationService {
     @Override
     public void addOperation(OperationEntity operationEntity) {
         operationMapper.addOperation(operationEntity);
+    }
+
+    @Override
+    public List<MyBiddingDTO> getMyBiddingRecord(int startPage,int pageSize,Long userId) {
+        return operationMapper.getMyBiddingRecord(startPage,pageSize,userId);
+    }
+
+    @Override
+    public Long getMyBiddingRecordCount(Long userId) {
+        return operationMapper.getMyBiddingRecordCount(userId);
     }
 }

@@ -11,13 +11,12 @@ import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.service.ITransactionService;
 import cn.nanmi.msts.web.utils.MathUtil;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
-import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
+import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
 import cn.nanmi.msts.web.web.vo.out.BiddingListVO;
 import cn.nanmi.msts.web.web.vo.out.BiddingVO;
 import cn.nanmi.msts.web.web.vo.out.OrderListVO;
 import cn.nanmi.msts.web.web.vo.out.PreBiddingVO;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,12 +41,11 @@ public class StockBusinessImpl implements IStockBusiness {
     private ITransactionService transactionService;
 
     @Override
-    public CSResponse getBiddingList(BiddingListQueryVO queryVO,UserDTO user) {
+    public CSResponse getBiddingList(PagedQueryVO queryVO,Long bidderId) {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
         page = page - 1;
         int startPage = page * pageSize ;
-        Long bidderId = user.getUserId();
 
         List<BiddingVO> biddingVOList = new ArrayList<>();
         //分页查询
@@ -83,7 +81,7 @@ public class StockBusinessImpl implements IStockBusiness {
         transactionService.addTransRecord(transactionEntity);
     }
 
-    public CSResponse getMyOrder(BiddingListQueryVO queryVO,Long userId){
+    public CSResponse getMyOrder(PagedQueryVO queryVO,Long userId){
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
         int startPage = (page - 1) * pageSize ;
@@ -183,7 +181,7 @@ public class StockBusinessImpl implements IStockBusiness {
         return stockService.getSystemRules();
     }
 
-    public CSResponse beConfirmedList(BiddingListQueryVO queryVO){
+    public CSResponse beConfirmedList(PagedQueryVO queryVO){
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
         int startPage = (page - 1) * pageSize ;
@@ -198,5 +196,23 @@ public class StockBusinessImpl implements IStockBusiness {
         JumpReleaseOrderDTO jumpReleaseOrderDTO = stockService.jumpReleaseOrder(userId);
 
         return new CSResponse(jumpReleaseOrderDTO);
+
+    }
+
+    @Override
+    public CSResponse getMyBiddingRecord(PagedQueryVO pagedQueryVO, Long userId) {
+        int page = pagedQueryVO.getPageNo();
+        int pageSize = pagedQueryVO.getPageSize();
+        page = page - 1;
+        int startPage = page * pageSize ;
+
+        List<MyBiddingDTO> myBiddingDTOList = operationService.getMyBiddingRecord(startPage,pageSize,userId);
+
+        Long count = operationService.getMyBiddingRecordCount(userId);
+
+        //todo DTO转VO
+
+
+        return null;
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
  * Date: 2017/1/16
  * Time: 17:29
  */
-public class BiddingListQueryVO implements Serializable {
+public class PagedQueryVO implements Serializable {
     /**
      * 每页消息数
      */
@@ -36,7 +36,7 @@ public class BiddingListQueryVO implements Serializable {
 
     @Override
     public String toString() {
-        return "BiddingListQueryVO{" +
+        return "PagedQueryVO{" +
                 "pageSize=" + pageSize +
                 ", pageNo=" + pageNo +
                 '}';

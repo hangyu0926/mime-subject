@@ -9,7 +9,7 @@ import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSPageResponse;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
-import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
+import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,7 @@ public class StockController {
      */
     @RequestMapping(value = "/biddingList",method = RequestMethod.POST)
     @ResponseBody
-    public CSResponse getBiddingList(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
+    public CSResponse getBiddingList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
         if(queryVO == null ){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
@@ -55,7 +55,7 @@ public class StockController {
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        return stockBusiness.getBiddingList(queryVO,user);
+        return stockBusiness.getBiddingList(queryVO,user.getUserId());
     }
 
     /**
@@ -66,14 +66,21 @@ public class StockController {
      */
     @RequestMapping(value = "/myBidding",method = RequestMethod.POST)
     @ResponseBody
-    public CSResponse getMyBidding(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
+    public CSResponse getMyBidding(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
         if(queryVO == null ){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
         if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        return null;
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+//        UserDTO user = new UserDTO();
+//        user.setUserId(2L);
+        if(user == null){
+            return new CSResponse(ErrorCode.SESSION_ERROR);
+        }
+        return stockBusiness.getMyBiddingRecord(queryVO,user.getUserId());
     }
 
     /**
@@ -126,7 +133,7 @@ public class StockController {
      */
     @RequestMapping(value = "confirmOrder")
     @ResponseBody
-    public CSResponse confirmOrder(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
+    public CSResponse confirmOrder(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
         if(queryVO == null ){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
@@ -180,7 +187,7 @@ public class StockController {
      */
     @RequestMapping(value = "getMyOrder")
     @ResponseBody
-    public CSResponse getMyOrder(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
+    public CSResponse getMyOrder(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
         if(queryVO == null ){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
@@ -224,7 +231,7 @@ public class StockController {
      */
     @RequestMapping(value = "beConfirmedList")
     @ResponseBody
-    public CSResponse beConfirmedList(HttpServletRequest request,@RequestBody BiddingListQueryVO queryVO){
+    public CSResponse beConfirmedList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
         if(queryVO == null ){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }

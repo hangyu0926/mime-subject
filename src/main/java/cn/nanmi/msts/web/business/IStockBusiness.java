@@ -5,7 +5,7 @@ import cn.nanmi.msts.web.model.SystemRules;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
-import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
+import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
 
 public interface IStockBusiness {
 
@@ -14,7 +14,7 @@ public interface IStockBusiness {
      * @param queryVO
      * @return
      */
-    CSResponse getBiddingList(BiddingListQueryVO queryVO,UserDTO user);
+    CSResponse getBiddingList(PagedQueryVO queryVO,Long bidderId);
 
     /**
      *  发布订单
@@ -29,7 +29,7 @@ public interface IStockBusiness {
      * @param userId
      * @return
      */
-    CSResponse getMyOrder(BiddingListQueryVO queryVO,Long userId);
+    CSResponse getMyOrder(PagedQueryVO queryVO,Long userId);
 
     /**
      * 撤销订单
@@ -62,10 +62,19 @@ public interface IStockBusiness {
      * @param queryVO
      * @return
      */
-    CSResponse beConfirmedList(BiddingListQueryVO queryVO);
+    CSResponse beConfirmedList(PagedQueryVO queryVO);
 
     /**
      * 跳转我的发布页
      */
     CSResponse jumpReleaseOrder(Long userId);
+
+
+    /**
+     *  查询我的竞拍列表（分页）
+     * @param pagedQueryVO
+     * @param userId
+     * @return
+     */
+    CSResponse getMyBiddingRecord(PagedQueryVO pagedQueryVO,Long userId);
 }

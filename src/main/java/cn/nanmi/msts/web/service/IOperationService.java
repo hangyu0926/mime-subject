@@ -1,11 +1,9 @@
 package cn.nanmi.msts.web.service;
 
 import cn.nanmi.msts.web.dao.entities.OperationEntity;
-import cn.nanmi.msts.web.model.BiddingDTO;
-import cn.nanmi.msts.web.model.BiddingDetailDTO;
-import cn.nanmi.msts.web.model.OrderDTO;
-import cn.nanmi.msts.web.model.PreBiddingDTO;
+import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.response.CSResponse;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +16,8 @@ import java.util.List;
 public interface IOperationService {
 
     void addOperation(OperationEntity operationEntity);
+
+    List<MyBiddingDTO> getMyBiddingRecord(int startPage,int pageSize,Long userId);
+
+    Long getMyBiddingRecordCount(Long userId);
 }

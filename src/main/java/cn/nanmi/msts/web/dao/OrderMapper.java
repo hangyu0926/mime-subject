@@ -2,8 +2,6 @@ package cn.nanmi.msts.web.dao;
 
 
 import cn.nanmi.msts.web.model.*;
-import cn.nanmi.msts.web.response.CSResponse;
-import cn.nanmi.msts.web.web.vo.in.BiddingListQueryVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
