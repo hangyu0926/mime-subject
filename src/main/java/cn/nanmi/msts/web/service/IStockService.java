@@ -28,6 +28,12 @@ public interface IStockService {
     void frozenStocks(Long sellId,Double stockAmt);
 
     /**
+     * 还原冻结资金
+     * @param sellId
+     */
+    void restoreFrozenStocks(Long sellId,Double stockAmt);
+
+    /**
      * 查询竞拍列表（分页)
      * @param startPage
      * @param pageSize

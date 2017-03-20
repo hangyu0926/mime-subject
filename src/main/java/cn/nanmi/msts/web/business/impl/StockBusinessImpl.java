@@ -304,6 +304,10 @@ public class StockBusinessImpl implements IStockBusiness {
             stockService.updateOrderSaleTime(orderCheckDTO.getOrderNo());
         }else{
             stockService.updateOrderState(orderCheckDTO.getOrderNo(),2);
+
+            //发布审核不通过。还原冻结资金
+            BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
+            stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(),biddingDetailDTO.getStockAmt());
         }
 
     }
@@ -315,6 +319,10 @@ public class StockBusinessImpl implements IStockBusiness {
         //修改订单状态
         if (0 == orderCheckDTO.getCheckingResult()){
             stockService.updateOrderState(orderCheckDTO.getOrderNo(),5);
+
+            //发布审核不通过。还原冻结资金
+            BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
+            stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(),biddingDetailDTO.getStockAmt());
         }else{
             stockService.updateOrderState(orderCheckDTO.getOrderNo(),4);
         }

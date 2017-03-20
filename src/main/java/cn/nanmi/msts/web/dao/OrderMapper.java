@@ -24,6 +24,8 @@ public interface OrderMapper {
 
     void frozenStocks(@Param("sellId")Long sellId,@Param("stockAmt")Double stockAmt);
 
+    void restoreFrozenStocks(@Param("sellId")Long sellId,@Param("stockAmt")Double stockAmt);
+
     List<OrderDTO> getMyOrder(@Param("startPage")int startPage, @Param("pageSize")int pageSize, @Param("userId") Long userId);
 
     Long getMyOrderCount(@Param("userId") Long userId);

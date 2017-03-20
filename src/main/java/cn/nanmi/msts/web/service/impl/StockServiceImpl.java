@@ -26,6 +26,11 @@ public class StockServiceImpl implements IStockService {
          orderMapper.releaseOrder(orderDTO);
     }
 
+    public void restoreFrozenStocks(Long sellId,Double stockAmt){
+
+        orderMapper.restoreFrozenStocks(sellId,stockAmt);
+    }
+
     public void frozenStocks(Long sellId,Double stockAmt){
 
         orderMapper.frozenStocks(sellId,stockAmt);
