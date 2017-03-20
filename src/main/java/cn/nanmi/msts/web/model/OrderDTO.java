@@ -40,6 +40,17 @@ public class OrderDTO implements Serializable {
     //该订单的竞价轮数
     private int buyerCounts;
 
+    //是否能撤销（0：可撤销 1：不可撤销）
+    private int hasbackout;
+
+    public int getHasbackout() {
+        return hasbackout;
+    }
+
+    public void setHasbackout(int hasbackout) {
+        this.hasbackout = hasbackout;
+    }
+
     public long getOrderId() {
         return orderId;
     }
