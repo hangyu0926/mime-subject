@@ -68,6 +68,14 @@
         LIMIT #{startPage},#{pageSize}
     </select>
 
+    <select id="getMyOrderCount" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM USER_ORDER UO
+        LEFT JOIN USER UU
+        ON UU.USER_ID = UO.SELLER_ID
+        WHERE UO.SELLER_ID = #{userId}
+    </select>
+
     <update id="updateOrderState">
         UPDATE USER_ORDER SET
         ORDER_STATE=#{orderState}
@@ -138,6 +146,27 @@
         LEFT JOIN USER UU ON UU.USER_ID = UO.SELLER_ID
         WHERE ORDER_STATE = 3 ORDER BY UO.CREATE_TIME DESC
         LIMIT #{startPage},#{pageSize}
+    </select>
+
+    <select id="beConfirmedListCount" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM USER_ORDER UO
+        LEFT JOIN USER UU ON UU.USER_ID = UO.SELLER_ID
+        WHERE ORDER_STATE = 6
+    </select>
+
+    <select id="releaseAuditListCount" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM USER_ORDER UO
+        LEFT JOIN USER UU ON UU.USER_ID = UO.SELLER_ID
+        WHERE ORDER_STATE = 1
+    </select>
+
+    <select id="backoutAuditListCount" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM USER_ORDER UO
+        LEFT JOIN USER UU ON UU.USER_ID = UO.SELLER_ID
+        WHERE ORDER_STATE = 3
     </select>
 
     <update id="updateOrderBidding">

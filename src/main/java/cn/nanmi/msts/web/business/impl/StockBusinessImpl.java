@@ -85,7 +85,11 @@ public class StockBusinessImpl implements IStockBusiness {
         int startPage = (page - 1) * pageSize ;
         List<OrderDTO> orderDTOList = stockService.getMyOrder(startPage,pageSize,userId);
 
-        OrderListVO   orderListVO = new OrderListVO(orderDTOList);
+        //总页数
+        Long count = stockService.getMyOrderCount(userId);
+        OrderListVO   orderListVO = new OrderListVO();
+        orderListVO.setOrderDTOList(orderDTOList);
+        orderListVO.setTotalCount(count);
         return new CSResponse(orderListVO);
     }
 
@@ -191,7 +195,11 @@ public class StockBusinessImpl implements IStockBusiness {
         int startPage = (page - 1) * pageSize ;
         List<OrderDTO> orderDTOList = stockService.beConfirmedList(startPage,pageSize);
 
-        OrderListVO   orderListVO = new OrderListVO(orderDTOList);
+        //总页数
+        Long count = stockService.beConfirmedListCount();
+        OrderListVO   orderListVO = new OrderListVO();
+        orderListVO.setOrderDTOList(orderDTOList);
+        orderListVO.setTotalCount(count);
         return new CSResponse(orderListVO);
     }
 
@@ -201,7 +209,11 @@ public class StockBusinessImpl implements IStockBusiness {
         int startPage = (page - 1) * pageSize ;
         List<OrderDTO> orderDTOList = stockService.releaseAuditList(startPage,pageSize);
 
-        OrderListVO   orderListVO = new OrderListVO(orderDTOList);
+        //总页数
+        Long count = stockService.releaseAuditListCount();
+        OrderListVO   orderListVO = new OrderListVO();
+        orderListVO.setOrderDTOList(orderDTOList);
+        orderListVO.setTotalCount(count);
         return new CSResponse(orderListVO);
     }
 
@@ -211,7 +223,11 @@ public class StockBusinessImpl implements IStockBusiness {
         int startPage = (page - 1) * pageSize ;
         List<OrderDTO> orderDTOList = stockService.backoutAuditList(startPage,pageSize);
 
-        OrderListVO   orderListVO = new OrderListVO(orderDTOList);
+        //总页数
+        Long count = stockService.backoutAuditListCount();
+        OrderListVO   orderListVO = new OrderListVO();
+        orderListVO.setOrderDTOList(orderDTOList);
+        orderListVO.setTotalCount(count);
         return new CSResponse(orderListVO);
     }
 

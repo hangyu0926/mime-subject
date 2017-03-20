@@ -55,6 +55,10 @@ public class StockServiceImpl implements IStockService {
         return orderMapper.getMyOrder(startPage,pageSize,userId);
     }
 
+    public Long getMyOrderCount(Long userId){
+        return orderMapper.getMyOrderCount(userId);
+    }
+
     public void updateOrderState(String orderNo,int orderState){
 
         orderMapper.updateOrderState(orderNo,orderState);
@@ -74,6 +78,18 @@ public class StockServiceImpl implements IStockService {
 
     public List<OrderDTO> backoutAuditList(int startPage,int pageSize){
         return orderMapper.backoutAuditList(startPage,pageSize);
+    }
+
+    public Long beConfirmedListCount(){
+        return orderMapper.beConfirmedListCount();
+    }
+
+    public Long releaseAuditListCount(){
+        return orderMapper.releaseAuditListCount();
+    }
+
+    public Long backoutAuditListCount(){
+        return orderMapper.backoutAuditListCount();
     }
 
     @Override

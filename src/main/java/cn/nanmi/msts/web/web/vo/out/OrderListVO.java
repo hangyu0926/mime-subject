@@ -25,6 +25,8 @@ public class OrderListVO implements Serializable {
 
     List<OrderDTO> orderDTOList;
 
+    private Long totalCount;
+
     public List<OrderDTO> getOrderDTOList() {
         return orderDTOList;
     }
@@ -33,7 +35,11 @@ public class OrderListVO implements Serializable {
         this.orderDTOList = orderDTOList;
     }
 
-    public OrderListVO(List<OrderDTO> orderDTOList) {
-        this.orderDTOList = orderDTOList;
+    public Long getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(Long totalCount) {
+        this.totalCount = totalCount;
     }
 }

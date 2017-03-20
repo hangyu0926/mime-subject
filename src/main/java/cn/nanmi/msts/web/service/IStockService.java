@@ -43,6 +43,14 @@ public interface IStockService {
     List<OrderDTO> getMyOrder(int startPage,int pageSize, Long userId);
 
     /**
+     * 我的发布
+     *
+     * @param userId
+     * @return
+     */
+    Long getMyOrderCount(Long userId);
+
+    /**
      * 修改订单状态
      * @param orderNo
      */
@@ -92,6 +100,25 @@ public interface IStockService {
      * @return
      */
     List<OrderDTO> backoutAuditList(int startPage,int pageSize);
+
+    /**
+     * 待确认订单（分页)
+     *
+     * @return
+     */
+    Long beConfirmedListCount();
+
+    /**
+     * 待审核订单-发布审核（分页）
+     * @return
+     */
+    Long releaseAuditListCount();
+
+    /**
+     * 待审核订单-撤销审核（分页）
+     * @return
+     */
+    Long backoutAuditListCount();
 
     /**
      * 修改订单竞拍出价
