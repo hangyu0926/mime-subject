@@ -26,7 +26,7 @@ public class MyBiddingDTO implements Serializable {
     private Double myPrice;
     //结束时间
     private Date expireTime;
-    //订单状态
+    //订单状态(1-待审核，2-已取消，3-撤销审核中，4-交易中，5-已撤销，6-竞拍结束，等待确认，7-交易结束，8-流拍)
     private Integer orderState;
 
     public MyBiddingDTO() {

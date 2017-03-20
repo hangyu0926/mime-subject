@@ -11,7 +11,7 @@ public class UserDTO {
     private String userName;
     private String userMobile;//手机
     private String loginPass;//密码
-    private int permissionId;//权限id
+    private int permissionId;//权限id(1-管理员，2-普通用户)
     private String mailAddress;
     private int deleteFlag;//是否被删除
     private Long createMan;//创建人

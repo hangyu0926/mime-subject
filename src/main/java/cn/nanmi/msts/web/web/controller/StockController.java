@@ -132,7 +132,7 @@ public class StockController {
      * @param queryVO
      * @return
      */
-    @RequestMapping(value = "confirmOrder")
+    @RequestMapping(value = "confirmOrder",method = RequestMethod.GET)
     @ResponseBody
     public CSResponse confirmOrder(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
         if(queryVO == null ){
