@@ -52,10 +52,10 @@ public class StockController {
         if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
-//        UserDTO user = new UserDTO();
-//        user.setUserId(2L);
+//        HttpSession session = request.getSession();
+//        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        UserDTO user = new UserDTO();
+        user.setUserId(2L);
         if (user == null) {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
@@ -78,10 +78,10 @@ public class StockController {
         if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
-//        UserDTO user = new UserDTO();
-//        user.setUserId(2L);
+//        HttpSession session = request.getSession();
+//        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        UserDTO user = new UserDTO();
+        user.setUserId(2L);
         if (user == null) {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
@@ -101,7 +101,6 @@ public class StockController {
         if (StringUtils.isBlank(orderNo)) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-
         return stockBusiness.getPreBidding(orderNo);
     }
 
@@ -122,10 +121,10 @@ public class StockController {
         if (StringUtils.isBlank(bidStockVO.getOrderNo()) || bidStockVO.getBiddingPrice() <= 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
-//        UserDTO user = new UserDTO();
-//        user.setUserId(2L);
+//        HttpSession session = request.getSession();
+//        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        UserDTO user = new UserDTO();
+        user.setUserId(2L);
         if (user == null) {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
@@ -147,8 +146,11 @@ public class StockController {
         if(StringUtils.isBlank(confirmVO.getOrderNo())){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+//        HttpSession session = request.getSession();
+//        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        UserDTO user = new UserDTO();
+        user.setUserId(20L);
+        user.setPermissionId(1);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }

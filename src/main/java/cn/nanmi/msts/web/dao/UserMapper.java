@@ -49,5 +49,6 @@ public interface UserMapper {
     void frozenStocks(@Param("sellId")Long sellId,@Param("stockAmt")Double stockAmt);
 
     void restoreFrozenStocks(@Param("sellId")Long sellId,@Param("stockAmt")Double stockAmt);
+    void balanceOrder(@Param("stockAmt")Double stockAmt,@Param("userId")Long userId);
 
 }

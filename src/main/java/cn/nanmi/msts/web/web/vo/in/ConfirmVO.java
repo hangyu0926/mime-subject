@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class ConfirmVO implements Serializable {
     //订单编号
     private String orderNo;
-    //确认者（0：买家，1：卖家，3：管理员）
+    //确认者（1：买家，2：卖家，3：管理员）
     private Integer confirmUser;
 
     public ConfirmVO() {
