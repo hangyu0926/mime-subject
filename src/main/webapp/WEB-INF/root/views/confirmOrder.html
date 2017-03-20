@@ -8,15 +8,15 @@
 	<script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="../resources/javascript/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../resources/javascript/main.js"></script>
-	<script type="text/javascript" src="../resources/javascript/publick.js"></script>
 	<script type="text/javascript" src="../resources/javascript/dialog.js"></script>
     <script type="text/javascript" src="../resources/javascript/validate.js"></script>
     <script type="text/javascript" src="../resources/javascript/md5.js"></script>
+	<script type="text/javascript" src="../resources/javascript/publick.js"></script>
 	<script type="text/javascript" src="../resources/javascript/confirmOrder/confirmOrder.js"></script>
-    <link rel="stylesheet" href="../resources/style/bootstrap.min.css">
-    <link rel="stylesheet" href="../resources/style/publick.css">
-     <link rel="stylesheet" type="text/css" href="../resources/style/alert.css">
-    <link rel="stylesheet" href="../resources/style/confirmOrder/confirmOrder.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/publick.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/alert.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/confirmOrder/confirmOrder.css">
 </head>
 <body>
 	<nav class="nav-head">
@@ -105,8 +105,7 @@
 			</ul>
 		</div>
 	</div>
-
-	  <!-- 模态框修改密码-->
+	<!-- 模态框修改密码-->
     <div class="modal fade" id="changePwd-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -160,5 +159,22 @@
             </div>
         </div>
     </div>
+    <!-- 登出模态框 -->
+	<div class="modal fade" id="errorTips">
+		<div class="modal-dialog" style="width: 360px">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<p class="modal-title text-center">提示</p>
+				</div>
+				<div class="myModal-body">
+					未知错误
+				</div>
+				<div class="myModal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

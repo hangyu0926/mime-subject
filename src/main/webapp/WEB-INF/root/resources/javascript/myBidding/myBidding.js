@@ -59,6 +59,7 @@ $(function() {
                     + "<span class='nowPrice'>当前竞价:"+orderList.nowPrice+"</span>"
                     + "<span class='myPrice'>我的出价:"+orderList.myPrice+"</span>"
                     + "<span class='biddingState'>竞拍状态:"+orderList.biddingState+"</span>"
+                    + "<span class='orderState'>订单状态:"+orderList.orderState+"</span>"
                     + "<span class='saleTime'>上架时间:"+orderList.saleTime+"</span>"
                     + "<span class='expireTime'>结束时间:"+orderList.expireTime+"</span>"
                     + "</div>"

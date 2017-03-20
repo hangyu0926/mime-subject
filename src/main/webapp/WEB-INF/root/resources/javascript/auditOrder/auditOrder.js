@@ -4,7 +4,7 @@ $(function() {
 *getReleaseAuditDataJson：待审核订单-发布审核》》发送的数据
 *backoutAuditDatajson：   待审核订单-撤销审核》》发送的数据
 */    
-    var isHistory = false;
+    var isHistory = (window.location.href.indexOf("?") == -1) ? false : true;
     var winHeight = document.documentElement.clientHeight;
     var getReleaseAuditDataJson = {
             pageSize: 10,
@@ -19,15 +19,15 @@ $(function() {
 */
     $(".content-title>span").on("click", function(e) {
         var index = $(this).index();
-    	$(this).addClass("active").siblings().removeClass("active");
+        $(this).addClass("active").siblings().removeClass("active");
     	if(index == 0) {
     		$(".issuedAudit").removeClass("hide");
     		$(".cancelAudit").addClass("hide");
-            window.sessionStorage.setItem("issuedAudit", true);
+            window.sessionStorage.setItem("issuedAudit", 0);
     	} else if(index == 1) {
     		$(".issuedAudit").addClass("hide");
     		$(".cancelAudit").removeClass("hide");
-            window.sessionStorage.setItem("issuedAudit", false);
+            window.sessionStorage.setItem("issuedAudit", 1);
     	}
     })
 /**
@@ -71,9 +71,8 @@ $(function() {
             $(".issuedAudit").append(list);
             $(".issuedAudit").attr("maxPage", Math.ceil(data.detailInfo.orderList.totalCount/10));
         }, "POST", function(data) {
-            window.global_dialog.error(data.desc,function(){
-                closeAlertDialog()
-            });
+            $("#errorTips").find(".myModal-body").html(data.desc);
+            $("#errorTips").modal("show");
         })
     };
 
@@ -122,9 +121,8 @@ $(function() {
             $(".cancelAudit").append(list);
             $(".cancelAudit").attr("maxPage", Math.ceil(data.detailInfo.orderList.totalCount/10));
         }, "POST", function(data) {
-            window.global_dialog.error(data.desc,function(){
-                closeAlertDialog()
-            });
+            $("#errorTips").find(".myModal-body").html(data.desc);
+            $("#errorTips").modal("show");
         });
     };
 /**
@@ -142,9 +140,8 @@ $(function() {
         global_ajax("releaseAudit", sendData, function(data) {
             return;
         }, "POST", function(data){
-            window.global_dialog.error(data.desc,function(){
-                closeAlertDialog()
-            });
+            $("#errorTips").find(".myModal-body").html(data.desc);
+            $("#errorTips").modal("show");
         });
     })
 /**
@@ -163,6 +160,22 @@ $(function() {
         //     $(".cancelAudit").removeClass("hide");
         // }
     }
+/**
+*点击子菜单展示对应的页面
+*/
+    $(".leftMenu .secondMenu>li").on("click", function(e) {
+        if($(this).parents("li").index() == 1 && $(this).index() == 1){
+            console.log(1111)
+            var auditOrderData = window.sessionStorage.getItem("issuedAudit") + "&" + getReleaseAuditDataJson.pageNo + "&" + backoutAuditDatajson.pageNo
+            setCookie("auditOrder", auditOrderData);
+        } else {
+            
+        }
+        var urlSrc = $(this).attr("urlSrc");
+        // var menuState = $(this).parents("li").index() + "&" + $(this).index();
+        // window.sessionStorage.setItem("menuState", menuState);
+        //window.location.href = urlSrc;
+    })
 /**
 *页面滚动到当前页面最底部时加载下一页
 *issueBottom:发布审核页面滚动到底部
@@ -192,6 +205,9 @@ $(function() {
                 }
             }
         };
-        
     }
+
+
+
+
 })
