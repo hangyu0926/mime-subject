@@ -57,7 +57,9 @@
     </insert>
 
     <select id="getMyOrder" resultMap="orderListMap">
-        SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,ORDER_STATE,SELLER_ID,UU.USER_NAME,MAX_BIDDING_PRICE,MAX_BIDDER,UO.CREATE_TIME,SALE_TIME,EXPIRE_TIME,SYSTEM_RULE_ID
+        SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,ORDER_STATE,SELLER_ID,UU.USER_NAME,MAX_BIDDING_PRICE,MAX_BIDDER,UO.CREATE_TIME,SALE_TIME,EXPIRE_TIME,SYSTEM_RULE_ID,
+        case when ORDER_STATE=4 and  date_add(SALE_TIME, interval 24 hour) > now()  then 0
+				else 1 end as hasbackout
         FROM USER_ORDER UO
         LEFT JOIN USER UU
         ON UU.USER_ID = UO.SELLER_ID
@@ -66,9 +68,9 @@
         LIMIT #{startPage},#{pageSize}
     </select>
 
-    <update id="backoutOrder">
+    <update id="updateOrderState">
         UPDATE USER_ORDER SET
-        ORDER_STATE=3
+        ORDER_STATE=#{orderState}
         WHERE ORDER_NO=#{orderNo}
     </update>
 
@@ -121,7 +123,23 @@
       WHERE ORDER_STATE = 6 ORDER BY UO.SALE_TIME DESC
       LIMIT #{startPage},#{pageSize}
     </select>
-    
+
+    <select id="releaseAuditList" resultMap="orderListMap">
+        SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,ORDER_STATE,SELLER_ID,UU.USER_NAME,MAX_BIDDING_PRICE,MAX_BIDDER,UO.CREATE_TIME,SALE_TIME,EXPIRE_TIME,SYSTEM_RULE_ID
+        FROM USER_ORDER UO
+        LEFT JOIN USER UU ON UU.USER_ID = UO.SELLER_ID
+        WHERE ORDER_STATE = 1 ORDER BY UO.CREATE_TIME DESC
+        LIMIT #{startPage},#{pageSize}
+    </select>
+
+    <select id="backoutAuditList" resultMap="orderListMap">
+        SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,ORDER_STATE,SELLER_ID,UU.USER_NAME,MAX_BIDDING_PRICE,MAX_BIDDER,UO.CREATE_TIME,SALE_TIME,EXPIRE_TIME,SYSTEM_RULE_ID
+        FROM USER_ORDER UO
+        LEFT JOIN USER UU ON UU.USER_ID = UO.SELLER_ID
+        WHERE ORDER_STATE = 3 ORDER BY UO.CREATE_TIME DESC
+        LIMIT #{startPage},#{pageSize}
+    </select>
+
     <update id="updateOrderBidding">
       UPDATE USER_ORDER
       SET MAX_BIDDING_PRICE = #{biddingPrice},MAX_BIDDER = #{bidderId}
@@ -137,4 +155,11 @@
         WHERE UU.USER_ID = #{userId}
          ORDER BY SR.CREATE_TIME desc limit 1
     </select>
+
+    <insert id="releaseAudit" parameterType="cn.nanmi.msts.web.model.OrderCheckDTO" >
+        insert into ORDER_CHECKING (AUDITOR,TRANS_ID, ORDER_NO, CHECKING_TYPE,
+        CHECKING_VIEW, CHECKING_RESULT,CREATE_TIME)
+        values (#{auditor}, #{transId}, #{orderNo}, #{checkingType},
+        #{checkingView},#{checkingResult},now())
+    </insert>
 </mapper>

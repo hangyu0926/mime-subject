@@ -29,7 +29,7 @@
 	  LIMIT #{startPage},#{pageSize}
     </select>
 
-    <select id="getMyBiddingRecordCount">
+    <select id="getMyBiddingRecordCount" resultType="Long">
         SELECT COUNT(1)
         FROM USER_OPERATION_STATUS UOS
         LEFT JOIN USER_ORDER UO

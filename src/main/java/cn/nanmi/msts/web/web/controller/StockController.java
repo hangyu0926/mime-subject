@@ -3,6 +3,7 @@ package cn.nanmi.msts.web.web.controller;
 import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.core.ConstantHelper;
 import cn.nanmi.msts.web.enums.ErrorCode;
+import cn.nanmi.msts.web.model.OrderCheckDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.SystemRules;
 import cn.nanmi.msts.web.model.UserDTO;
@@ -131,7 +132,7 @@ public class StockController {
      * @param queryVO
      * @return
      */
-    @RequestMapping(value = "confirmOrder")
+    @RequestMapping(value = "confirmOrder",method = RequestMethod.GET)
     @ResponseBody
     public CSResponse confirmOrder(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
         if(queryVO == null ){
@@ -240,6 +241,112 @@ public class StockController {
         }
 
         return stockBusiness.beConfirmedList(queryVO);
+    }
+
+    /**
+     *  待审核订单-发布审核（分页）
+     * @param request
+     * @param queryVO
+     * @return
+     */
+    @RequestMapping(value = "releaseAuditList")
+    @ResponseBody
+    public CSResponse releaseAuditList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
+        if(queryVO == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        return stockBusiness.releaseAuditList(queryVO);
+    }
+
+    /**
+     *  待审核订单-撤销审核（分页）
+     * @param request
+     * @param queryVO
+     * @return
+     */
+    @RequestMapping(value = "backoutAuditList")
+    @ResponseBody
+    public CSResponse backoutAuditList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
+        if(queryVO == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        return stockBusiness.backoutAuditList(queryVO);
+    }
+
+    /**
+     * 发布审核通过/不通过
+     * @param request
+     */
+    @RequestMapping(value = "releaseAudit")
+    @ResponseBody
+    public CSResponse releaseAudit(HttpServletRequest request,@RequestBody Map map){
+        /*   HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        if(user == null){
+            return new CSResponse(ErrorCode.SESSION_ERROR);
+        }*/
+
+        if(map == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(null == map.get("orderNo") || null == map.get("checkingResult")){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        OrderCheckDTO orderCheckDTO = new OrderCheckDTO();
+        /*orderCheckDTO.setAuditor(user.getUserName());*/
+        orderCheckDTO.setAuditor(2);
+        orderCheckDTO.setTransId(UUID.randomUUID().toString().replace("-", ""));
+        orderCheckDTO.setOrderNo(map.get("orderNo").toString());
+        orderCheckDTO.setCheckingType(1);
+        orderCheckDTO.setCheckingView(null == map.get("checkingView") ? "" : map.get("checkingView").toString());
+        orderCheckDTO.setCheckingResult(Integer.valueOf(map.get("checkingResult").toString()));
+
+        stockBusiness.releaseAudit(orderCheckDTO);
+
+        return null;
+    }
+
+    /**
+     * 撤销审核通过/不通过
+     * @param request
+     */
+    @RequestMapping(value = "backoutAudit")
+    @ResponseBody
+    public CSResponse backoutAudit(HttpServletRequest request,@RequestBody Map map){
+        /*   HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        if(user == null){
+            return new CSResponse(ErrorCode.SESSION_ERROR);
+        }*/
+
+        if(map == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(null == map.get("orderNo") || null == map.get("checkingResult")){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        OrderCheckDTO orderCheckDTO = new OrderCheckDTO();
+        /*orderCheckDTO.setAuditor(user.getUserName());*/
+        orderCheckDTO.setAuditor(2);
+        orderCheckDTO.setTransId(UUID.randomUUID().toString().replace("-", ""));
+        orderCheckDTO.setOrderNo(map.get("orderNo").toString());
+        orderCheckDTO.setCheckingType(2);
+        orderCheckDTO.setCheckingView(null == map.get("checkingView") ? "" : map.get("checkingView").toString());
+        orderCheckDTO.setCheckingResult(Integer.valueOf(map.get("checkingResult").toString()));
+
+        stockBusiness.backoutAudit(orderCheckDTO);
+
+        return null;
     }
 
     /**

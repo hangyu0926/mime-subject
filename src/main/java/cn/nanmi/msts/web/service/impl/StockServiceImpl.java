@@ -55,9 +55,9 @@ public class StockServiceImpl implements IStockService {
         return orderMapper.getMyOrder(startPage,pageSize,userId);
     }
 
-    public void backoutOrder(String orderNo){
+    public void updateOrderState(String orderNo,int orderState){
 
-        orderMapper.backoutOrder(orderNo);
+        orderMapper.updateOrderState(orderNo,orderState);
     }
 
     public SystemRules getSystemRules(){
@@ -68,6 +68,14 @@ public class StockServiceImpl implements IStockService {
         return orderMapper.beConfirmedList(startPage,pageSize);
     }
 
+    public List<OrderDTO> releaseAuditList(int startPage,int pageSize){
+        return orderMapper.releaseAuditList(startPage,pageSize);
+    }
+
+    public List<OrderDTO> backoutAuditList(int startPage,int pageSize){
+        return orderMapper.backoutAuditList(startPage,pageSize);
+    }
+
     @Override
     public void updateOrderBidding(Double biddingPrice, Long bidderId, String orderNo) {
          orderMapper.updateOrderBidding(biddingPrice,bidderId,orderNo);
@@ -75,5 +83,9 @@ public class StockServiceImpl implements IStockService {
 
     public JumpReleaseOrderDTO jumpReleaseOrder(Long userId) {
         return orderMapper.jumpReleaseOrder(userId);
+    }
+
+    public void releaseAudit(OrderCheckDTO orderCheckDTO) {
+         orderMapper.releaseAudit(orderCheckDTO);
     }
 }

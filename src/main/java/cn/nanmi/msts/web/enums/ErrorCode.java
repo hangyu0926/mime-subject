@@ -107,6 +107,7 @@ public enum ErrorCode {
     LOWER_MIN_MAKEUP("5003","您的加价低于最低限制"),
     GREATER_MAX_MAKEUP("5004","您的加价高于最高限制"),
     INVALID_ORDER("5005","订单状态无效"),
+    ORDER_IS_OVER("5006","该订单已结束"),
     FORBID_BIDDING_YOURSELF("5010","不能竞拍自己的标的");
 
 	

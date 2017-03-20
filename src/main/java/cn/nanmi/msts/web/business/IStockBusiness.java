@@ -1,5 +1,6 @@
 package cn.nanmi.msts.web.business;
 
+import cn.nanmi.msts.web.model.OrderCheckDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.SystemRules;
 import cn.nanmi.msts.web.model.UserDTO;
@@ -65,6 +66,21 @@ public interface IStockBusiness {
     CSResponse beConfirmedList(PagedQueryVO queryVO);
 
     /**
+     * 待审核订单-发布审核（分页）
+     * @param queryVO
+     * @return
+     */
+    CSResponse releaseAuditList(PagedQueryVO queryVO);
+
+
+    /**
+     * 待审核订单-撤销审核（分页）
+     * @param queryVO
+     * @return
+     */
+    CSResponse backoutAuditList(PagedQueryVO queryVO);
+
+    /**
      * 跳转我的发布页
      */
     CSResponse jumpReleaseOrder(Long userId);
@@ -77,4 +93,18 @@ public interface IStockBusiness {
      * @return
      */
     CSResponse getMyBiddingRecord(PagedQueryVO pagedQueryVO,Long userId);
+
+    /**
+     *  发布审核通过/不通过
+     * @param orderCheckDTO
+     * @return
+     */
+    void releaseAudit(OrderCheckDTO orderCheckDTO);
+
+    /**
+     *  撤销审核通过/不通过
+     * @param orderCheckDTO
+     * @return
+     */
+    void backoutAudit(OrderCheckDTO orderCheckDTO);
 }

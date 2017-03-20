@@ -43,10 +43,10 @@ public interface IStockService {
     List<OrderDTO> getMyOrder(int startPage,int pageSize, Long userId);
 
     /**
-     * 撤销订单
+     * 修改订单状态
      * @param orderNo
      */
-    void backoutOrder(String orderNo);
+    void updateOrderState(String orderNo,int orderState);
 
     /**
      * 查询准备竞拍参数
@@ -82,6 +82,18 @@ public interface IStockService {
     List<OrderDTO> beConfirmedList(int startPage,int pageSize);
 
     /**
+     * 待审核订单-发布审核（分页）
+     * @return
+     */
+    List<OrderDTO> releaseAuditList(int startPage,int pageSize);
+
+    /**
+     * 待审核订单-撤销审核（分页）
+     * @return
+     */
+    List<OrderDTO> backoutAuditList(int startPage,int pageSize);
+
+    /**
      * 修改订单竞拍出价
      * @param biddingPrice
      * @param bidderId
@@ -93,4 +105,9 @@ public interface IStockService {
      * 跳转我的发布页
      */
     JumpReleaseOrderDTO jumpReleaseOrder(Long userId);
+
+    /**
+     * 审核新增记录
+     */
+    void releaseAudit(OrderCheckDTO orderCheckDTO);
 }
