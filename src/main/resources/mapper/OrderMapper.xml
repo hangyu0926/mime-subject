@@ -122,10 +122,19 @@
         WHERE ORDER_NO = #{orderNo}
     </select>
 
-    <!-- 定时更新 -->
+    <!-- 定时更新拍卖竞拍结束订单 -->
     <update id="updateStatus" >
-        UPDATE USER_ORDER  SET  ORDER_STATE=6 WHERE date(EXPIRE_TIME) = curdate()-1 AND (ORDER_STATE=3 OR ORDER_STATE=4);
+        UPDATE USER_ORDER  SET  ORDER_STATE=6 WHERE date(EXPIRE_TIME) = curdate()-1 AND ORDER_STATE IN (3,4) AND MAX_BIDDER IS NOT NULL;
     </update>
+
+    <!-- 定时更新流拍订单 -->
+    <update id="updateStatus2Pass" >
+        UPDATE USER_ORDER  SET  ORDER_STATE=8 WHERE date(EXPIRE_TIME) = curdate()-1 AND ORDER_STATE IN (3,4) AND MAX_BIDDER IS  NULL;
+    </update>
+
+    <select id="getPassOrder" resultMap="orderListMap">
+        SELECT SELLER_ID,SUM(STOCKS_AMT) AS STOCKS_AMT FROM USER_ORDER WHERE date(EXPIRE_TIME) = curdate()-1 AND ORDER_STATE IN (3,4) AND MAX_BIDDER IS  NULL GROUP BY SELLER_ID
+    </select>
 
     <select id="getSystemRules" resultType="cn.nanmi.msts.web.model.SystemRules">
         select RULE_ID as ruleId,BIDDING_PERIOD as biddingPeriod,MIN_STOCK_PRICE AS minStockPrice,MAX_STOCK_PRICE AS maxStockPrice from SYSTEM_RULES ORDER BY CREATE_TIME desc limit 1

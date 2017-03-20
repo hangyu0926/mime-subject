@@ -123,4 +123,9 @@ public interface IStockBusiness {
      * @param confirmVO
      */
     CSResponse confirmOrder(ConfirmVO confirmVO,Long userId);
+
+    /**
+     * 每日跑批更新订单状态
+     */
+    void updateOrderState();
 }

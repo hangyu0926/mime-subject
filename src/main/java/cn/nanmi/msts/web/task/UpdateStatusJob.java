@@ -1,5 +1,6 @@
 package cn.nanmi.msts.web.task;
 
+import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.service.IStockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +12,13 @@ public class UpdateStatusJob {
 
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 	
-	private IStockService service ;
+	private IStockBusiness stockBusiness ;
 	
 	@Scheduled(cron="0 0 12 * * ?")
 	public void updateStatus(){
 		try {
 			LOGGER.info("开始更新状态...");
-			service.updateStatus();
+			stockBusiness.updateOrderState();
 			LOGGER.info("更新状态成功!");
 		} catch (Exception e) {
 			LOGGER.debug(e.toString());

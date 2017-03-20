@@ -91,10 +91,21 @@ public interface IStockService {
     BiddingDetailDTO getOrderDetail(String orderNo);
 
     /**
-     * 更新订单状态
+     * 更新竞拍结束的订单
      * @return
      */
     void updateStatus();
+
+    /**
+     * 更新流拍订单状态
+     */
+    void updateStatus2Pass();
+
+    /**
+     * 获取流拍的订单
+     * @return
+     */
+    List<OrderDTO> getPassOrder();
 
     /**
      * 获取当前规则

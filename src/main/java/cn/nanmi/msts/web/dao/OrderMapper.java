@@ -54,4 +54,7 @@ public interface OrderMapper {
 
     void confirmOrder(@Param("orderState")Integer orderState,@Param("sellerConfirm")Integer sellerConfirm,@Param("buyerConfirm")Integer buyerConfirm,@Param("orderNo")String orderNo);
 
+    List<OrderDTO> getPassOrder();
+
+    void updateStatus2Pass();
 }

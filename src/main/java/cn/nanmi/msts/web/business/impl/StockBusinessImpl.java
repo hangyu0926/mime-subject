@@ -411,4 +411,17 @@ public class StockBusinessImpl implements IStockBusiness {
         }
         return new CSResponse();
     }
+
+    @Override
+    public void updateOrderState() {
+        //更新竞拍结束的订单
+        stockService.updateStatus();
+        List<OrderDTO> orderList = stockService.getPassOrder();
+        //结算流拍订单的个人股权
+        for (OrderDTO orderDTO : orderList){
+            stockService.restoreFrozenStocks(orderDTO.getSellerId(),orderDTO.getStockAmt());
+        }
+        //更新流拍的订单状态
+        stockService.updateStatus2Pass();
+    }
 }

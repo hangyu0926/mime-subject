@@ -94,7 +94,7 @@ public class StockServiceImpl implements IStockService {
     }
 
     public List<OrderDTO> releaseAuditList(int startPage,int pageSize){
-        return orderMapper.releaseAuditList(startPage,pageSize);
+        return orderMapper.releaseAuditList(startPage, pageSize);
     }
 
     public List<OrderDTO> backoutAuditList(int startPage,int pageSize){
@@ -134,5 +134,15 @@ public class StockServiceImpl implements IStockService {
     @Override
     public void confirmOrder(Integer orderState, Integer sellerConfirm, Integer buyerConfirm,String orderNo) {
         orderMapper.confirmOrder(orderState,sellerConfirm,buyerConfirm,orderNo);
+    }
+
+    @Override
+    public List<OrderDTO> getPassOrder() {
+        return orderMapper.getPassOrder();
+    }
+
+    @Override
+    public void updateStatus2Pass() {
+        orderMapper.updateStatus2Pass();
     }
 }
