@@ -44,6 +44,3 @@
 	});
 };
 
-;function accountReset(){
-
-};

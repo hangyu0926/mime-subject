@@ -18,7 +18,7 @@
     border: none;
     border-radius: 6px;
     margin: 0 auto;
-    display: inherit;
+    /* display: inherit; */
 }
 .auction-add-sure button:hover{
 	background-color: #ff6b6b;
@@ -26,4 +26,5 @@
 }
 .auction-add-sure{
 	width: 485px;
+    text-align: right;
 }

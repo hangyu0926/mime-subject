@@ -83,3 +83,10 @@
 .account_toolbar span:nth-of-type(2){
 	margin-right: 60px;
 }
+
+@media screen and (max-width: 1300px) {
+	.contentBox > .contentRight {
+		width: auto;
+		overflow-y: auto;
+	}
+}

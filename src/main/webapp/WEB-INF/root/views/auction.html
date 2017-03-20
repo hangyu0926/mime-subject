@@ -14,7 +14,7 @@
     <script type="text/javascript" src="../resources/javascript/publick.js"></script>
      <script type="text/javascript" src="../resources/javascript/dialog.js"></script>
     <script type="text/javascript" src="../resources/javascript/md5.js"></script>
-    <!-- <script type="text/javascript" src="../resources/javascript/auction/auditOrder.js"></script> -->
+    <script type="text/javascript" src="../resources/javascript/auction/auction.js"></script>
 </head>
 <body>
 	<nav class="nav-head">
@@ -31,23 +31,24 @@
                 <li class="accountManagement">
                     <span>账户管理</span>
                     <ul class="secondMenu">
-                        <li class="" urlSrc="#"><a href="auditOrder.html">新增账户</a></li>
-                        <li urlSrc="#"><a href="accountView.html">账户查看</a></li>
+                        <li class="" urlSrc="auditAdd.html">新增账户</li>
+                        <li urlSrc="accountView.html">账户查看</li>
                     </ul>
                 </li>
-                <li class="admin ">
+                <li class="admin active">
                     <span>管理员</span>
                     <ul class="secondMenu">
-                        <li urlSrc="#"><a href="auction.html">竞拍配置</a></li>
+                         <li class="active" urlSrc="auction.html">竞拍配置</li>
                         <li urlSrc="auditOrder.html">待审核订单</li>
-                        <li urlSrc="#">待确认订单</li>
+                        <li urlSrc="confirmOrder.html">待确认订单</li>
                     </ul>
                 </li>
                 <li class="forme ">
                     <span>我的股权</span>
                     <ul class="secondMenu">
-                        <li urlSrc="#">我的发布</li>
-                        <li urlSrc="#">我的竞拍</li>
+                         <li class="active" urlSrc="goToAuction.html">我要竞拍</li>
+                        <li urlSrc="releaseOrder.html">我的发布</li>
+                        <li urlSrc="myBidding.html">我的竞拍</li>
                     </ul>
                 </li>
             </ul>

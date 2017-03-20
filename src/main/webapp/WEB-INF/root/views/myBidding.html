@@ -9,16 +9,20 @@
 	<script type="text/javascript" src="../resources/javascript/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../resources/javascript/main.js"></script>
 	<script type="text/javascript" src="../resources/javascript/publick.js"></script>
+	<script type="text/javascript" src="../resources/javascript/dialog.js"></script>
+    <script type="text/javascript" src="../resources/javascript/validate.js"></script>
+    <script type="text/javascript" src="../resources/javascript/md5.js"></script>
 	<script type="text/javascript" src="../resources/javascript/myBidding/myBidding.js"></script>
     <link rel="stylesheet" href="../resources/style/bootstrap.min.css">
     <link rel="stylesheet" href="../resources/style/publick.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style/alert.css">
     <link rel="stylesheet" href="../resources/style/myBidding/myBidding.css">
 </head>
 <body>
 	<nav class="nav-head">
 		 <div class="nav-head-LOGO">米么股权系统</div>
 		 <div class="nav-head-right">
-		    <span class="nav-head-logout">退出</span>
+		    <span class="nav-head-logout" data-target="#loginOut" data-toggle="modal">退出</span>
 		    <span class="nav-head-changPwd" data-target="#changePwd-modal" data-toggle="modal">修改密码</span>
 		    <span class="nav-head-userName">沈旭祥</span>
 		 </div>
@@ -29,14 +33,14 @@
 				<li class="accountManagement">
 					<span>账户管理</span>
 					<ul class="secondMenu">
-						<li class="" urlSrc="#">新增账户</li>
-						<li urlSrc="#">账户查看</li>
+						<li class="" urlSrc="auditAdd.html">新增账户</li>
+						<li urlSrc="accountView.html">账户查看</li>
 					</ul>
 				</li> 
 				<li class="admin ">
 					<span>管理员</span>
 					<ul  class="secondMenu">
-						<li urlSrc="#">竞拍配置</li>
+						<li urlSrc="auction.html">竞拍配置</li>
 						<li urlSrc="auditOrder.html">待审核订单</li>
 						<li urlSrc="confirmOrder.html">待确认订单</li>
 					</ul>
@@ -137,41 +141,59 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="changePwd-modal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<p class="modal-title text-center">用户密码修改</p>
-				</div>
-				<div class="modal-body">
-					<div class="form-group row">
-						<label for="originPwd" class="col-md-3">旧密码：</label>
-						<div class="col-md-8">
-						    <input type="password" name="originPwd" id="originPwd" class="form-control" placeholder="原来的密码"> 
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="nowPwd" class="col-md-3">新密码：</label>
-						<div class="col-md-8">
-						    <input type="password" name="nowPwd" id="nowPwd" class="form-control" placeholder="新密码"> 
-						</div>
-					</div>
-					<div class="form-group row" style="margin-bottom:0;">
-						<label for="nowPwd" class="col-md-3">确认密码：</label>
-						<div class="col-md-8">
-						    <input type="password" name="nowPwd" id="nowPwd" class="form-control" placeholder="新密码"> 
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<div>
-						<button type="button" class="btn btn-primary">确认</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	  <!-- 模态框修改密码-->
+    <div class="modal fade" id="changePwd-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title text-center">用户密码修改</p>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="originPwd" class="col-md-3">旧密码：</label>
+                        <div class="col-md-8">
+                            <input type="password" name="originPwd" id="originPwd" class="form-control" placeholder="原来的密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nowPwd" class="col-md-3">新密码：</label>
+                        <div class="col-md-8">
+                            <input type="password" name="nowPwd" id="nowPwd" class="form-control" placeholder="新密码">
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-bottom:0;">
+                        <label for="nowPwd" class="col-md-3">确认密码：</label>
+                        <div class="col-md-8">
+                            <input type="password" name="nowPwd" id="nowPwdagain" class="form-control" placeholder="新密码">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button type="button" id="modifyPassword" class="btn btn-primary" onclick="doNotfirst()">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="doClear()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 登出模态框 -->
+     <div class="modal fade" id="loginOut">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title text-center">登出</p>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button type="button" id="modifyPassword" class="btn btn-primary" onclick="doLoginout()">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

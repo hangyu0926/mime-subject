@@ -89,6 +89,9 @@ $(function() {
     "oldPassword": str3,
     "newPassword": str2
   }, function(data) {
+    doClear();
+    $("#firstPwd-modal").modal("hide");
+    $("#changePwd-modal").modal("hide");
     global_dialog.error("修改成功", function() {
       closeAlertDialog();
     });

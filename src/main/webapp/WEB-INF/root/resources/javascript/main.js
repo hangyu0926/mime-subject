@@ -17,7 +17,8 @@ var global_route = {
     'deleteUser':'/user/deleteUser',//删除用户
     'getUserList':'/user/getUserList',//获取用户列表
     'addUser':'/user/addUser',//新增账户
-    'logout':'/user/logout'//登出
+    'logout':'/user/logout',//登出
+    'updateConfig':'/stocks/updateConfig'//竞拍配置
 };
 /**
 *global_ajax

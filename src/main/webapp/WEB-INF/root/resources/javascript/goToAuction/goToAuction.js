@@ -25,4 +25,9 @@ $(function() {
 	var newPass=$("#firstnowPwd").val().trim();
 	var mewPassagain=$("#firstnowPwdagain").val().trim();
 	doModifypass(newPass,mewPassagain);
-}
+};
+
+;function doClearfirst(){
+  $("#firstnowPwd").val("");
+  $("#firstnowPwdagain").val("");
+};
