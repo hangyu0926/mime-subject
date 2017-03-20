@@ -46,7 +46,8 @@ var totalCount = 0; //最大页
 };
 //重置密码
 ;function doModify(id) {
-  // $("#modifyPassword").click(function() {
+  $("#roleDelete").modal("show");
+  $('#roleDelfoot').find('.btn-active').unbind('click').click(function() {
     global_ajax("resetUserPassword", { "userId": id }, function(data) {
       global_dialog.error("重置成功", function() {
         closeAlertDialog()
@@ -56,13 +57,15 @@ var totalCount = 0; //最大页
         closeAlertDialog()
       });
     });
-  // });
+  });
 };
 //删除用户
 ;function doDelete(id) {
-  global_ajax("deleteUser", { "userId": id }, function(data) {
-  	//提示删除成功
-  	global_dialog.error("删除成功", function() {
+  $("#roleDelete").modal("show");
+  $('#roleDelfoot').find('.btn-active').unbind('click').click(function() {
+    global_ajax("deleteUser", { "userId": id }, function(data) {
+      //提示删除成功
+      global_dialog.error("删除成功", function() {
         closeAlertDialog();
       });
   	//重新刷数据 判断当前页是不是最后一条
@@ -76,6 +79,7 @@ var totalCount = 0; //最大页
   	global_dialog.error(data.desc, function() {
         closeAlertDialog()
       });
+    });
   });
 };
 //上一页
