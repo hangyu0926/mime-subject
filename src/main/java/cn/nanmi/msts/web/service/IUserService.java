@@ -51,6 +51,6 @@ public interface IUserService {
 
     public Long getEmployeeNum(GetUserPageListVO getVO);
 
-
+    void balanceOrder(Double stockAmt,Long userId);
 
 }

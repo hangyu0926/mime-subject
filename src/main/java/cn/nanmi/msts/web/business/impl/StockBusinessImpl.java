@@ -10,6 +10,7 @@ import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IOperationService;
 import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.service.ITransactionService;
+import cn.nanmi.msts.web.service.IUserService;
 import cn.nanmi.msts.web.utils.MathUtil;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.ConfirmVO;
@@ -42,6 +43,8 @@ public class StockBusinessImpl implements IStockBusiness {
     private IOperationService operationService;
     @Resource
     private ITransactionService transactionService;
+    @Resource
+    private IUserService userService;
 
     @Override
     public CSResponse getBiddingList(PagedQueryVO queryVO,Long bidderId) {
@@ -56,7 +59,7 @@ public class StockBusinessImpl implements IStockBusiness {
         if(biddingList != null && biddingList.size()>0){
             for(BiddingDTO biddingDTO :biddingList){
                 BiddingVO biddingVO = new BiddingVO(biddingDTO);
-                if(biddingDTO.getMaxBidder().equals(bidderId)){
+                if(biddingDTO.getMaxBidder()!=null && biddingDTO.getMaxBidder().equals(bidderId)){
                     biddingVO.setBiddingState(2);
                 }else{
                     biddingVO.setBiddingState(1);
@@ -215,7 +218,7 @@ public class StockBusinessImpl implements IStockBusiness {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
         int startPage = (page - 1) * pageSize ;
-        List<OrderDTO> orderDTOList = stockService.releaseAuditList(startPage,pageSize);
+        List<OrderDTO> orderDTOList = stockService.releaseAuditList(startPage, pageSize);
 
         //总页数
         Long count = stockService.releaseAuditListCount();
@@ -229,7 +232,7 @@ public class StockBusinessImpl implements IStockBusiness {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
         int startPage = (page - 1) * pageSize ;
-        List<OrderDTO> orderDTOList = stockService.backoutAuditList(startPage,pageSize);
+        List<OrderDTO> orderDTOList = stockService.backoutAuditList(startPage, pageSize);
 
         //总页数
         Long count = stockService.backoutAuditListCount();
@@ -353,7 +356,7 @@ public class StockBusinessImpl implements IStockBusiness {
     @Override
     public CSResponse confirmOrder(ConfirmVO confirmVO,Long userId) {
         String orderNo = confirmVO.getOrderNo();
-        //确认者（0：买家，1：卖家，3：管理员）
+        //确认者（1：买家，2：卖家，3：管理员）
         Integer confirmUser = confirmVO.getConfirmUser();
         BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderNo);
         if(biddingDetailDTO == null){
@@ -364,40 +367,39 @@ public class StockBusinessImpl implements IStockBusiness {
             //订单状态无效
             return new CSResponse(ErrorCode.INVALID_ORDER);
         }
-        if(confirmUser ==0){
+        if(confirmUser ==1){
             //买家确认
             if(biddingDetailDTO.getMaxBidder() != userId){
                 //非本人订单
                 return new CSResponse(ErrorCode.INVALID_USER);
             }
-            if(biddingDetailDTO.getBuyerConfirm() ==1){
+            if(biddingDetailDTO.getBuyerConfirm() !=null && biddingDetailDTO.getBuyerConfirm() ==1){
                 //该订单已被确认
                 return new CSResponse(ErrorCode.HAS_CONFIRM_ORDER);
             }
-            if(biddingDetailDTO.getSellerId() ==1){
-                //todo 双方已确认，订单结算
+            if(biddingDetailDTO.getSellerConfirm()!=null && biddingDetailDTO.getSellerConfirm() ==1){
+                //双方已确认，订单结算
                 stockService.confirmOrder(7,null,1,orderNo);
-
-
-
+                userService.balanceOrder(biddingDetailDTO.getStockAmt(),biddingDetailDTO.getSellerId());
 
             }else{
                 stockService.confirmOrder(null,null,1,orderNo);
             }
         }
-        if(confirmUser ==1){
+        if(confirmUser ==2){
             //卖家确认
             if(biddingDetailDTO.getSellerId() != userId){
                 //非本人订单
                 return new CSResponse(ErrorCode.INVALID_USER);
             }
-            if(biddingDetailDTO.getSellerConfirm() ==1){
+            if(biddingDetailDTO.getSellerConfirm() !=null &&biddingDetailDTO.getSellerConfirm() ==1){
                 //该订单已被确认
                 return new CSResponse(ErrorCode.HAS_CONFIRM_ORDER);
             }
-            if(biddingDetailDTO.getBuyerConfirm() ==1){
-                //todo 双方已确认，订单结算
+            if(biddingDetailDTO.getBuyerConfirm() != null && biddingDetailDTO.getBuyerConfirm() ==1){
+                //双方已确认，订单结算
                 stockService.confirmOrder(7,1,null,orderNo);
+                userService.balanceOrder(biddingDetailDTO.getStockAmt(),biddingDetailDTO.getSellerId());
             }else{
                 stockService.confirmOrder(null,1,null,orderNo);
             }
@@ -405,7 +407,7 @@ public class StockBusinessImpl implements IStockBusiness {
         if(confirmUser ==3){
             stockService.updateOrderState(orderNo,7);
             //结算订单
-
+            userService.balanceOrder(biddingDetailDTO.getStockAmt(),biddingDetailDTO.getSellerId());
         }
         return new CSResponse();
     }

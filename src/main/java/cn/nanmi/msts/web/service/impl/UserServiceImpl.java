@@ -84,4 +84,9 @@ public class UserServiceImpl implements IUserService {
     public Long getEmployeeNum(GetUserPageListVO getVO) {
         return userMapper.getEmployeeNum(getVO);
     }
+
+    @Override
+    public void balanceOrder(Double stockAmt, Long userId) {
+        userMapper.balanceOrder(stockAmt,userId);
+    }
 }
