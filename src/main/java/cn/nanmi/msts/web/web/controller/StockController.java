@@ -9,6 +9,7 @@ import cn.nanmi.msts.web.model.SystemRules;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSPageResponse;
 import cn.nanmi.msts.web.response.CSResponse;
+import cn.nanmi.msts.web.utils.MathUtil;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.ConfirmVO;
 import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
@@ -176,8 +177,29 @@ public class StockController {
         if (map == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if (null == map.get("stockAmt") || null == map.get("initialPrice")) {
+        if (null == map.get("stockAmt") || null == map.get("initialPrice")
+                || "".equals(map.get("stockAmt").toString())  || "".equals(map.get("initialPrice").toString())) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+       /* Double bidMakeup =  MathUtil.sub(Double.valueOf(map.get("stockAmt").toString()),Double.valueOf(user.getAvailableStock()));
+        if(bidMakeup > 0 ){
+            //您的发布股权数大于可售股权数
+            return new CSResponse(ErrorCode.YOUR_RELEASE_BEYOND);
+        }*/
+
+        SystemRules systemRules = stockBusiness.getSystemRules();
+
+        Double bidMakeup1 =  MathUtil.sub(Double.valueOf(map.get("stockAmt").toString()),systemRules.getMinStockPrice());
+        if(bidMakeup1 < 0 ){
+            //您的发布股权数小于起拍单价
+            return new CSResponse(ErrorCode.YOUR_RELEASE_LOWER);
+        }
+
+        Double bidMakeup2 =  MathUtil.sub(Double.valueOf(map.get("stockAmt").toString()),systemRules.getMaxStockPrice());
+        if(bidMakeup2 > 0 ){
+            //您的发布股权数大于最大单价
+            return new CSResponse(ErrorCode.YOUR_RELEASE_HIGHER);
         }
 
         OrderDTO orderDTO = new OrderDTO();
@@ -187,7 +209,7 @@ public class StockController {
         //orderDTO.setSellerId(user.getUserId());
         orderDTO.setSellerId(1L);
 
-        SystemRules systemRules = stockBusiness.getSystemRules();
+
         orderDTO.setSystemRuleId(systemRules.getRuleId());
         orderDTO.setBiddingPeriod(systemRules.getBiddingPeriod());
         stockBusiness.releaseOrder(orderDTO);
@@ -352,7 +374,7 @@ public class StockController {
 
         stockBusiness.releaseAudit(orderCheckDTO);
 
-        return null;
+        return new CSResponse();
     }
 
     /**
@@ -387,7 +409,7 @@ public class StockController {
 
         stockBusiness.backoutAudit(orderCheckDTO);
 
-        return null;
+        return new CSResponse();
     }
 
     /**

@@ -110,7 +110,11 @@ public enum ErrorCode {
     ORDER_IS_OVER("5006","该订单已结束"),
     INVALID_USER("5007","非法用户"),
     HAS_CONFIRM_ORDER("5008","该订单已被确认"),
-    FORBID_BIDDING_YOURSELF("5010","不能竞拍自己的标的");
+    FORBID_BIDDING_YOURSELF("5010","不能竞拍自己的标的"),
+
+    YOUR_RELEASE_BEYOND("5011","您的发布股权数超出您的可售股权数"),
+    YOUR_RELEASE_LOWER("5012","您的发布股权数小于起拍单价"),
+    YOUR_RELEASE_HIGHER("5013","您的发布股权数大于最大单价");
 
 	
     /**
