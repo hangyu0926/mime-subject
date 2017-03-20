@@ -72,7 +72,10 @@ public class StockBusinessImpl implements IStockBusiness {
     }
 
     public void releaseOrder(OrderDTO orderDTO){
-         stockService.releaseOrder(orderDTO);
+        stockService.releaseOrder(orderDTO);
+
+        //减去可售股权数，冻结该笔订单股权
+        stockService.frozenStocks(orderDTO.getSellerId(),orderDTO.getStockAmt());
 
         //新增用户流水
         TransactionEntity transactionEntity = new TransactionEntity();
@@ -297,6 +300,8 @@ public class StockBusinessImpl implements IStockBusiness {
         //修改订单状态
         if (0 == orderCheckDTO.getCheckingResult()){
             stockService.updateOrderState(orderCheckDTO.getOrderNo(),4);
+            //添加订单上架时间
+            stockService.updateOrderSaleTime(orderCheckDTO.getOrderNo());
         }else{
             stockService.updateOrderState(orderCheckDTO.getOrderNo(),2);
         }

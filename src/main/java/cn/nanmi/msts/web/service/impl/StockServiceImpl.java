@@ -25,6 +25,12 @@ public class StockServiceImpl implements IStockService {
 
          orderMapper.releaseOrder(orderDTO);
     }
+
+    public void frozenStocks(Long sellId,Double stockAmt){
+
+        orderMapper.frozenStocks(sellId,stockAmt);
+    }
+
     @Override
     public List<BiddingDTO> getBiddingList(int startPage,int pageSize,Long userId) {
         return orderMapper.getBiddingList(startPage, pageSize, userId);
@@ -63,6 +69,11 @@ public class StockServiceImpl implements IStockService {
     public void updateOrderState(String orderNo,int orderState){
 
         orderMapper.updateOrderState(orderNo,orderState);
+    }
+
+    public void updateOrderSaleTime(String orderNo){
+
+        orderMapper.updateOrderSaleTime(orderNo);
     }
 
     public SystemRules getSystemRules(){

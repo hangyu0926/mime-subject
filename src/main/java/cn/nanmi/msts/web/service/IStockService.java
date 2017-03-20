@@ -20,6 +20,13 @@ public interface IStockService {
      * @return
      */
     void releaseOrder(OrderDTO orderDTO);
+
+    /**
+     * 减去可售股权数，冻结该笔订单股权
+     * @param sellId
+     */
+    void frozenStocks(Long sellId,Double stockAmt);
+
     /**
      * 查询竞拍列表（分页)
      * @param startPage
@@ -56,6 +63,12 @@ public interface IStockService {
      * @param orderNo
      */
     void updateOrderState(String orderNo,int orderState);
+
+    /**
+     *  //添加订单上架时间
+     * @param orderNo
+     */
+    void updateOrderSaleTime(String orderNo);
 
     /**
      * 查询准备竞拍参数
