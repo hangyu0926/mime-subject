@@ -2,6 +2,7 @@ package cn.nanmi.msts.web.service;
 
 import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.response.CSResponse;
+import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 
 import java.util.List;
 
@@ -132,7 +133,10 @@ public interface IStockService {
      * 跳转我的发布页
      */
     JumpReleaseOrderDTO jumpReleaseOrder(Long userId);
-
+    /**
+     * 修改配置
+     */
+    void insertNewConfig(UpdateConfigVO updateConfigVO);
     /**
      * 审核新增记录
      */

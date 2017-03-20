@@ -7,6 +7,9 @@ import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
+import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
+
+import javax.servlet.http.HttpServletRequest;
 
 public interface IStockBusiness {
 
@@ -64,6 +67,12 @@ public interface IStockBusiness {
      * @return
      */
     CSResponse beConfirmedList(PagedQueryVO queryVO);
+
+    /**
+     * 撤销订单
+     * @param updateConfigVO
+     */
+    CSResponse updateConfig(HttpServletRequest request, UpdateConfigVO updateConfigVO);
 
     /**
      * 待审核订单-发布审核（分页）

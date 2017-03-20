@@ -57,7 +57,7 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
         if (null == user) {
             return new CSResponse(ErrorCode.USER_NOT_EXIST);
         } else {
-                if(password.equals(Constants.INITIAL_PASSWORD)){
+                if(password.equals(Constants.INITIAL_PASSWORD)&&password.equals(user.getLoginPass())){
                     isFirst = true;
                 }else {
                 if (!password.equals(user.getLoginPass())) {
@@ -112,6 +112,8 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
             CSResponse modifyResponse = new CSResponse();
             //修改数据库中的密码
             userService.modifyPassword(user.getUserId(), newPassword);
+            user.setLoginPass(newPassword);
+            session.setAttribute(ConstantHelper.USER_SESSION, user);
             return modifyResponse;
         }
     }

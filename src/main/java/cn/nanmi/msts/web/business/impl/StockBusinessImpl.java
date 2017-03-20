@@ -1,6 +1,7 @@
 package cn.nanmi.msts.web.business.impl;
 
 import cn.nanmi.msts.web.business.IStockBusiness;
+import cn.nanmi.msts.web.core.ConstantHelper;
 import cn.nanmi.msts.web.dao.entities.OperationEntity;
 import cn.nanmi.msts.web.dao.entities.TransactionEntity;
 import cn.nanmi.msts.web.enums.ErrorCode;
@@ -12,12 +13,15 @@ import cn.nanmi.msts.web.service.ITransactionService;
 import cn.nanmi.msts.web.utils.MathUtil;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
+import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 import cn.nanmi.msts.web.web.vo.out.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -273,6 +277,17 @@ public class StockBusinessImpl implements IStockBusiness {
         myBiddingListVO.setTotalCount(count);
         myBiddingListVO.setMyBiddingVOList(myBiddingVOList);
         return new CSResponse(myBiddingListVO);
+    }
+
+    @Override
+    public CSResponse updateConfig(HttpServletRequest request, UpdateConfigVO updateConfigVO) {
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+       if(user.getPermissionId()!=1){
+           return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
+       }
+        stockService.insertNewConfig(updateConfigVO);
+        return new CSResponse();
     }
 
     public void releaseAudit(OrderCheckDTO orderCheckDTO){

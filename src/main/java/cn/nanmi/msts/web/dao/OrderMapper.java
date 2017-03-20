@@ -2,6 +2,7 @@ package cn.nanmi.msts.web.dao;
 
 
 import cn.nanmi.msts.web.model.*;
+import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -44,6 +45,8 @@ public interface OrderMapper {
     void updateOrderBidding(@Param("biddingPrice")Double biddingPrice,@Param("bidderId")Long bidderId,@Param("orderNo")String orderNo);
 
     JumpReleaseOrderDTO jumpReleaseOrder(@Param("userId") Long userId);
+
+    void insertNewConfig(UpdateConfigVO updateConfigVO);
 
     void releaseAudit(OrderCheckDTO orderCheckDTO);
 

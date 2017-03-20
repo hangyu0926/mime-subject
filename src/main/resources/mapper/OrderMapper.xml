@@ -185,10 +185,17 @@
          ORDER BY SR.CREATE_TIME desc limit 1
     </select>
 
+    <insert id="insertNewConfig" parameterType="cn.nanmi.msts.web.web.vo.in.UpdateConfigVO" >
+        insert into SYSTEM_RULES (MIN_STOCK_PRICE, MAX_STOCK_PRICE, MIN_MAKEUP,
+        MAX_MAKEUP, BIDDING_PERIOD,BACK_PERIOD,CREATE_TIME)
+        values (#{startAmt}, #{maxAmt}, #{minAdd}, #{maxAdd},#{stockTime},#{backTime},NOW())
+    </insert>
+
     <insert id="releaseAudit" parameterType="cn.nanmi.msts.web.model.OrderCheckDTO" >
         insert into ORDER_CHECKING (AUDITOR,TRANS_ID, ORDER_NO, CHECKING_TYPE,
         CHECKING_VIEW, CHECKING_RESULT,CREATE_TIME)
         values (#{auditor}, #{transId}, #{orderNo}, #{checkingType},
         #{checkingView},#{checkingResult},now())
     </insert>
+
 </mapper>

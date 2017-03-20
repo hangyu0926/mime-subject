@@ -75,7 +75,6 @@
         <if test="keyWords != null and keyWords != '' ">
             AND (MOBILE_NO LIKE '%${keyWords}%'
             OR USER_NAME LIKE '%${keyWords}%'
-            OR USER_WECHAT LIKE '%${keyWords}%'
             OR LOGIN_NAME LIKE '%${keyWords}%')
         </if>
     </select>

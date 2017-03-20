@@ -4,6 +4,7 @@ import cn.nanmi.msts.web.dao.OrderMapper;
 import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IStockService;
+import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -101,7 +102,12 @@ public class StockServiceImpl implements IStockService {
         return orderMapper.jumpReleaseOrder(userId);
     }
 
+    @Override
+    public void insertNewConfig(UpdateConfigVO updateConfigVO) {
+        orderMapper.insertNewConfig(updateConfigVO);
+    }
+
     public void releaseAudit(OrderCheckDTO orderCheckDTO) {
-         orderMapper.releaseAudit(orderCheckDTO);
+        orderMapper.releaseAudit(orderCheckDTO);
     }
 }

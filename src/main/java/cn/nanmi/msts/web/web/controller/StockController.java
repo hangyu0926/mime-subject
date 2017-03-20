@@ -11,6 +11,7 @@ import cn.nanmi.msts.web.response.CSPageResponse;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
+import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,72 +29,75 @@ import java.util.UUID;
  * Time: 14:38
  */
 @Controller
-@RequestMapping(value = "/stocks",  produces = { "application/json;charset=UTF-8" })
+@RequestMapping(value = "/stocks", produces = {"application/json;charset=UTF-8"})
 public class StockController {
 
     @Resource
     private IStockBusiness stockBusiness;
 
     /**
-     *  查询竞拍列表（分页)
+     * 查询竞拍列表（分页)
+     *
      * @param request
      * @param queryVO
      * @return
      */
-    @RequestMapping(value = "/biddingList",method = RequestMethod.POST)
+    @RequestMapping(value = "/biddingList", method = RequestMethod.POST)
     @ResponseBody
-    public CSResponse getBiddingList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
-        if(queryVO == null ){
+    public CSResponse getBiddingList(HttpServletRequest request, @RequestBody PagedQueryVO queryVO) {
+        if (queryVO == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+        if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
 //        UserDTO user = new UserDTO();
 //        user.setUserId(2L);
-        if(user == null){
+        if (user == null) {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        return stockBusiness.getBiddingList(queryVO,user.getUserId());
+        return stockBusiness.getBiddingList(queryVO, user.getUserId());
     }
 
     /**
-     *  我的竞拍列表（分页)
+     * 我的竞拍列表（分页)
+     *
      * @param request
      * @param queryVO
      * @return
      */
-    @RequestMapping(value = "/myBidding",method = RequestMethod.POST)
+    @RequestMapping(value = "/myBidding", method = RequestMethod.POST)
     @ResponseBody
-    public CSResponse getMyBidding(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
-        if(queryVO == null ){
+    public CSResponse getMyBidding(HttpServletRequest request, @RequestBody PagedQueryVO queryVO) {
+        if (queryVO == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+        if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
 //        UserDTO user = new UserDTO();
 //        user.setUserId(2L);
-        if(user == null){
+        if (user == null) {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        return stockBusiness.getMyBiddingRecord(queryVO,user.getUserId());
+        return stockBusiness.getMyBiddingRecord(queryVO, user.getUserId());
     }
 
     /**
      * 准备竞拍
+     *
      * @param request
      * @param orderNo
      * @return
      */
-    @RequestMapping(value = "/preBidding",method = RequestMethod.GET)
+    @RequestMapping(value = "/preBidding", method = RequestMethod.GET)
     @ResponseBody
-    public CSResponse preBidding(HttpServletRequest request,String orderNo){
-        if(StringUtils.isBlank(orderNo)){
+    public CSResponse preBidding(HttpServletRequest request, String orderNo) {
+        if (StringUtils.isBlank(orderNo)) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -102,66 +106,69 @@ public class StockController {
 
 
     /**
-     *  竞拍标的
+     * 竞拍标的
+     *
      * @param request
      * @param bidStockVO
      * @return
      */
-    @RequestMapping(value = "/bidding",method = RequestMethod.POST)
+    @RequestMapping(value = "/bidding", method = RequestMethod.POST)
     @ResponseBody
-    public CSResponse bidStock(HttpServletRequest request,@RequestBody BidStockVO bidStockVO){
-        if(bidStockVO == null ){
+    public CSResponse bidStock(HttpServletRequest request, @RequestBody BidStockVO bidStockVO) {
+        if (bidStockVO == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(StringUtils.isBlank(bidStockVO.getOrderNo()) || bidStockVO.getBiddingPrice()<=0){
+        if (StringUtils.isBlank(bidStockVO.getOrderNo()) || bidStockVO.getBiddingPrice() <= 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
 //        UserDTO user = new UserDTO();
 //        user.setUserId(2L);
-        if(user == null){
+        if (user == null) {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        return stockBusiness.bidStock(bidStockVO,user);
+        return stockBusiness.bidStock(bidStockVO, user);
     }
 
     /**
-     *  确认订单
+     * 确认订单
+     *
      * @param request
      * @param queryVO
      * @return
      */
     @RequestMapping(value = "confirmOrder",method = RequestMethod.GET)
     @ResponseBody
-    public CSResponse confirmOrder(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
-        if(queryVO == null ){
+    public CSResponse confirmOrder(HttpServletRequest request, @RequestBody PagedQueryVO queryVO) {
+        if (queryVO == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+        if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
         return null;
     }
 
     /**
-     *  发布订单
+     * 发布订单
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = "releaseOrder")
     @ResponseBody
-    public CSResponse releaseOrder(HttpServletRequest request, @RequestBody Map map){
+    public CSResponse releaseOrder(HttpServletRequest request, @RequestBody Map map) {
       /*  HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }*/
 
-        if(map == null ){
+        if (map == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(null == map.get("stockAmt") || null == map.get("initialPrice")){
+        if (null == map.get("stockAmt") || null == map.get("initialPrice")) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -175,24 +182,25 @@ public class StockController {
         SystemRules systemRules = stockBusiness.getSystemRules();
         orderDTO.setSystemRuleId(systemRules.getRuleId());
         orderDTO.setBiddingPeriod(systemRules.getBiddingPeriod());
-         stockBusiness.releaseOrder(orderDTO);
+        stockBusiness.releaseOrder(orderDTO);
 
         return null;
     }
 
     /**
-     *  我的发布（分页)
+     * 我的发布（分页)
+     *
      * @param request
      * @param queryVO
      * @return
      */
     @RequestMapping(value = "getMyOrder")
     @ResponseBody
-    public CSResponse getMyOrder(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
-        if(queryVO == null ){
+    public CSResponse getMyOrder(HttpServletRequest request, @RequestBody PagedQueryVO queryVO) {
+        if (queryVO == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+        if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -202,20 +210,21 @@ public class StockController {
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }*/
-        return stockBusiness.getMyOrder(queryVO,1L);
+        return stockBusiness.getMyOrder(queryVO, 1L);
     }
 
     /**
      * 撤销订单
+     *
      * @param request
      */
     @RequestMapping(value = "backoutOrder")
     @ResponseBody
-    public CSResponse backoutOrder(HttpServletRequest request,@RequestBody Map map){
-        if(map == null ){
+    public CSResponse backoutOrder(HttpServletRequest request, @RequestBody Map map) {
+        if (map == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(null == map.get("orderNo")){
+        if (null == map.get("orderNo")) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -225,18 +234,19 @@ public class StockController {
     }
 
     /**
-     *  待确认订单（分页)
+     * 待确认订单（分页)
+     *
      * @param request
      * @param queryVO
      * @return
      */
     @RequestMapping(value = "beConfirmedList")
     @ResponseBody
-    public CSResponse beConfirmedList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
-        if(queryVO == null ){
+    public CSResponse beConfirmedList(HttpServletRequest request, @RequestBody PagedQueryVO queryVO) {
+        if (queryVO == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+        if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -244,18 +254,38 @@ public class StockController {
     }
 
     /**
-     *  待审核订单-发布审核（分页）
+     * 修改配置
+     *
+     * @param request
+     * @param updateConfigVO
+     * @return
+     */
+    @RequestMapping(value = "updateConfig")
+    @ResponseBody
+    public CSResponse updateConfig(HttpServletRequest request, @RequestBody UpdateConfigVO updateConfigVO) {
+        if (updateConfigVO == null) {
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if (updateConfigVO.getBackTime() > updateConfigVO.getStockTime()||updateConfigVO.getStartAmt()>updateConfigVO.getMaxAmt()||updateConfigVO.getMinAdd()>updateConfigVO.getMaxAdd()) {
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        return stockBusiness.updateConfig(request,updateConfigVO);
+    }
+
+    /**
+     * 待审核订单-发布审核（分页）
+     *
      * @param request
      * @param queryVO
      * @return
      */
     @RequestMapping(value = "releaseAuditList")
     @ResponseBody
-    public CSResponse releaseAuditList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
-        if(queryVO == null ){
+    public CSResponse releaseAuditList(HttpServletRequest request, @RequestBody PagedQueryVO queryVO) {
+        if (queryVO == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+        if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -263,18 +293,19 @@ public class StockController {
     }
 
     /**
-     *  待审核订单-撤销审核（分页）
+     * 待审核订单-撤销审核（分页）
+     *
      * @param request
      * @param queryVO
      * @return
      */
     @RequestMapping(value = "backoutAuditList")
     @ResponseBody
-    public CSResponse backoutAuditList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
-        if(queryVO == null ){
+    public CSResponse backoutAuditList(HttpServletRequest request, @RequestBody PagedQueryVO queryVO) {
+        if (queryVO == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+        if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -283,21 +314,22 @@ public class StockController {
 
     /**
      * 发布审核通过/不通过
+     *
      * @param request
      */
     @RequestMapping(value = "releaseAudit")
     @ResponseBody
-    public CSResponse releaseAudit(HttpServletRequest request,@RequestBody Map map){
+    public CSResponse releaseAudit(HttpServletRequest request, @RequestBody Map map) {
         /*   HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }*/
 
-        if(map == null ){
+        if (map == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(null == map.get("orderNo") || null == map.get("checkingResult")){
+        if (null == map.get("orderNo") || null == map.get("checkingResult")) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -317,21 +349,22 @@ public class StockController {
 
     /**
      * 撤销审核通过/不通过
+     *
      * @param request
      */
     @RequestMapping(value = "backoutAudit")
     @ResponseBody
-    public CSResponse backoutAudit(HttpServletRequest request,@RequestBody Map map){
+    public CSResponse backoutAudit(HttpServletRequest request, @RequestBody Map map) {
         /*   HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }*/
 
-        if(map == null ){
+        if (map == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(null == map.get("orderNo") || null == map.get("checkingResult")){
+        if (null == map.get("orderNo") || null == map.get("checkingResult")) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -351,12 +384,13 @@ public class StockController {
 
     /**
      * 跳转我的发布页
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = "jumpReleaseOrder")
     @ResponseBody
-    public CSResponse jumpReleaseOrder(HttpServletRequest request){
+    public CSResponse jumpReleaseOrder(HttpServletRequest request) {
        /* HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
 
