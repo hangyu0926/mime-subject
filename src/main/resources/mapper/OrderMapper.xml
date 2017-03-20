@@ -121,7 +121,23 @@
       WHERE ORDER_STATE = 6 ORDER BY UO.SALE_TIME DESC
       LIMIT #{startPage},#{pageSize}
     </select>
-    
+
+    <select id="releaseAuditList" resultMap="orderListMap">
+        SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,ORDER_STATE,SELLER_ID,UU.USER_NAME,MAX_BIDDING_PRICE,MAX_BIDDER,UO.CREATE_TIME,SALE_TIME,EXPIRE_TIME,SYSTEM_RULE_ID
+        FROM USER_ORDER UO
+        LEFT JOIN USER UU ON UU.USER_ID = UO.SELLER_ID
+        WHERE ORDER_STATE = 1 ORDER BY UO.CREATE_TIME DESC
+        LIMIT #{startPage},#{pageSize}
+    </select>
+
+    <select id="backoutAuditList" resultMap="orderListMap">
+        SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,ORDER_STATE,SELLER_ID,UU.USER_NAME,MAX_BIDDING_PRICE,MAX_BIDDER,UO.CREATE_TIME,SALE_TIME,EXPIRE_TIME,SYSTEM_RULE_ID
+        FROM USER_ORDER UO
+        LEFT JOIN USER UU ON UU.USER_ID = UO.SELLER_ID
+        WHERE ORDER_STATE = 3 ORDER BY UO.CREATE_TIME DESC
+        LIMIT #{startPage},#{pageSize}
+    </select>
+
     <update id="updateOrderBidding">
       UPDATE USER_ORDER
       SET MAX_BIDDING_PRICE = #{biddingPrice},MAX_BIDDER = #{bidderId}

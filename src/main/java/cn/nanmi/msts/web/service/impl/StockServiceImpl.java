@@ -68,6 +68,14 @@ public class StockServiceImpl implements IStockService {
         return orderMapper.beConfirmedList(startPage,pageSize);
     }
 
+    public List<OrderDTO> releaseAuditList(int startPage,int pageSize){
+        return orderMapper.releaseAuditList(startPage,pageSize);
+    }
+
+    public List<OrderDTO> backoutAuditList(int startPage,int pageSize){
+        return orderMapper.backoutAuditList(startPage,pageSize);
+    }
+
     @Override
     public void updateOrderBidding(Double biddingPrice, Long bidderId, String orderNo) {
          orderMapper.updateOrderBidding(biddingPrice,bidderId,orderNo);

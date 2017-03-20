@@ -82,6 +82,18 @@ public interface IStockService {
     List<OrderDTO> beConfirmedList(int startPage,int pageSize);
 
     /**
+     * 待审核订单-发布审核（分页）
+     * @return
+     */
+    List<OrderDTO> releaseAuditList(int startPage,int pageSize);
+
+    /**
+     * 待审核订单-撤销审核（分页）
+     * @return
+     */
+    List<OrderDTO> backoutAuditList(int startPage,int pageSize);
+
+    /**
      * 修改订单竞拍出价
      * @param biddingPrice
      * @param bidderId

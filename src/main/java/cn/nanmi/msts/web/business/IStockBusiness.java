@@ -65,6 +65,21 @@ public interface IStockBusiness {
     CSResponse beConfirmedList(PagedQueryVO queryVO);
 
     /**
+     * 待审核订单-发布审核（分页）
+     * @param queryVO
+     * @return
+     */
+    CSResponse releaseAuditList(PagedQueryVO queryVO);
+
+
+    /**
+     * 待审核订单-撤销审核（分页）
+     * @param queryVO
+     * @return
+     */
+    CSResponse backoutAuditList(PagedQueryVO queryVO);
+
+    /**
      * 跳转我的发布页
      */
     CSResponse jumpReleaseOrder(Long userId);

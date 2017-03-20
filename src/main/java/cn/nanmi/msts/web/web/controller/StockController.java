@@ -243,6 +243,44 @@ public class StockController {
     }
 
     /**
+     *  待审核订单-发布审核（分页）
+     * @param request
+     * @param queryVO
+     * @return
+     */
+    @RequestMapping(value = "releaseAuditList")
+    @ResponseBody
+    public CSResponse releaseAuditList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
+        if(queryVO == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        return stockBusiness.releaseAuditList(queryVO);
+    }
+
+    /**
+     *  待审核订单-撤销审核（分页）
+     * @param request
+     * @param queryVO
+     * @return
+     */
+    @RequestMapping(value = "backoutAuditList")
+    @ResponseBody
+    public CSResponse backoutAuditList(HttpServletRequest request,@RequestBody PagedQueryVO queryVO){
+        if(queryVO == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(queryVO.getPageNo()<0 || queryVO.getPageSize()<0){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        return stockBusiness.backoutAuditList(queryVO);
+    }
+
+    /**
      * 跳转我的发布页
      * @param request
      * @return

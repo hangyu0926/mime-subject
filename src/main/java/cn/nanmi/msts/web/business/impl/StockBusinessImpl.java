@@ -191,6 +191,26 @@ public class StockBusinessImpl implements IStockBusiness {
         return new CSResponse(orderListVO);
     }
 
+    public CSResponse releaseAuditList(PagedQueryVO queryVO){
+        int page = queryVO.getPageNo();
+        int pageSize = queryVO.getPageSize();
+        int startPage = (page - 1) * pageSize ;
+        List<OrderDTO> orderDTOList = stockService.releaseAuditList(startPage,pageSize);
+
+        OrderListVO   orderListVO = new OrderListVO(orderDTOList);
+        return new CSResponse(orderListVO);
+    }
+
+    public CSResponse backoutAuditList(PagedQueryVO queryVO){
+        int page = queryVO.getPageNo();
+        int pageSize = queryVO.getPageSize();
+        int startPage = (page - 1) * pageSize ;
+        List<OrderDTO> orderDTOList = stockService.backoutAuditList(startPage,pageSize);
+
+        OrderListVO   orderListVO = new OrderListVO(orderDTOList);
+        return new CSResponse(orderListVO);
+    }
+
     public CSResponse jumpReleaseOrder(Long userId) {
 
         JumpReleaseOrderDTO jumpReleaseOrderDTO = stockService.jumpReleaseOrder(userId);

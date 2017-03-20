@@ -29,6 +29,10 @@ public interface OrderMapper {
 
     List<OrderDTO> beConfirmedList(@Param("startPage")int startPage, @Param("pageSize")int pageSize);
 
+    List<OrderDTO> releaseAuditList(@Param("startPage")int startPage, @Param("pageSize")int pageSize);
+
+    List<OrderDTO> backoutAuditList(@Param("startPage")int startPage, @Param("pageSize")int pageSize);
+
     void updateOrderBidding(@Param("biddingPrice")Double biddingPrice,@Param("bidderId")Long bidderId,@Param("orderNo")String orderNo);
 
     JumpReleaseOrderDTO jumpReleaseOrder(@Param("userId") Long userId);
