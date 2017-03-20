@@ -294,12 +294,21 @@ public class StockBusinessImpl implements IStockBusiness {
         return new CSResponse();
     }
 
-    public void releaseAudit(OrderCheckDTO orderCheckDTO){
+    public CSResponse releaseAudit(OrderCheckDTO orderCheckDTO){
         //审核新增记录
         stockService.releaseAudit(orderCheckDTO);
 
         //修改订单状态
         if (0 == orderCheckDTO.getCheckingResult()){
+
+            BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
+            Date now = new Date();
+            int spanTime = biddingDetailDTO.getExpireTime().compareTo(now);
+            if(spanTime<0){
+                //该订单已结束
+                return new CSResponse(ErrorCode.ORDER_IS_OVER);
+            }
+
             stockService.updateOrderState(orderCheckDTO.getOrderNo(),4);
             //添加订单上架时间
             stockService.updateOrderSaleTime(orderCheckDTO.getOrderNo());
@@ -311,9 +320,10 @@ public class StockBusinessImpl implements IStockBusiness {
             stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(),biddingDetailDTO.getStockAmt());
         }
 
+        return new CSResponse();
     }
 
-    public void backoutAudit(OrderCheckDTO orderCheckDTO){
+    public CSResponse backoutAudit(OrderCheckDTO orderCheckDTO){
         //审核新增记录
         stockService.releaseAudit(orderCheckDTO);
 
@@ -325,8 +335,19 @@ public class StockBusinessImpl implements IStockBusiness {
             BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
             stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(),biddingDetailDTO.getStockAmt());
         }else{
+
+            BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
+            Date now = new Date();
+            int spanTime = biddingDetailDTO.getExpireTime().compareTo(now);
+            if(spanTime<0){
+                //该订单已结束
+                return new CSResponse(ErrorCode.ORDER_IS_OVER);
+            }
+
             stockService.updateOrderState(orderCheckDTO.getOrderNo(),4);
         }
+
+        return new CSResponse();
     }
 
     @Override

@@ -109,14 +109,14 @@ public interface IStockBusiness {
      * @param orderCheckDTO
      * @return
      */
-    void releaseAudit(OrderCheckDTO orderCheckDTO);
+    CSResponse releaseAudit(OrderCheckDTO orderCheckDTO);
 
     /**
      *  撤销审核通过/不通过
      * @param orderCheckDTO
      * @return
      */
-    void backoutAudit(OrderCheckDTO orderCheckDTO);
+    CSResponse backoutAudit(OrderCheckDTO orderCheckDTO);
 
     /**
      * 确认订单
