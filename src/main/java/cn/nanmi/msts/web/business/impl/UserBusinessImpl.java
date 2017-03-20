@@ -57,9 +57,9 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
         if (null == user) {
             return new CSResponse(ErrorCode.USER_NOT_EXIST);
         } else {
-                if(password.equals(Constants.INITIAL_PASSWORD)&&password.equals(user.getLoginPass())){
-                    isFirst = true;
-                }else {
+            if (password.equals(Constants.INITIAL_PASSWORD) && password.equals(user.getLoginPass())) {
+                isFirst = true;
+            } else {
                 if (!password.equals(user.getLoginPass())) {
                     return new CSResponse(ErrorCode.CONFIRM_PASSWORD_WRONG);
                 }
@@ -72,10 +72,10 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
             UserModelVO userModelVO = UserModelConverter.initUserModelIVOValues(user);
             CSResponse loginResponse;
 
-            if(isFirst){
-                 loginResponse = new CSResponse(ErrorCode.USER_IS_INIT);
-            }else{
-                 loginResponse = new CSResponse();
+            if (isFirst) {
+                loginResponse = new CSResponse(ErrorCode.USER_IS_INIT);
+            } else {
+                loginResponse = new CSResponse();
             }
             loginResponse.setDetailInfo(userModelVO);
             return loginResponse;
@@ -87,7 +87,7 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
         LOGGER.info(JsonUtil.formatLog("用户修改密码:" + modifyPasswordVO.toString()));
         String oldPassword = modifyPasswordVO.getOldPassword();
         String newPassword = modifyPasswordVO.getNewPassword();
-        if ( StringUtils.isBlank(newPassword)) {
+        if (StringUtils.isBlank(newPassword)) {
             //旧密码或新密码为空
             LOGGER.error(JsonUtil.formatLog("用户修改密码,新密码为空:" + modifyPasswordVO.toString()));
             return new CSResponse(ErrorCode.USERNAME_PASSWORD_NULL);
@@ -98,13 +98,13 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
         if (null == user) {
             return new CSResponse(ErrorCode.CONFIRM_PASSWORD_WRONG);
         } else {
-            if(StringUtils.isBlank(oldPassword)){
-                if(!user.getLoginPass().equals(Constants.INITIAL_PASSWORD)){
+            if (StringUtils.isBlank(oldPassword)) {
+                if (!user.getLoginPass().equals(Constants.INITIAL_PASSWORD)) {
                     LOGGER.error(JsonUtil.formatLog("用户修改密码,密码错误1:" + modifyPasswordVO.toString()));
                     return new CSResponse(ErrorCode.PASSWORD_WRONG);
                 }
-            }else{
-                if(!oldPassword.equals(user.getLoginPass())){
+            } else {
+                if (!oldPassword.equals(user.getLoginPass())) {
                     LOGGER.error(JsonUtil.formatLog("用户修改密码,密码错误2:" + modifyPasswordVO.toString()));
                     return new CSResponse(ErrorCode.PASSWORD_WRONG);
                 }
@@ -142,26 +142,26 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
             LOGGER.info("employee session 超时");
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        if(curUser.getPermissionId()!=1){
+        if (curUser.getPermissionId() != 1) {
             return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
         }
-            if(StringUtils.isBlank(addVO.getUserMailAdd())|| StringUtils.isBlank(addVO.getUserMobile())|| StringUtils.isBlank(addVO.getUserName())){
-                return new CSResponse(ErrorCode.ADD_NOT_ALL_FAILED);
-            }
-            if(!Pattern.matches("^([\\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.com|\\.cn)$", addVO.getUserMailAdd())||addVO.getUserMailAdd().length()>50){
-                return new CSResponse(ErrorCode.ADD_FORMAT_ERROR_FAILED);
-            }
-            if(addVO.getUserName().length()>22||addVO.getUserMobile().length()!=11){
-                return new CSResponse(ErrorCode.ADD_FORMAT_ERROR_FAILED);
-            }
-            if (userService.getEmployeeNumByMobile(addVO.getUserMobile()) > 0) {
-                return new CSResponse(ErrorCode.ADD_MOBILE_EXIST_FAILED);
-            }
-            if (userService.getEmployeeNumByEmail(addVO.getUserMailAdd()) > 0) {
-                return new CSResponse(ErrorCode.ADD_MAIL_EXIST_FAILED);
-            }
+        if (StringUtils.isBlank(addVO.getUserMailAdd()) || StringUtils.isBlank(addVO.getUserMobile()) || StringUtils.isBlank(addVO.getUserName())) {
+            return new CSResponse(ErrorCode.ADD_NOT_ALL_FAILED);
+        }
+        if (!Pattern.matches("^([\\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.com|\\.cn)$", addVO.getUserMailAdd()) || addVO.getUserMailAdd().length() > 50) {
+            return new CSResponse(ErrorCode.ADD_FORMAT_ERROR_FAILED);
+        }
+        if (addVO.getUserName().length() > 22 || addVO.getUserMobile().length() != 11) {
+            return new CSResponse(ErrorCode.ADD_FORMAT_ERROR_FAILED);
+        }
+        if (userService.getEmployeeNumByMobile(addVO.getUserMobile()) > 0) {
+            return new CSResponse(ErrorCode.ADD_MOBILE_EXIST_FAILED);
+        }
+        if (userService.getEmployeeNumByEmail(addVO.getUserMailAdd()) > 0) {
+            return new CSResponse(ErrorCode.ADD_MAIL_EXIST_FAILED);
+        }
 
-            userService.addUser(addVO);
+        userService.addUser(addVO);
 
         return new CSResponse();
     }
@@ -169,10 +169,10 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
     @Override
     public CSResponse getUserList(GetUserListVO getVO) {
         LOGGER.info("请求参数：" + getVO);
-        if(getVO == null ){
+        if (getVO == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if(getVO.getPageNo()<0 || getVO.getPageSize()<0){
+        if (getVO.getPageNo() < 0 || getVO.getPageSize() < 0) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
@@ -180,13 +180,13 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
         int page = getVO.getPageNo();
         int pageSize = getVO.getPageSize();
         page = page - 1;
-        int startPage = page * pageSize ;
+        int startPage = page * pageSize;
         GetUserPageListVO getUserPageListVO = new GetUserPageListVO(getVO);
         getUserPageListVO.setStartPage(startPage);
         Long num = userService.getEmployeeTotalNum();
         Long totalNum = userService.getEmployeeNum(getUserPageListVO);
         ArrayList<UserModelVO> list = userService.getEmployeeList(getUserPageListVO);
-        UserListOutVO listOutVO = new UserListOutVO(list,totalNum,num);
+        UserListOutVO listOutVO = new UserListOutVO(list, totalNum, num);
         return new CSResponse(listOutVO);
     }
 
@@ -201,10 +201,10 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
             LOGGER.info("del employee session 超时");
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        if(curUser.getPermissionId()!=1){
+        if (curUser.getPermissionId() != 1) {
             return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
         }
-        if(curUser.getUserId()==userId){//不能删除自己
+        if (curUser.getUserId() == userId) {//不能删除自己
             return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
         }
         userService.deleteEmployee(userId, curUser.getUserId());
@@ -222,13 +222,12 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
             LOGGER.info("resetUserPassword employee session 超时");
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        if(curUser.getPermissionId()!=1){
+        if (curUser.getPermissionId() != 1) {
             return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
         }
         userService.resetUserPassword(userId);
         return new CSResponse();
     }
-
 
 
 }

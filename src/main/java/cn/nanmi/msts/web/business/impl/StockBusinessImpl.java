@@ -51,7 +51,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
     private ITransactionService transactionService;
     @Resource
     private IUserService userService;
-    private String fileServerOutPath;
+//    private String fileServerOutPath;
 
     @Override
     public CSResponse getBiddingList(PagedQueryVO queryVO, Long bidderId) {
@@ -66,7 +66,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         if (biddingList != null && biddingList.size() > 0) {
             for (BiddingDTO biddingDTO : biddingList) {
                 BiddingVO biddingVO = new BiddingVO(biddingDTO);
-                if(biddingDTO.getMaxBidder()!=null && biddingDTO.getMaxBidder().equals(bidderId)){
+                if (biddingDTO.getMaxBidder() != null && biddingDTO.getMaxBidder().equals(bidderId)) {
                     biddingVO.setBiddingState(2);
                 } else {
                     biddingVO.setBiddingState(1);
@@ -225,7 +225,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
     public CSResponse releaseAuditList(PagedQueryVO queryVO) {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
-        int startPage = (page - 1) * pageSize ;
+        int startPage = (page - 1) * pageSize;
         List<OrderDTO> orderDTOList = stockService.releaseAuditList(startPage, pageSize);
 
         //总页数
@@ -239,7 +239,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
     public CSResponse backoutAuditList(PagedQueryVO queryVO) {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
-        int startPage = (page - 1) * pageSize ;
+        int startPage = (page - 1) * pageSize;
         List<OrderDTO> orderDTOList = stockService.backoutAuditList(startPage, pageSize);
 
         //总页数
@@ -305,117 +305,117 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         return new CSResponse();
     }
 
-    public CSResponse releaseAudit(OrderCheckDTO orderCheckDTO){
+    public CSResponse releaseAudit(OrderCheckDTO orderCheckDTO) {
         //审核新增记录
         stockService.releaseAudit(orderCheckDTO);
 
         //修改订单状态
-        if (0 == orderCheckDTO.getCheckingResult()){
+        if (0 == orderCheckDTO.getCheckingResult()) {
 
             BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
             Date now = new Date();
             int spanTime = biddingDetailDTO.getExpireTime().compareTo(now);
-            if(spanTime<0){
+            if (spanTime < 0) {
                 //该订单已结束
                 return new CSResponse(ErrorCode.ORDER_IS_OVER);
             }
 
-            stockService.updateOrderState(orderCheckDTO.getOrderNo(),4);
+            stockService.updateOrderState(orderCheckDTO.getOrderNo(), 4);
             //添加订单上架时间
             stockService.updateOrderSaleTime(orderCheckDTO.getOrderNo());
-        }else{
-            stockService.updateOrderState(orderCheckDTO.getOrderNo(),2);
+        } else {
+            stockService.updateOrderState(orderCheckDTO.getOrderNo(), 2);
 
             //发布审核不通过。还原冻结资金
             BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
-            stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(),biddingDetailDTO.getStockAmt());
+            stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(), biddingDetailDTO.getStockAmt());
         }
 
         return new CSResponse();
     }
 
-    public CSResponse backoutAudit(OrderCheckDTO orderCheckDTO){
+    public CSResponse backoutAudit(OrderCheckDTO orderCheckDTO) {
         //审核新增记录
         stockService.releaseAudit(orderCheckDTO);
 
         //修改订单状态
-        if (0 == orderCheckDTO.getCheckingResult()){
-            stockService.updateOrderState(orderCheckDTO.getOrderNo(),5);
+        if (0 == orderCheckDTO.getCheckingResult()) {
+            stockService.updateOrderState(orderCheckDTO.getOrderNo(), 5);
 
             //发布审核不通过。还原冻结资金
             BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
-            stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(),biddingDetailDTO.getStockAmt());
-        }else{
+            stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(), biddingDetailDTO.getStockAmt());
+        } else {
 
             BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
             Date now = new Date();
             int spanTime = biddingDetailDTO.getExpireTime().compareTo(now);
-            if(spanTime<0){
+            if (spanTime < 0) {
                 //该订单已结束
                 return new CSResponse(ErrorCode.ORDER_IS_OVER);
             }
 
-            stockService.updateOrderState(orderCheckDTO.getOrderNo(),4);
+            stockService.updateOrderState(orderCheckDTO.getOrderNo(), 4);
         }
 
         return new CSResponse();
     }
 
     @Override
-    public CSResponse confirmOrder(ConfirmVO confirmVO,Long userId) {
+    public CSResponse confirmOrder(ConfirmVO confirmVO, Long userId) {
         String orderNo = confirmVO.getOrderNo();
         //确认者（1：买家，2：卖家，3：管理员）
         Integer confirmUser = confirmVO.getConfirmUser();
         BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderNo);
-        if(biddingDetailDTO == null){
+        if (biddingDetailDTO == null) {
             //没有找到竞拍订单
             return new CSResponse(ErrorCode.NOT_FIND_BIDDING);
         }
-        if(biddingDetailDTO.getOrderStatus() !=6){
+        if (biddingDetailDTO.getOrderStatus() != 6) {
             //订单状态无效
             return new CSResponse(ErrorCode.INVALID_ORDER);
         }
-        if(confirmUser ==1){
+        if (confirmUser == 1) {
             //买家确认
-            if(biddingDetailDTO.getMaxBidder() != userId){
+            if (biddingDetailDTO.getMaxBidder() != userId) {
                 //非本人订单
                 return new CSResponse(ErrorCode.INVALID_USER);
             }
-            if(biddingDetailDTO.getBuyerConfirm() !=null && biddingDetailDTO.getBuyerConfirm() ==1){
+            if (biddingDetailDTO.getBuyerConfirm() != null && biddingDetailDTO.getBuyerConfirm() == 1) {
                 //该订单已被确认
                 return new CSResponse(ErrorCode.HAS_CONFIRM_ORDER);
             }
-            if(biddingDetailDTO.getSellerConfirm()!=null && biddingDetailDTO.getSellerConfirm() ==1){
+            if (biddingDetailDTO.getSellerConfirm() != null && biddingDetailDTO.getSellerConfirm() == 1) {
                 //双方已确认，订单结算
-                stockService.confirmOrder(7,null,1,orderNo);
-                userService.balanceOrder(biddingDetailDTO.getStockAmt(),biddingDetailDTO.getSellerId());
+                stockService.confirmOrder(7, null, 1, orderNo);
+                userService.balanceOrder(biddingDetailDTO.getStockAmt(), biddingDetailDTO.getSellerId());
 
-            }else{
-                stockService.confirmOrder(null,null,1,orderNo);
+            } else {
+                stockService.confirmOrder(null, null, 1, orderNo);
             }
         }
-        if(confirmUser ==2){
+        if (confirmUser == 2) {
             //卖家确认
-            if(biddingDetailDTO.getSellerId() != userId){
+            if (biddingDetailDTO.getSellerId() != userId) {
                 //非本人订单
                 return new CSResponse(ErrorCode.INVALID_USER);
             }
-            if(biddingDetailDTO.getSellerConfirm() !=null &&biddingDetailDTO.getSellerConfirm() ==1){
+            if (biddingDetailDTO.getSellerConfirm() != null && biddingDetailDTO.getSellerConfirm() == 1) {
                 //该订单已被确认
                 return new CSResponse(ErrorCode.HAS_CONFIRM_ORDER);
             }
-            if(biddingDetailDTO.getBuyerConfirm() != null && biddingDetailDTO.getBuyerConfirm() ==1){
+            if (biddingDetailDTO.getBuyerConfirm() != null && biddingDetailDTO.getBuyerConfirm() == 1) {
                 //双方已确认，订单结算
-                stockService.confirmOrder(7,1,null,orderNo);
-                userService.balanceOrder(biddingDetailDTO.getStockAmt(),biddingDetailDTO.getSellerId());
-            }else{
-                stockService.confirmOrder(null,1,null,orderNo);
+                stockService.confirmOrder(7, 1, null, orderNo);
+                userService.balanceOrder(biddingDetailDTO.getStockAmt(), biddingDetailDTO.getSellerId());
+            } else {
+                stockService.confirmOrder(null, 1, null, orderNo);
             }
         }
-        if(confirmUser ==3){
-            stockService.updateOrderState(orderNo,7);
+        if (confirmUser == 3) {
+            stockService.updateOrderState(orderNo, 7);
             //结算订单
-            userService.balanceOrder(biddingDetailDTO.getStockAmt(),biddingDetailDTO.getSellerId());
+            userService.balanceOrder(biddingDetailDTO.getStockAmt(), biddingDetailDTO.getSellerId());
         }
         return new CSResponse();
     }
@@ -426,8 +426,8 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         stockService.updateStatus();
         List<OrderDTO> orderList = stockService.getPassOrder();
         //结算流拍订单的个人股权
-        for (OrderDTO orderDTO : orderList){
-            stockService.restoreFrozenStocks(orderDTO.getSellerId(),orderDTO.getStockAmt());
+        for (OrderDTO orderDTO : orderList) {
+            stockService.restoreFrozenStocks(orderDTO.getSellerId(), orderDTO.getStockAmt());
         }
         //更新流拍的订单状态
         stockService.updateStatus2Pass();
@@ -435,37 +435,38 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
 
     /**
      * 发送邮件
-     * @param OrderNo  订单号
+     *
+     * @param OrderNo 订单号
      * @param type    1发布  2竞价更新
      */
-    public boolean sendEmail(String OrderNo,int type){
-    if(StringUtils.isBlank(OrderNo)||!(type==1||type==2)){
-        return false;
-    }
-    if(fileServerOutPath==null){
-        fileServerOutPath = BusinessConfUtil.get("sys.root.address");
-    }
-     //根据orderNo拿到order实体
-    BiddingDetailDTO orderDetail = stockService.getOrderDetail(OrderNo);
-    //拿到所有用户的邮箱
-        ArrayList<String> mails =  userService.getMailList();
+    public boolean sendEmail(String OrderNo, int type) {
+        if (StringUtils.isBlank(OrderNo) || !(type == 1 || type == 2)) {
+            return false;
+        }
+//    if(fileServerOutPath==null){
+//        fileServerOutPath = BusinessConfUtil.get("sys.root.address");
+//    }
+        //根据orderNo拿到order实体
+        BiddingDetailDTO orderDetail = stockService.getOrderDetail(OrderNo);
+        //拿到所有用户的邮箱
+        ArrayList<String> mails = userService.getMailList();
         String str = StringUtils.join(mails.toArray(), ",");
         try {
             SendMail sm = new SendMail();
             String subject;
-            if(type == 1){
-                subject = "新增标的通知，订单号："+orderDetail.getOrderNo() ;
-            }else{
-                subject = "标的竞价更新通知，订单号："+orderDetail.getOrderNo() ;
+            if (type == 1) {
+                subject = "新增标的通知，订单号：" + orderDetail.getOrderNo();
+            } else {
+                subject = "标的竞价更新通知，订单号：" + orderDetail.getOrderNo();
             }
             sm.setAddress(Constants.FROM, str, subject);
             StringBuffer txt = new StringBuffer();
-            txt.append( "您好：");
+            txt.append("您好：");
             txt.append("<br/>");
-            if(type == 1){
-                txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新增标的，订单号：" + orderDetail.getOrderNo() + ",起拍价:" + orderDetail.getInitialPrice()+",请注意查看。" );
-            }else{
-                txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标的竞价更新，订单号：" + orderDetail.getOrderNo() + ",起拍价:" + orderDetail.getInitialPrice()+ ",当前最高出价:" + orderDetail.getMaxBiddingPrice()+",请注意查看。" );
+            if (type == 1) {
+                txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新增标的，订单号：" + orderDetail.getOrderNo() + ",起拍价:" + orderDetail.getInitialPrice() + ",请注意查看。");
+            } else {
+                txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标的竞价更新，订单号：" + orderDetail.getOrderNo() + ",起拍价:" + orderDetail.getInitialPrice() + ",当前最高出价:" + orderDetail.getMaxBiddingPrice() + ",请注意查看。");
 
             }
 //            txt.append("详情请点击链接获取");
@@ -478,7 +479,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
             return true;
         } catch (Exception e) {
             LOGGER.error("发送失败：" + e.toString());
-            return  false;
+            return false;
         }
     }
 
