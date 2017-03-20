@@ -39,6 +39,8 @@ public interface IUserService {
 
     public int addUser(AddUserVO addUserVO) ;
 
+    ArrayList<String> getMailList();
+
     public Long getEmployeeTotalNum();
 
     public void deleteEmployee(Long userId, Long curUserId);

@@ -1,5 +1,7 @@
 package cn.nanmi.msts.web.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.BodyPart;
@@ -55,8 +57,18 @@ public class SendMail {
         
         try {
 			message.setFrom(new InternetAddress(from));
-            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
-            message.setSubject(subject);
+//            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+//多个收件人
+//			List list = new ArrayList();//不能使用string类型的类型，这样只能发送一个收件人
+//			String []median=to.split(",");//对输入的多个邮件进行逗号分割
+//			for(int i=0;i<median.length;i++){
+//				list.add(new InternetAddress(median[i]));
+//			}
+//			InternetAddress[] internetAddressTo =(InternetAddress[])list.toArray(new InternetAddress[list.size()]);
+			InternetAddress[] internetAddressTo = new InternetAddress().parse(to);
+			message.setRecipients(Message.RecipientType.TO, internetAddressTo);
+
+			message.setSubject(subject);
             
             // 向multipart对象中添加邮件的各个部分内容，包括文本内容和附件
             Multipart multipart = new MimeMultipart();

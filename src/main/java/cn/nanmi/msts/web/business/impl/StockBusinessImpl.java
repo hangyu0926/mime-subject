@@ -1,7 +1,9 @@
 package cn.nanmi.msts.web.business.impl;
 
 import cn.nanmi.msts.web.business.IStockBusiness;
+import cn.nanmi.msts.web.business.IUserBusiness;
 import cn.nanmi.msts.web.core.ConstantHelper;
+import cn.nanmi.msts.web.core.Constants;
 import cn.nanmi.msts.web.dao.entities.OperationEntity;
 import cn.nanmi.msts.web.dao.entities.TransactionEntity;
 import cn.nanmi.msts.web.enums.ErrorCode;
@@ -11,12 +13,16 @@ import cn.nanmi.msts.web.service.IOperationService;
 import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.service.ITransactionService;
 import cn.nanmi.msts.web.service.IUserService;
+import cn.nanmi.msts.web.utils.BusinessConfUtil;
+import cn.nanmi.msts.web.utils.DateUtil;
 import cn.nanmi.msts.web.utils.MathUtil;
+import cn.nanmi.msts.web.utils.SendMail;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
 import cn.nanmi.msts.web.web.vo.in.ConfirmVO;
 import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
 import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 import cn.nanmi.msts.web.web.vo.out.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +41,7 @@ import java.util.List;
  * Time: 9:31
  */
 @Component("stockBusiness")
-public class StockBusinessImpl implements IStockBusiness {
+public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusiness {
 
     @Resource
     private IStockService stockService;
@@ -45,23 +51,24 @@ public class StockBusinessImpl implements IStockBusiness {
     private ITransactionService transactionService;
     @Resource
     private IUserService userService;
+    private String fileServerOutPath;
 
     @Override
-    public CSResponse getBiddingList(PagedQueryVO queryVO,Long bidderId) {
+    public CSResponse getBiddingList(PagedQueryVO queryVO, Long bidderId) {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
         page = page - 1;
-        int startPage = page * pageSize ;
+        int startPage = page * pageSize;
 
         List<BiddingVO> biddingVOList = new ArrayList<>();
         //分页查询
-        List<BiddingDTO> biddingList = stockService.getBiddingList(startPage,pageSize,bidderId);
-        if(biddingList != null && biddingList.size()>0){
-            for(BiddingDTO biddingDTO :biddingList){
+        List<BiddingDTO> biddingList = stockService.getBiddingList(startPage, pageSize, bidderId);
+        if (biddingList != null && biddingList.size() > 0) {
+            for (BiddingDTO biddingDTO : biddingList) {
                 BiddingVO biddingVO = new BiddingVO(biddingDTO);
                 if(biddingDTO.getMaxBidder()!=null && biddingDTO.getMaxBidder().equals(bidderId)){
                     biddingVO.setBiddingState(2);
-                }else{
+                } else {
                     biddingVO.setBiddingState(1);
                 }
                 biddingVOList.add(biddingVO);
@@ -75,11 +82,11 @@ public class StockBusinessImpl implements IStockBusiness {
         return new CSResponse(biddingListVO);
     }
 
-    public void releaseOrder(OrderDTO orderDTO){
+    public void releaseOrder(OrderDTO orderDTO) {
         stockService.releaseOrder(orderDTO);
 
         //减去可售股权数，冻结该笔订单股权
-        stockService.frozenStocks(orderDTO.getSellerId(),orderDTO.getStockAmt());
+        stockService.frozenStocks(orderDTO.getSellerId(), orderDTO.getStockAmt());
 
         //新增用户流水
         TransactionEntity transactionEntity = new TransactionEntity();
@@ -90,22 +97,22 @@ public class StockBusinessImpl implements IStockBusiness {
         transactionService.addTransRecord(transactionEntity);
     }
 
-    public CSResponse getMyOrder(PagedQueryVO queryVO,Long userId){
+    public CSResponse getMyOrder(PagedQueryVO queryVO, Long userId) {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
-        int startPage = (page - 1) * pageSize ;
-        List<OrderDTO> orderDTOList = stockService.getMyOrder(startPage,pageSize,userId);
+        int startPage = (page - 1) * pageSize;
+        List<OrderDTO> orderDTOList = stockService.getMyOrder(startPage, pageSize, userId);
 
         //总页数
         Long count = stockService.getMyOrderCount(userId);
-        OrderListVO   orderListVO = new OrderListVO();
+        OrderListVO orderListVO = new OrderListVO();
         orderListVO.setOrderDTOList(orderDTOList);
         orderListVO.setTotalCount(count);
         return new CSResponse(orderListVO);
     }
 
-    public void backoutOrder(String orderNo){
-        stockService.updateOrderState(orderNo,3);
+    public void backoutOrder(String orderNo) {
+        stockService.updateOrderState(orderNo, 3);
 
         BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderNo);
 
@@ -129,55 +136,56 @@ public class StockBusinessImpl implements IStockBusiness {
     }
 
     @Override
-    public CSResponse bidStock(BidStockVO bidStockVO,UserDTO user) {
+    public CSResponse bidStock(BidStockVO bidStockVO, UserDTO user) {
         String orderNo = bidStockVO.getOrderNo();
         Double myPrice = bidStockVO.getBiddingPrice();
         BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderNo);
-        if(biddingDetailDTO == null){
+        if (biddingDetailDTO == null) {
             //没有找到竞拍订单
             return new CSResponse(ErrorCode.NOT_FIND_BIDDING);
         }
-        if(biddingDetailDTO.getOrderStatus() !=3 && biddingDetailDTO.getOrderStatus() !=4){
+        if (biddingDetailDTO.getOrderStatus() != 3 && biddingDetailDTO.getOrderStatus() != 4) {
             //订单状态无效
             return new CSResponse(ErrorCode.INVALID_ORDER);
         }
-        if(biddingDetailDTO.getSellerId() == user.getUserId()){
+        if (biddingDetailDTO.getSellerId() == user.getUserId()) {
             //不能竞拍自己的标的
             return new CSResponse(ErrorCode.FORBID_BIDDING_YOURSELF);
         }
         Date now = new Date();
         int spanTime = biddingDetailDTO.getExpireTime().compareTo(now);
-        if(spanTime<0){
+        if (spanTime < 0) {
             //该订单已结束
             return new CSResponse(ErrorCode.ORDER_IS_OVER);
         }
-        Double bidMakeup =  MathUtil.sub(myPrice,biddingDetailDTO.getMaxBiddingPrice());
-        if(bidMakeup <= 0 ){
+        Double bidMakeup = MathUtil.sub(myPrice, biddingDetailDTO.getMaxBiddingPrice());
+        if (bidMakeup <= 0) {
             //您的出价低于当前竞价
             return new CSResponse(ErrorCode.YOUR_PRICE_LOWER);
         }
-        if(bidMakeup<biddingDetailDTO.getMinMakeUp()){
+        if (bidMakeup < biddingDetailDTO.getMinMakeUp()) {
             //您的加价低于最低限制
             return new CSResponse(ErrorCode.LOWER_MIN_MAKEUP);
         }
-        if(bidMakeup>biddingDetailDTO.getMaxMakeUp()){
+        if (bidMakeup > biddingDetailDTO.getMaxMakeUp()) {
             //您的加价高于最高限制
             return new CSResponse(ErrorCode.GREATER_MAX_MAKEUP);
         }
-        synchronized(orderNo){
-            takeBidding(bidStockVO,user.getUserId());
+        synchronized (orderNo) {
+            takeBidding(bidStockVO, user.getUserId());
         }
         return new CSResponse();
     }
 
     /**
      * 竞拍订单操作
+     *
      * @param bidStockVO
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    private void takeBidding(BidStockVO bidStockVO,Long userId){
+    private void takeBidding(BidStockVO bidStockVO, Long userId) {
         //更新订单表,最高出价、最高出价人
-        stockService.updateOrderBidding(bidStockVO.getBiddingPrice(),userId,bidStockVO.getOrderNo());
+        stockService.updateOrderBidding(bidStockVO.getBiddingPrice(), userId, bidStockVO.getOrderNo());
 
         //用户状态表，新增或更新用户ID、订单号、金额、操作类型
         OperationEntity operationEntity = new OperationEntity();
@@ -196,25 +204,25 @@ public class StockBusinessImpl implements IStockBusiness {
         transactionService.addTransRecord(transactionEntity);
     }
 
-    public SystemRules getSystemRules(){
+    public SystemRules getSystemRules() {
         return stockService.getSystemRules();
     }
 
-    public CSResponse beConfirmedList(PagedQueryVO queryVO){
+    public CSResponse beConfirmedList(PagedQueryVO queryVO) {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
-        int startPage = (page - 1) * pageSize ;
-        List<OrderDTO> orderDTOList = stockService.beConfirmedList(startPage,pageSize);
+        int startPage = (page - 1) * pageSize;
+        List<OrderDTO> orderDTOList = stockService.beConfirmedList(startPage, pageSize);
 
         //总页数
         Long count = stockService.beConfirmedListCount();
-        OrderListVO   orderListVO = new OrderListVO();
+        OrderListVO orderListVO = new OrderListVO();
         orderListVO.setOrderDTOList(orderDTOList);
         orderListVO.setTotalCount(count);
         return new CSResponse(orderListVO);
     }
 
-    public CSResponse releaseAuditList(PagedQueryVO queryVO){
+    public CSResponse releaseAuditList(PagedQueryVO queryVO) {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
         int startPage = (page - 1) * pageSize ;
@@ -222,13 +230,13 @@ public class StockBusinessImpl implements IStockBusiness {
 
         //总页数
         Long count = stockService.releaseAuditListCount();
-        OrderListVO   orderListVO = new OrderListVO();
+        OrderListVO orderListVO = new OrderListVO();
         orderListVO.setOrderDTOList(orderDTOList);
         orderListVO.setTotalCount(count);
         return new CSResponse(orderListVO);
     }
 
-    public CSResponse backoutAuditList(PagedQueryVO queryVO){
+    public CSResponse backoutAuditList(PagedQueryVO queryVO) {
         int page = queryVO.getPageNo();
         int pageSize = queryVO.getPageSize();
         int startPage = (page - 1) * pageSize ;
@@ -236,7 +244,7 @@ public class StockBusinessImpl implements IStockBusiness {
 
         //总页数
         Long count = stockService.backoutAuditListCount();
-        OrderListVO   orderListVO = new OrderListVO();
+        OrderListVO orderListVO = new OrderListVO();
         orderListVO.setOrderDTOList(orderDTOList);
         orderListVO.setTotalCount(count);
         return new CSResponse(orderListVO);
@@ -255,25 +263,25 @@ public class StockBusinessImpl implements IStockBusiness {
         int page = pagedQueryVO.getPageNo();
         int pageSize = pagedQueryVO.getPageSize();
         page = page - 1;
-        int startPage = page * pageSize ;
+        int startPage = page * pageSize;
 
-        List<MyBiddingDTO> myBiddingDTOList = operationService.getMyBiddingRecord(startPage,pageSize,userId);
+        List<MyBiddingDTO> myBiddingDTOList = operationService.getMyBiddingRecord(startPage, pageSize, userId);
         Long count = operationService.getMyBiddingRecordCount(userId);
 
         List<MyBiddingVO> myBiddingVOList = new ArrayList<>();
-        if(myBiddingDTOList !=null && myBiddingDTOList.size()>0){
-            for(MyBiddingDTO myBiddingDTO:myBiddingDTOList){
+        if (myBiddingDTOList != null && myBiddingDTOList.size() > 0) {
+            for (MyBiddingDTO myBiddingDTO : myBiddingDTOList) {
                 MyBiddingVO myBiddingVO = new MyBiddingVO(myBiddingDTO);
-                if(myBiddingDTO.getOrderState() ==3 ){
+                if (myBiddingDTO.getOrderState() == 3) {
                     //撤销审核中状态前端显示交易中
                     myBiddingVO.setOrderState(4);
-                }else{
+                } else {
                     myBiddingVO.setOrderState(myBiddingDTO.getOrderState());
                 }
-                if(myBiddingDTO.getBidderId() != userId){
+                if (myBiddingDTO.getBidderId() != userId) {
                     //竞拍失败
                     myBiddingVO.setBiddingState(1);
-                }else{
+                } else {
                     //最高出价
                     myBiddingVO.setBiddingState(2);
                 }
@@ -290,9 +298,9 @@ public class StockBusinessImpl implements IStockBusiness {
     public CSResponse updateConfig(HttpServletRequest request, UpdateConfigVO updateConfigVO) {
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
-       if(user.getPermissionId()!=1){
-           return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
-       }
+        if (user.getPermissionId() != 1) {
+            return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
+        }
         stockService.insertNewConfig(updateConfigVO);
         return new CSResponse();
     }
@@ -424,4 +432,55 @@ public class StockBusinessImpl implements IStockBusiness {
         //更新流拍的订单状态
         stockService.updateStatus2Pass();
     }
+
+    /**
+     * 发送邮件
+     * @param OrderNo  订单号
+     * @param type    1发布  2竞价更新
+     */
+    public boolean sendEmail(String OrderNo,int type){
+    if(StringUtils.isBlank(OrderNo)||!(type==1||type==2)){
+        return false;
+    }
+    if(fileServerOutPath==null){
+        fileServerOutPath = BusinessConfUtil.get("sys.root.address");
+    }
+     //根据orderNo拿到order实体
+    BiddingDetailDTO orderDetail = stockService.getOrderDetail(OrderNo);
+    //拿到所有用户的邮箱
+        ArrayList<String> mails =  userService.getMailList();
+        String str = StringUtils.join(mails.toArray(), ",");
+        try {
+            SendMail sm = new SendMail();
+            String subject;
+            if(type == 1){
+                subject = "新增标的通知，订单号："+orderDetail.getOrderNo() ;
+            }else{
+                subject = "标的竞价更新通知，订单号："+orderDetail.getOrderNo() ;
+            }
+            sm.setAddress(Constants.FROM, str, subject);
+            StringBuffer txt = new StringBuffer();
+            txt.append( "您好：");
+            txt.append("<br/>");
+            if(type == 1){
+                txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新增标的，订单号：" + orderDetail.getOrderNo() + ",起拍价:" + orderDetail.getInitialPrice()+",请注意查看。" );
+            }else{
+                txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标的竞价更新，订单号：" + orderDetail.getOrderNo() + ",起拍价:" + orderDetail.getInitialPrice()+ ",当前最高出价:" + orderDetail.getMaxBiddingPrice()+",请注意查看。" );
+
+            }
+//            txt.append("详情请点击链接获取");
+//            txt.append("<a href='" + fileServerOutPath+"/msts/views" + "'>" + attach.getUrl() + "</a>");
+            txt.append("<br/>");
+            txt.append("<br/>");
+            txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;米么股权系统");
+
+            sm.send(Constants.HOST, Constants.USER, Constants.PWD, txt.toString());
+            return true;
+        } catch (Exception e) {
+            LOGGER.error("发送失败：" + e.toString());
+            return  false;
+        }
+    }
+
+
 }

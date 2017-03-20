@@ -55,6 +55,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public ArrayList<String> getMailList() {
+        return userMapper.getMailList();
+    }
+
+    @Override
     public Long getEmployeeTotalNum() {
         return userMapper.getEmployeeTotalNum();
     }

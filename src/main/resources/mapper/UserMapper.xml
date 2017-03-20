@@ -100,7 +100,13 @@
          ORDER BY USER_ID ASC
         limit #{startPage},#{pageSize}
     </select>
-
+    <select id="getMailList" resultType="java.lang.String">
+        SELECT
+        LOGIN_NAME
+        FROM USER
+        WHERE DEL_FLAG=0
+        ORDER BY USER_ID ASC
+    </select>
 
     <update id="deleteEmployee">
         UPDATE USER SET
