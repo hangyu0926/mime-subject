@@ -30,7 +30,9 @@ $(function() {
         $(this).css("overflow-y", "hidden");
         $("body").css({"overflow": "auto", "margin-right": "0px"});
     })
-
+    //顶栏用户名
+    var name=localStorage.getItem("name");
+    $(".nav-head-userName").text(name);
 });
 
 // 修改密码
@@ -121,3 +123,4 @@ global_ajax("passModify", {
         window.location.href = "login.html";
     })
 };
+

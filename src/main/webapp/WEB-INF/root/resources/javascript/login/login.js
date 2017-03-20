@@ -26,20 +26,21 @@ String.prototype.trim = function() {
 		"userMail":userName,
 		"password":userPassword
 	},function(data){
+		var name=data.detailInfo.userName;
+		localStorage.setItem("name", name);
 		window.location.href="/msts/views/goToAuction.html?id="+data.code;
 	},"post",function(data){
 		global_dialog.error(data.desc,function(){
 			closeAlertDialog();
 		});
-	})
+	});
 };
 
 ;function findPass(){
 	$("#loginIn").hide();
 	$("#register").hide();
 	$("#findPass").show();
-}
-
+};
 //注册
 ;function doRegister(){
 	var username=$("#register_username").val();

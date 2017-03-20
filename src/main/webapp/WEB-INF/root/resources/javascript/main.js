@@ -50,5 +50,5 @@ var global_ajax = function(urlKey, params, callback, method, error) {
         		error(data);
         	}
         }
-    })
+    });
 };

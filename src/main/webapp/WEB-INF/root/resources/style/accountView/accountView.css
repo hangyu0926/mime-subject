@@ -117,3 +117,9 @@
 .modal-body-font{
 	font-size: 16px;
 }
+.modal-header{
+	border-bottom: none;
+}
+.modal-body-font-header{
+	font-size: 18px;
+}
