@@ -125,5 +125,11 @@
         SELECT COUNT(1) FROM USER WHERE LOGIN_NAME=#{email} AND DEL_FLAG=0
     </select>
 
+    <update id="frozenStocks" >
+        UPDATE USER  SET STOCKS_SALE_AMT = STOCKS_SALE_AMT - #{stockAmt},FROZEN_STOCKS = FROZEN_STOCKS +  #{stockAmt} WHERE USER_ID = #{sellId}
+    </update>
 
+    <update id="restoreFrozenStocks" >
+        UPDATE USER  SET STOCKS_SALE_AMT = STOCKS_SALE_AMT + #{stockAmt},FROZEN_STOCKS = FROZEN_STOCKS -  #{stockAmt} WHERE USER_ID = #{sellId}
+    </update>
 </mapper>

@@ -1,6 +1,7 @@
 package cn.nanmi.msts.web.service.impl;
 
 import cn.nanmi.msts.web.dao.OrderMapper;
+import cn.nanmi.msts.web.dao.UserMapper;
 import cn.nanmi.msts.web.model.*;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.service.IStockService;
@@ -21,6 +22,9 @@ public class StockServiceImpl implements IStockService {
     @Resource
     private OrderMapper orderMapper;
 
+    @Resource
+    private UserMapper userMapper;
+
     public void releaseOrder(OrderDTO orderDTO){
 
          orderMapper.releaseOrder(orderDTO);
@@ -28,12 +32,12 @@ public class StockServiceImpl implements IStockService {
 
     public void restoreFrozenStocks(Long sellId,Double stockAmt){
 
-        orderMapper.restoreFrozenStocks(sellId,stockAmt);
+        userMapper.restoreFrozenStocks(sellId,stockAmt);
     }
 
     public void frozenStocks(Long sellId,Double stockAmt){
 
-        orderMapper.frozenStocks(sellId,stockAmt);
+        userMapper.frozenStocks(sellId,stockAmt);
     }
 
     @Override

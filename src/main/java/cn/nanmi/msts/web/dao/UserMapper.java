@@ -46,4 +46,8 @@ public interface UserMapper {
 
     Long getEmployeeNum(GetUserPageListVO getVO);
 
+    void frozenStocks(@Param("sellId")Long sellId,@Param("stockAmt")Double stockAmt);
+
+    void restoreFrozenStocks(@Param("sellId")Long sellId,@Param("stockAmt")Double stockAmt);
+
 }
