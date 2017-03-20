@@ -23,7 +23,7 @@ public interface OrderMapper {
 
     List<OrderDTO> getMyOrder(@Param("startPage")int startPage, @Param("pageSize")int pageSize, @Param("userId") Long userId);
 
-    void backoutOrder(@Param("orderNo")String orderNo);
+    void updateOrderState(@Param("orderNo")String orderNo,@Param("orderState")int orderState);
 
     SystemRules getSystemRules();
 
@@ -36,4 +36,6 @@ public interface OrderMapper {
     void updateOrderBidding(@Param("biddingPrice")Double biddingPrice,@Param("bidderId")Long bidderId,@Param("orderNo")String orderNo);
 
     JumpReleaseOrderDTO jumpReleaseOrder(@Param("userId") Long userId);
+
+    void releaseAudit(OrderCheckDTO orderCheckDTO);
 }

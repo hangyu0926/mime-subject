@@ -92,7 +92,7 @@ public class StockBusinessImpl implements IStockBusiness {
     }
 
     public void backoutOrder(String orderNo){
-        stockService.backoutOrder(orderNo);
+        stockService.updateOrderState(orderNo,3);
 
         BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderNo);
 
@@ -234,5 +234,31 @@ public class StockBusinessImpl implements IStockBusiness {
 
 
         return null;
+    }
+
+    public void releaseAudit(OrderCheckDTO orderCheckDTO){
+        //审核新增记录
+        stockService.releaseAudit(orderCheckDTO);
+
+        //修改订单状态
+        if (0 == orderCheckDTO.getCheckingResult()){
+            stockService.updateOrderState(orderCheckDTO.getOrderNo(),4);
+        }else{
+            stockService.updateOrderState(orderCheckDTO.getOrderNo(),2);
+        }
+
+    }
+
+    public void backoutAudit(OrderCheckDTO orderCheckDTO){
+        //审核新增记录
+        stockService.releaseAudit(orderCheckDTO);
+
+        //修改订单状态
+        if (0 == orderCheckDTO.getCheckingResult()){
+            stockService.updateOrderState(orderCheckDTO.getOrderNo(),5);
+        }else{
+            stockService.updateOrderState(orderCheckDTO.getOrderNo(),4);
+        }
+
     }
 }

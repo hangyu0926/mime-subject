@@ -3,6 +3,7 @@ package cn.nanmi.msts.web.web.controller;
 import cn.nanmi.msts.web.business.IStockBusiness;
 import cn.nanmi.msts.web.core.ConstantHelper;
 import cn.nanmi.msts.web.enums.ErrorCode;
+import cn.nanmi.msts.web.model.OrderCheckDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.SystemRules;
 import cn.nanmi.msts.web.model.UserDTO;
@@ -278,6 +279,74 @@ public class StockController {
         }
 
         return stockBusiness.backoutAuditList(queryVO);
+    }
+
+    /**
+     * 发布审核通过/不通过
+     * @param request
+     */
+    @RequestMapping(value = "releaseAudit")
+    @ResponseBody
+    public CSResponse releaseAudit(HttpServletRequest request,@RequestBody Map map){
+        /*   HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        if(user == null){
+            return new CSResponse(ErrorCode.SESSION_ERROR);
+        }*/
+
+        if(map == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(null == map.get("orderNo") || null == map.get("checkingResult")){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        OrderCheckDTO orderCheckDTO = new OrderCheckDTO();
+        /*orderCheckDTO.setAuditor(user.getUserName());*/
+        orderCheckDTO.setAuditor(2);
+        orderCheckDTO.setTransId(UUID.randomUUID().toString().replace("-", ""));
+        orderCheckDTO.setOrderNo(map.get("orderNo").toString());
+        orderCheckDTO.setCheckingType(1);
+        orderCheckDTO.setCheckingView(null == map.get("checkingView") ? "" : map.get("checkingView").toString());
+        orderCheckDTO.setCheckingResult(Integer.valueOf(map.get("checkingResult").toString()));
+
+        stockBusiness.releaseAudit(orderCheckDTO);
+
+        return null;
+    }
+
+    /**
+     * 撤销审核通过/不通过
+     * @param request
+     */
+    @RequestMapping(value = "backoutAudit")
+    @ResponseBody
+    public CSResponse backoutAudit(HttpServletRequest request,@RequestBody Map map){
+        /*   HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        if(user == null){
+            return new CSResponse(ErrorCode.SESSION_ERROR);
+        }*/
+
+        if(map == null ){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+        if(null == map.get("orderNo") || null == map.get("checkingResult")){
+            return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        OrderCheckDTO orderCheckDTO = new OrderCheckDTO();
+        /*orderCheckDTO.setAuditor(user.getUserName());*/
+        orderCheckDTO.setAuditor(2);
+        orderCheckDTO.setTransId(UUID.randomUUID().toString().replace("-", ""));
+        orderCheckDTO.setOrderNo(map.get("orderNo").toString());
+        orderCheckDTO.setCheckingType(2);
+        orderCheckDTO.setCheckingView(null == map.get("checkingView") ? "" : map.get("checkingView").toString());
+        orderCheckDTO.setCheckingResult(Integer.valueOf(map.get("checkingResult").toString()));
+
+        stockBusiness.backoutAudit(orderCheckDTO);
+
+        return null;
     }
 
     /**

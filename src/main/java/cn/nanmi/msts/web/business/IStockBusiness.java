@@ -1,5 +1,6 @@
 package cn.nanmi.msts.web.business;
 
+import cn.nanmi.msts.web.model.OrderCheckDTO;
 import cn.nanmi.msts.web.model.OrderDTO;
 import cn.nanmi.msts.web.model.SystemRules;
 import cn.nanmi.msts.web.model.UserDTO;
@@ -92,4 +93,18 @@ public interface IStockBusiness {
      * @return
      */
     CSResponse getMyBiddingRecord(PagedQueryVO pagedQueryVO,Long userId);
+
+    /**
+     *  发布审核通过/不通过
+     * @param orderCheckDTO
+     * @return
+     */
+    void releaseAudit(OrderCheckDTO orderCheckDTO);
+
+    /**
+     *  撤销审核通过/不通过
+     * @param orderCheckDTO
+     * @return
+     */
+    void backoutAudit(OrderCheckDTO orderCheckDTO);
 }
