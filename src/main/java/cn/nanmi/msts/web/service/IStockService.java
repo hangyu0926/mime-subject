@@ -160,4 +160,12 @@ public interface IStockService {
      * 审核新增记录
      */
     void releaseAudit(OrderCheckDTO orderCheckDTO);
+
+    /**
+     * 卖家、买家、管理员确认订单
+     * @param orderState
+     * @param sellerConfirm
+     * @param buyerConfirm
+     */
+    void confirmOrder(Integer orderState,Integer sellerConfirm,Integer buyerConfirm,String orderNo);
 }

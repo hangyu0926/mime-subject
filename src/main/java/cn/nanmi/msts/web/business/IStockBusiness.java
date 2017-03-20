@@ -6,6 +6,7 @@ import cn.nanmi.msts.web.model.SystemRules;
 import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
+import cn.nanmi.msts.web.web.vo.in.ConfirmVO;
 import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
 import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 
@@ -116,4 +117,10 @@ public interface IStockBusiness {
      * @return
      */
     void backoutAudit(OrderCheckDTO orderCheckDTO);
+
+    /**
+     * 确认订单
+     * @param confirmVO
+     */
+    CSResponse confirmOrder(ConfirmVO confirmVO,Long userId);
 }

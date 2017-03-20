@@ -108,6 +108,8 @@ public enum ErrorCode {
     GREATER_MAX_MAKEUP("5004","您的加价高于最高限制"),
     INVALID_ORDER("5005","订单状态无效"),
     ORDER_IS_OVER("5006","该订单已结束"),
+    INVALID_USER("5007","非法用户"),
+    HAS_CONFIRM_ORDER("5008","该订单已被确认"),
     FORBID_BIDDING_YOURSELF("5010","不能竞拍自己的标的");
 
 	

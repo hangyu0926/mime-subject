@@ -10,6 +10,7 @@ import cn.nanmi.msts.web.model.UserDTO;
 import cn.nanmi.msts.web.response.CSPageResponse;
 import cn.nanmi.msts.web.response.CSResponse;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
+import cn.nanmi.msts.web.web.vo.in.ConfirmVO;
 import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
 import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 import org.apache.commons.lang.StringUtils;
@@ -135,19 +136,26 @@ public class StockController {
      * 确认订单
      *
      * @param request
-     * @param queryVO
      * @return
      */
-    @RequestMapping(value = "confirmOrder",method = RequestMethod.GET)
+    @RequestMapping(value = "confirmOrder")
     @ResponseBody
-    public CSResponse confirmOrder(HttpServletRequest request, @RequestBody PagedQueryVO queryVO) {
-        if (queryVO == null) {
+    public CSResponse confirmOrder(HttpServletRequest request,@RequestBody ConfirmVO confirmVO){
+        if(confirmVO == null){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        if (queryVO.getPageNo() < 0 || queryVO.getPageSize() < 0) {
+        if(StringUtils.isBlank(confirmVO.getOrderNo())){
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
-        return null;
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
+        if(user == null){
+            return new CSResponse(ErrorCode.SESSION_ERROR);
+        }
+        if(confirmVO.getConfirmUser() == 3 && user.getPermissionId() !=1){
+            return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
+        }
+        return stockBusiness.confirmOrder(confirmVO,user.getUserId());
     }
 
     /**

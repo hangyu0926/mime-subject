@@ -212,4 +212,18 @@
         #{checkingView},#{checkingResult},now())
     </insert>
 
+    <update id="confirmOrder">
+        UPDATE USER_ORDER
+        SET
+        <if test="orderState != null">
+            ORDER_STATE = #{orderState},
+        </if>
+        <if test="sellerConfirm != null">
+            SELLER_CONFIRM = #{sellerConfirm}
+        </if>
+        <if test="buyerConfirm != null">
+            BUYER_CONFIRM = #{buyerConfirm}
+        </if>
+        WHERE ORDER_NO = #{orderNo}
+    </update>
 </mapper>

@@ -12,6 +12,7 @@ import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.service.ITransactionService;
 import cn.nanmi.msts.web.utils.MathUtil;
 import cn.nanmi.msts.web.web.vo.in.BidStockVO;
+import cn.nanmi.msts.web.web.vo.in.ConfirmVO;
 import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
 import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 import cn.nanmi.msts.web.web.vo.out.*;
@@ -326,6 +327,65 @@ public class StockBusinessImpl implements IStockBusiness {
         }else{
             stockService.updateOrderState(orderCheckDTO.getOrderNo(),4);
         }
+    }
 
+    @Override
+    public CSResponse confirmOrder(ConfirmVO confirmVO,Long userId) {
+        String orderNo = confirmVO.getOrderNo();
+        //确认者（0：买家，1：卖家，3：管理员）
+        Integer confirmUser = confirmVO.getConfirmUser();
+        BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderNo);
+        if(biddingDetailDTO == null){
+            //没有找到竞拍订单
+            return new CSResponse(ErrorCode.NOT_FIND_BIDDING);
+        }
+        if(biddingDetailDTO.getOrderStatus() !=6){
+            //订单状态无效
+            return new CSResponse(ErrorCode.INVALID_ORDER);
+        }
+        if(confirmUser ==0){
+            //买家确认
+            if(biddingDetailDTO.getMaxBidder() != userId){
+                //非本人订单
+                return new CSResponse(ErrorCode.INVALID_USER);
+            }
+            if(biddingDetailDTO.getBuyerConfirm() ==1){
+                //该订单已被确认
+                return new CSResponse(ErrorCode.HAS_CONFIRM_ORDER);
+            }
+            if(biddingDetailDTO.getSellerId() ==1){
+                //todo 双方已确认，订单结算
+                stockService.confirmOrder(7,null,1,orderNo);
+
+
+
+
+            }else{
+                stockService.confirmOrder(null,null,1,orderNo);
+            }
+        }
+        if(confirmUser ==1){
+            //卖家确认
+            if(biddingDetailDTO.getSellerId() != userId){
+                //非本人订单
+                return new CSResponse(ErrorCode.INVALID_USER);
+            }
+            if(biddingDetailDTO.getSellerConfirm() ==1){
+                //该订单已被确认
+                return new CSResponse(ErrorCode.HAS_CONFIRM_ORDER);
+            }
+            if(biddingDetailDTO.getBuyerConfirm() ==1){
+                //todo 双方已确认，订单结算
+                stockService.confirmOrder(7,1,null,orderNo);
+            }else{
+                stockService.confirmOrder(null,1,null,orderNo);
+            }
+        }
+        if(confirmUser ==3){
+            stockService.updateOrderState(orderNo,7);
+            //结算订单
+
+        }
+        return new CSResponse();
     }
 }

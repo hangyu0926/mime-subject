@@ -126,4 +126,9 @@ public class StockServiceImpl implements IStockService {
     public void releaseAudit(OrderCheckDTO orderCheckDTO) {
         orderMapper.releaseAudit(orderCheckDTO);
     }
+
+    @Override
+    public void confirmOrder(Integer orderState, Integer sellerConfirm, Integer buyerConfirm,String orderNo) {
+        orderMapper.confirmOrder(orderState,sellerConfirm,buyerConfirm,orderNo);
+    }
 }
