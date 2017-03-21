@@ -26,8 +26,11 @@ String.prototype.trim = function() {
 		"userMail":userName,
 		"password":userPassword
 	},function(data){
+		localStorage.clear();
 		var name=data.detailInfo.userName;
 		localStorage.setItem("name", name);
+		var permissionId=data.detailInfo.permissionId;
+		localStorage.setItem("permissionId", permissionId);
 		window.location.href="/msts/views/goToAuction.html?id="+data.code;
 	},"post",function(data){
 		global_dialog.error(data.desc,function(){

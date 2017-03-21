@@ -31,8 +31,17 @@ $(function() {
         $("body").css({"overflow": "auto", "margin-right": "0px"});
     })
     //顶栏用户名
-    var name=localStorage.getItem("name");
+    var name = localStorage.getItem("name");
     $(".nav-head-userName").text(name);
+    //权限1超管
+    var permissionId = localStorage.getItem("permissionId");
+    if(permissionId=="1"){
+        // $(".accountManagement").hide();
+        // $(".admin").hide();
+    }else{
+        $(".accountManagement").hide();
+        $(".admin").hide();
+    }
 });
 
 // 修改密码

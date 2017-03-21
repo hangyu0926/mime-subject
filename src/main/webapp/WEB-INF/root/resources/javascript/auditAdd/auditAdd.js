@@ -22,6 +22,12 @@
 	if(ksgushu.length==0){
 		ksgushu=gushu;
 	};
+	if(ksgushu>gushu){
+		global_dialog.error("可售股权不能大于股权数",function(){
+			closeAlertDialog();
+		});
+		return
+	};
 	gushu=parseInt(gushu);
 	ksgushu=parseInt(ksgushu);
 	global_ajax("addUser",{
