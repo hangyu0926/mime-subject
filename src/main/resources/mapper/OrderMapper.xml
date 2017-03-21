@@ -229,4 +229,8 @@
         </if>
         WHERE ORDER_NO = #{orderNo}
     </update>
+
+    <select id="queryTodayOrder" resultType="java.lang.Long">
+        SELECT count(1) FROM USER_ORDER where ORDER_NO  LIKE '%${curDate}%'
+    </select>
 </mapper>

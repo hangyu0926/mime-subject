@@ -22,6 +22,8 @@ public interface OrderMapper {
 
     void releaseOrder(OrderDTO orderDTO);
 
+    Long queryTodayOrder(@Param("curDate")String curDate);
+
     List<OrderDTO> getMyOrder(@Param("startPage")int startPage, @Param("pageSize")int pageSize, @Param("userId") Long userId);
 
     Long getMyOrderCount(@Param("userId") Long userId);

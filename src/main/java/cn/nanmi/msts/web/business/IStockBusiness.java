@@ -26,7 +26,7 @@ public interface IStockBusiness {
      * @param orderDTO
      * @return
      */
-    void releaseOrder(OrderDTO orderDTO);
+    CSResponse releaseOrder(OrderDTO orderDTO);
 
     /**
      * 我的发布

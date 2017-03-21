@@ -22,6 +22,14 @@ public interface IStockService {
     void releaseOrder(OrderDTO orderDTO);
 
     /**
+     * 查询今日已发布多少订单
+     * @param curDate
+     * @return
+     */
+    Long queryTodayOrder(String curDate);
+
+
+    /**
      * 减去可售股权数，冻结该笔订单股权
      * @param sellId
      */

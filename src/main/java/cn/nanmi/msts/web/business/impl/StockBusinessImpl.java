@@ -82,7 +82,26 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         return new CSResponse(biddingListVO);
     }
 
-    public void releaseOrder(OrderDTO orderDTO) {
+    public CSResponse releaseOrder(OrderDTO orderDTO) {
+        String  curDate = DateUtil.getShortStrDate(new Date());
+
+        long num = stockService.queryTodayOrder(curDate);
+
+        String nums = String.valueOf(num+1);
+
+        if (nums.length() >= 1000){
+            return new CSResponse(ErrorCode.TODAY_RELEASE_HIGHER);
+        }
+
+        if (nums.length() == 1){
+            nums = "00" + nums;
+        }
+        if (nums.length() == 2){
+            nums = "0" + nums;
+        }
+
+        orderDTO.setOrderNo(curDate+nums);
+
         stockService.releaseOrder(orderDTO);
 
         //减去可售股权数，冻结该笔订单股权
@@ -105,6 +124,8 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         }catch (Exception e){
             LOGGER.error("发布股权邮件发送异常，订单号:{}，用户ID:{}",orderDTO.getOrderNo(),orderDTO.getSellerId());
         }
+
+        return new CSResponse();
     }
 
     public CSResponse getMyOrder(PagedQueryVO queryVO, Long userId) {

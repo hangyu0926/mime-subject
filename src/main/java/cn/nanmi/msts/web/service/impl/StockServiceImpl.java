@@ -30,6 +30,11 @@ public class StockServiceImpl implements IStockService {
          orderMapper.releaseOrder(orderDTO);
     }
 
+    public Long queryTodayOrder(String curDate){
+
+        return orderMapper.queryTodayOrder(curDate);
+    }
+
     public void restoreFrozenStocks(Long sellId,Double stockAmt){
 
         userMapper.restoreFrozenStocks(sellId,stockAmt);
