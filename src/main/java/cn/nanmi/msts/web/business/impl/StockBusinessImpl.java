@@ -95,6 +95,9 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         transactionEntity.setTransAmt(orderDTO.getInitialPrice());
         transactionEntity.setTransType(2);
         transactionService.addTransRecord(transactionEntity);
+
+        //发送邮件
+        sendEmail(orderDTO.getOrderNo(),1);
     }
 
     public CSResponse getMyOrder(PagedQueryVO queryVO, Long userId) {
