@@ -177,6 +177,14 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         synchronized (orderNo) {
             takeBidding(bidStockVO, user.getUserId());
         }
+        try{
+            Boolean result = sendEmail(orderNo,2);
+            if(!result){
+                LOGGER.error("竞拍邮件发送失败，订单号:{}，用户ID:{}", orderNo, user.getUserId());
+            }
+        }catch (Exception e){
+            LOGGER.error("竞拍邮件发送异常，订单号:{}，用户ID:{}",orderNo,user.getUserId());
+        }
         return new CSResponse();
     }
 
