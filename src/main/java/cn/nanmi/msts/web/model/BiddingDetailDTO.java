@@ -38,9 +38,13 @@ public class BiddingDetailDTO implements Serializable {
     private Long sysRuleId;
     //备注
     private String remarks;
-    //最小加价
+    //系统最低单价限制
+    private Double minPrice;
+    //系统最高单价限制
+    private Double maxPrice;
+    //最小加价限制
     private Double minMakeUp;
-    //最大加价
+    //最大加价限制
     private Double maxMakeUp;
 
     public BiddingDetailDTO() {
@@ -172,5 +176,21 @@ public class BiddingDetailDTO implements Serializable {
 
     public void setMaxMakeUp(Double maxMakeUp) {
         this.maxMakeUp = maxMakeUp;
+    }
+
+    public Double getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(Double minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public Double getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice = maxPrice;
     }
 }

@@ -189,6 +189,14 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
             //该订单已结束
             return new CSResponse(ErrorCode.ORDER_IS_OVER);
         }
+        if(myPrice < biddingDetailDTO.getMinPrice() ){
+            //您的每股单价小于起拍单价
+            return new CSResponse(ErrorCode.YOUR_RELEASE_LOWER);
+        }
+        if(myPrice > biddingDetailDTO.getMaxPrice() ){
+            //您的每股单价大于最大单价
+            return new CSResponse(ErrorCode.YOUR_RELEASE_HIGHER);
+        }
         Double bidMakeup = MathUtil.sub(myPrice, biddingDetailDTO.getMaxBiddingPrice());
         if (bidMakeup <= 0) {
             //您的出价低于当前竞价

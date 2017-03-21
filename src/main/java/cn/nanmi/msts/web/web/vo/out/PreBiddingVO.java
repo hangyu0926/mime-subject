@@ -18,12 +18,18 @@ public class PreBiddingVO implements Serializable {
     private Double minMakeUp;
     //最大加价
     private Double maxMakeUp;
+    //系统最低单价限制
+    private Double minPrice;
+    //系统最高单价限制
+    private Double maxPrice;
 
     public PreBiddingVO(PreBiddingDTO preBiddingDTO) {
         if(preBiddingDTO != null){
             this.nowPrice = preBiddingDTO.getNowPrice();
             this.minMakeUp = preBiddingDTO.getMinMakeUp();
             this.maxMakeUp = preBiddingDTO.getMaxMakeUp();
+            this.minPrice = preBiddingDTO.getMinPrice();
+            this.maxPrice = preBiddingDTO.getMaxPrice();
         }
     }
 
@@ -49,5 +55,21 @@ public class PreBiddingVO implements Serializable {
 
     public void setMaxMakeUp(Double maxMakeUp) {
         this.maxMakeUp = maxMakeUp;
+    }
+
+    public Double getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(Double minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public Double getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice = maxPrice;
     }
 }
