@@ -113,8 +113,8 @@ public enum ErrorCode {
     FORBID_BIDDING_YOURSELF("5010","不能竞拍自己的标的"),
 
     YOUR_RELEASE_BEYOND("5011","您的发布股权数超出您的可售股权数"),
-    YOUR_RELEASE_LOWER("5012","您的发布股权数小于起拍单价"),
-    YOUR_RELEASE_HIGHER("5013","您的发布股权数大于最大单价");
+    YOUR_RELEASE_LOWER("5012","您的每股单价小于起拍单价"),
+    YOUR_RELEASE_HIGHER("5013","您的每股单价大于最大单价");
 
 	
     /**

@@ -192,15 +192,15 @@ public class StockController {
 
         SystemRules systemRules = stockBusiness.getSystemRules();
 
-        Double bidMakeup1 =  MathUtil.sub(Double.valueOf(map.get("stockAmt").toString()),systemRules.getMinStockPrice());
+        Double bidMakeup1 =  MathUtil.sub(Double.valueOf(map.get("initialPrice").toString()),systemRules.getMinStockPrice());
         if(bidMakeup1 < 0 ){
-            //您的发布股权数小于起拍单价
+            //您的发每股单价小于起拍单价
             return new CSResponse(ErrorCode.YOUR_RELEASE_LOWER);
         }
 
-        Double bidMakeup2 =  MathUtil.sub(Double.valueOf(map.get("stockAmt").toString()),systemRules.getMaxStockPrice());
+        Double bidMakeup2 =  MathUtil.sub(Double.valueOf(map.get("initialPrice").toString()),systemRules.getMaxStockPrice());
         if(bidMakeup2 > 0 ){
-            //您的发布股权数大于最大单价
+            //您的每股单价大于最大单价
             return new CSResponse(ErrorCode.YOUR_RELEASE_HIGHER);
         }
 
