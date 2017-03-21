@@ -359,6 +359,10 @@ public class StockController {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
 
+        if(user.getPermissionId() !=1){
+            return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
+        }
+
         if (map == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
@@ -392,6 +396,10 @@ public class StockController {
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
+        }
+
+        if(user.getPermissionId() !=1){
+            return new CSResponse(ErrorCode.PC_PERMISSION_ERROR);
         }
 
         if (map == null) {

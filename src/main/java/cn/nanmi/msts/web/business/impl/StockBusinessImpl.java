@@ -97,7 +97,14 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         transactionService.addTransRecord(transactionEntity);
 
         //发送邮件
-        sendEmail(orderDTO.getOrderNo(),1);
+        try{
+            Boolean result = sendEmail(orderDTO.getOrderNo(),1);
+            if(!result){
+                LOGGER.error("发布股权邮件发送失败，订单号:{}，用户ID:{}", orderDTO.getOrderNo(), orderDTO.getSellerId());
+            }
+        }catch (Exception e){
+            LOGGER.error("发布股权邮件发送异常，订单号:{}，用户ID:{}",orderDTO.getOrderNo(),orderDTO.getSellerId());
+        }
     }
 
     public CSResponse getMyOrder(PagedQueryVO queryVO, Long userId) {
