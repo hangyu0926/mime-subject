@@ -15,7 +15,7 @@ public class BiddingVO implements Serializable {
     //订单编号
     private String orderNo;
     //订单股权数
-    private Double stockAmt;
+    private Double stocksAmt;
     //起拍单价
     private Double initPrice;
     //当前竞价
@@ -32,7 +32,7 @@ public class BiddingVO implements Serializable {
     public BiddingVO(BiddingDTO biddingDTO) {
         if(biddingDTO !=null){
            this.orderNo = biddingDTO.getOrderNo();
-           this.stockAmt = biddingDTO.getStockAmt();
+           this.stocksAmt = biddingDTO.getStockAmt();
            this.initPrice = biddingDTO.getInitialPrice();
            this.nowPrice = biddingDTO.getMaxBiddingPrice();
            this.sellerName = biddingDTO.getSellerName();
@@ -49,12 +49,12 @@ public class BiddingVO implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public Double getStockAmt() {
-        return stockAmt;
+    public Double getStocksAmt() {
+        return stocksAmt;
     }
 
-    public void setStockAmt(Double stockAmt) {
-        this.stockAmt = stockAmt;
+    public void setStocksAmt(Double stocksAmt) {
+        this.stocksAmt = stocksAmt;
     }
 
     public Double getInitPrice() {
