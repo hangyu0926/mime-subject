@@ -30,8 +30,8 @@ public class Constants {
     public static final String HOST = "smtp.exmail.qq.com";
     public static final String SUBJECT = "附件下载";
     //发件人地址
-    public static final String FROM = "wuyan@xiyucapital.com";
-    public static final String USER = "wuyan@xiyucapital.com";
+    public static final String FROM = "mimeboard@mi-me.com";
+    public static final String USER = "mimeboard@mi-me.com";
     public static final String PWD = "100Days";
     
 }
