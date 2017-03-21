@@ -170,11 +170,11 @@ public class StockController {
     @RequestMapping(value = "releaseOrder")
     @ResponseBody
     public CSResponse releaseOrder(HttpServletRequest request, @RequestBody Map map) {
-      /*  HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
-        }*/
+        }
 
         if (map == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
@@ -184,11 +184,11 @@ public class StockController {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
-       /* Double bidMakeup =  MathUtil.sub(Double.valueOf(map.get("stockAmt").toString()),Double.valueOf(user.getAvailableStock()));
+       Double bidMakeup =  MathUtil.sub(Double.valueOf(map.get("stockAmt").toString()),Double.valueOf(user.getAvailableStock()));
         if(bidMakeup > 0 ){
             //您的发布股权数大于可售股权数
             return new CSResponse(ErrorCode.YOUR_RELEASE_BEYOND);
-        }*/
+        }
 
         SystemRules systemRules = stockBusiness.getSystemRules();
 
@@ -208,15 +208,15 @@ public class StockController {
         orderDTO.setOrderNo(UUID.randomUUID().toString().replace("-", ""));
         orderDTO.setStockAmt(Double.valueOf(map.get("stockAmt").toString()));
         orderDTO.setInitialPrice(Double.valueOf(map.get("initialPrice").toString()));
-        //orderDTO.setSellerId(user.getUserId());
-        orderDTO.setSellerId(1L);
+        orderDTO.setSellerId(user.getUserId());
+        //orderDTO.setSellerId(1L);
 
 
         orderDTO.setSystemRuleId(systemRules.getRuleId());
         orderDTO.setBiddingPeriod(systemRules.getBiddingPeriod());
         stockBusiness.releaseOrder(orderDTO);
 
-        return null;
+        return new CSResponse();
     }
 
     /**
@@ -236,13 +236,14 @@ public class StockController {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
-     /*   HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
 
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
-        }*/
-        return stockBusiness.getMyOrder(queryVO, 1L);
+        }
+        //return stockBusiness.getMyOrder(queryVO, 1L);
+        return stockBusiness.getMyOrder(queryVO, user.getUserId());
     }
 
     /**
@@ -262,7 +263,7 @@ public class StockController {
 
         stockBusiness.backoutOrder(map.get("orderNo").toString());
 
-        return null;
+        return new CSResponse();
     }
 
     /**
@@ -352,11 +353,11 @@ public class StockController {
     @RequestMapping(value = "releaseAudit")
     @ResponseBody
     public CSResponse releaseAudit(HttpServletRequest request, @RequestBody Map map) {
-        /*   HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
-        }*/
+        }
 
         if (map == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
@@ -366,8 +367,8 @@ public class StockController {
         }
 
         OrderCheckDTO orderCheckDTO = new OrderCheckDTO();
-        /*orderCheckDTO.setAuditor(user.getUserName());*/
-        orderCheckDTO.setAuditor(2);
+        orderCheckDTO.setAuditor(user.getUserId());
+        //orderCheckDTO.setAuditor(2);
         orderCheckDTO.setTransId(UUID.randomUUID().toString().replace("-", ""));
         orderCheckDTO.setOrderNo(map.get("orderNo").toString());
         orderCheckDTO.setCheckingType(1);
@@ -387,11 +388,11 @@ public class StockController {
     @RequestMapping(value = "backoutAudit")
     @ResponseBody
     public CSResponse backoutAudit(HttpServletRequest request, @RequestBody Map map) {
-        /*   HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
-        }*/
+        }
 
         if (map == null) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
@@ -401,8 +402,8 @@ public class StockController {
         }
 
         OrderCheckDTO orderCheckDTO = new OrderCheckDTO();
-        /*orderCheckDTO.setAuditor(user.getUserName());*/
-        orderCheckDTO.setAuditor(2);
+        orderCheckDTO.setAuditor(user.getUserId());
+        //orderCheckDTO.setAuditor(2);
         orderCheckDTO.setTransId(UUID.randomUUID().toString().replace("-", ""));
         orderCheckDTO.setOrderNo(map.get("orderNo").toString());
         orderCheckDTO.setCheckingType(2);
@@ -423,13 +424,14 @@ public class StockController {
     @RequestMapping(value = "jumpReleaseOrder")
     @ResponseBody
     public CSResponse jumpReleaseOrder(HttpServletRequest request) {
-       /* HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
 
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
-        }*/
+        }
 
-        return stockBusiness.jumpReleaseOrder(1L);
+        //return stockBusiness.jumpReleaseOrder(1L);
+        return stockBusiness.jumpReleaseOrder(user.getUserId());
     }
 }
