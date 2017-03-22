@@ -11,6 +11,7 @@
         <result column="OPERATION_AMT" javaType="Double" property="myPrice"></result>
         <result column="EXPIRE_TIME" javaType="Date" property="expireTime"></result>
         <result column="ORDER_STATE" javaType="Integer" property="orderState"></result>
+        <result column="BUYER_CONFIRM" javaType="Integer" property="buyerConfirm"></result>
     </resultMap>
 
     <select id="addOperation" parameterType="cn.nanmi.msts.web.dao.entities.OperationEntity">
@@ -19,7 +20,7 @@
     </select>
 
     <select id="getMyBiddingRecord" resultMap="myBiddingMap">
-      SELECT UO.ORDER_NO,UO.STOCKS_AMT,UO.INITIAL_PRICE,UO.SALE_TIME,UO.MAX_BIDDING_PRICE
+       SELECT UO.ORDER_NO,UO.STOCKS_AMT,UO.INITIAL_PRICE,UO.SALE_TIME,UO.MAX_BIDDING_PRICE,UO.BUYER_CONFIRM
           ,UO.MAX_BIDDER,UOS.OPERATION_AMT,UO.EXPIRE_TIME,UO.ORDER_STATE
       FROM USER_OPERATION_STATUS UOS
       LEFT JOIN USER_ORDER UO

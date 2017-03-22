@@ -30,6 +30,8 @@ public class MyBiddingVO implements Serializable{
     private Date saleTime;
     //结束时间
     private Date expireTime;
+    //卖家确认
+    private Integer buyerConfirm;
 
 
     public MyBiddingVO(MyBiddingDTO myBiddingDTO) {
@@ -115,5 +117,13 @@ public class MyBiddingVO implements Serializable{
 
     public void setExpireTime(Date expireTime) {
         this.expireTime = expireTime;
+    }
+
+    public Integer getBuyerConfirm() {
+        return buyerConfirm;
+    }
+
+    public void setBuyerConfirm(Integer buyerConfirm) {
+        this.buyerConfirm = buyerConfirm;
     }
 }

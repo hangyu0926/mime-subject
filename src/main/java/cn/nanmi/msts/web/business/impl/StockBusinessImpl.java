@@ -334,6 +334,11 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
                     //最高出价
                     myBiddingVO.setBiddingState(2);
                 }
+                if(myBiddingDTO.getBuyerConfirm() == null){
+                    myBiddingVO.setBuyerConfirm(1);
+                }else{
+                    myBiddingVO.setBuyerConfirm(2);
+                }
                 myBiddingVOList.add(myBiddingVO);
             }
         }
