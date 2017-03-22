@@ -107,7 +107,7 @@
 	padding-top: 23px;
 	margin-right: 100px;
 }
-.contentRight > ul > li > div.resultInfo > div.audit-btn > span.audit-true {
+.contentRight > ul > li > div.resultInfo > div.audit-btn > span {
 	float: left;
 	width: 120px;
 	line-height: 32px;

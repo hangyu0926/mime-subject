@@ -1,5 +1,5 @@
 /**
-*setCookie:储存cookie;
+*setCookie:储存cookie; 
 *getCookie:获取cookie;
 *name：    键值;
 *value：   储存值;

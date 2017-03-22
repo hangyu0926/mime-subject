@@ -8,18 +8,15 @@ $(function() {
     var winHeight = document.documentElement.clientHeight;
     var getMyBiddingDataJson = {
             pageSize: 10,
-            pageNo: 1
-        };
-    var backoutAuditDatajson = {
-            pageSize: 10,
-            pageNo: 1
+            pageNo: 1,
+            userId: window.localStorage.getItem("userId")
         };
 /**
 *发布审核数据获取方法
 *toEmpty:true/false 是否清空之前的数据
 */ 
     var getMyBidding = function(toEmpty){
-        global_ajax("myBidding", getMyBiddingDataJson, function(data) {
+        global_ajax("getMyOrder", getMyBiddingDataJson, function(data) {
             var len = data.detailInfo.orderList.length;
             var orderList = null;
             var list = null;
@@ -50,13 +47,16 @@ $(function() {
                             + "</div>"
                     }
                 }
+                if(!orderList.saleTime) {
+                    orderList.saleTime = "--"
+                } 
                 list = "<li>"
                     + "<div class='orderInfo clearfix'>"
                     + "<div>"
                     + "<span class='orderNo'>订单号:"+orderList.orderNo+"</span>"
                     + "<span class='stocksAmt'>股权数:"+orderList.stocksAmt+"</span>"
                     + "<span class='initialPrice'>起拍单价:"+orderList.initPrice+"</span>"
-                    + "<span class='nowPrice'>当前竞价:"+orderList.nowPrice+"</span>"
+                    + "<span class='maxBiddingPrice'>当前竞价:"+orderList.maxBiddingPrice+"</span>"
                     + "<span class='myPrice'>我的出价:"+orderList.myPrice+"</span>"
                     + "<span class='biddingState'>竞拍状态:"+orderList.biddingState+"</span>"
                     + "<span class='orderState'>订单状态:"+orderList.orderState+"</span>"
@@ -121,30 +121,18 @@ $(function() {
 *issueBottom:发布审核页面滚动到底部
 *cancelBottom:撤销审核页面滚动到底部
 */
-    var addNextPageData = function(){
-        var issueBottom = "";
-        var cancelBottom = "";
+    var addNextPageData = function(){ 
+        var myBiddingBottom = "";
         window.onscroll = function(e) {
-            if($(".myBidding").hasClass("hide")) {
-                var cancelBottom = document.querySelector(".cancelAudit").getBoundingClientRect().bottom;
-                if(issueBottom == winHeight - 40) {
-                    backoutAuditDatajson.pageNo += 1;
-                    if(backoutAuditDatajson.pageNo >= parseInt($(".cancelAudit").attr("maxPage"))) {
-                        backoutAuditDatajson.pageNo = parseInt($(".cancelAudit").attr("maxPage"));
-                    }
-                    getBackoutAudit();
-                }
-            } else {
-                var issueBottom = document.querySelector(".myBidding").getBoundingClientRect().bottom;
-                if(issueBottom == winHeight - 40) {
-                    getReleaseAuditDataJson.pageNo += 1;
-                    if(getReleaseAuditDataJson.pageNo >= parseInt($(".myBidding").attr("maxPage"))) {
-                        getReleaseAuditDataJson.pageNo = parseInt($(".myBidding").attr("maxPage"));
-                    }
-                    getReleaseAudit();
+            myBiddingBottom = document.querySelector("#auctionList").getBoundingClientRect().bottom;
+            if(myBiddingBottom == winHeight - 40) {
+                getBiddingListDataJson.pageNo += 1;
+                if(getBiddingListDataJson.pageNo <= parseInt($("#auctionList").attr("maxPage"))) {
+                    getBiddingList();
+                } else {
+                    getBiddingListDataJson.pageNo = parseInt($("#auctionList").attr("maxPage"));
                 }
             }
-        };
-        
+        }
     }
 })
