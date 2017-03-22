@@ -14,7 +14,7 @@ public class UpdateStatusJob {
 	
 	private IStockBusiness stockBusiness ;
 	
-	@Scheduled(cron="0 0 12 * * ?")
+	@Scheduled(cron="0 0 2 * * ?")
 	public void updateStatus(){
 		try {
 			LOGGER.info("开始更新状态...");
