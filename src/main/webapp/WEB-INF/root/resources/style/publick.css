@@ -228,9 +228,32 @@ ul {
     text-align: left;
     color: #999;
 }
+#releaseNewInfo .modal-body {
+    position: relative;
+}
+#releaseNewInfo .modal-body > p {
+    position: absolute;
+    bottom: -10px;
+    left: 0px;
+    width: 100%;
+    line-height: 30px;
+    font-size: 14px;
+    color: #ff6b6b;
+    text-align: center;
+    opacity: 0;
+    -webkit-transition: opacity .4s;
+       -moz-transition: opacity .4s;
+        -ms-transition: opacity .4s;
+         -o-transition: opacity .4s;
+            transition: opacity .4s;
+}
+#releaseNewInfo .modal-body > p.active {
+	opacity: 1;
+}
 .modal-backdrop {
 	z-index: 10;
 }
+
 #errorTips .modal-title {
 	line-height: 40px;
 }
@@ -247,21 +270,135 @@ ul {
 	height: 60px;
 	text-align: center;
 }
-#errorTips .myModal-footer > .btn{
+#errorTips .myModal-footer > .btn {
 	width: 120px;
 }
-#loginOut>div{
-	position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    width: 400px;
+#setPreBidding .modal-body {
+    position: relative;
+}
+#setPreBidding .modal-body > .mes {
+	width: 100%;
+	height: 60px;
+	font-size: 14px;
+	font-style: normal;
+	-webkit-user-select:none;
+	   -moz-user-select:none;
+	    -ms-user-select:none;
+	     -o-user-select:none;
+	        user-select:none;
+}
+#setPreBidding .modal-body > .mes > span {
+	line-height: 60px;
+    cursor: default;
+}
+#setPreBidding .modal-body > .mes > span.unitPrice {
+	margin-right: 20px;
+}
+#setPreBidding .modal-body > .mes > i {
+	display: inline-block;
+	width: 34px;
+	height: 34px;
+	line-height: 32px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 18px;
+	font-style: normal;
+	cursor: pointer;
+	background: transparent;
+	-webkit-border-radius: 6px;
+	-webkit-text-shadow: none;
+}
+#setPreBidding .modal-body > .mes > i:first-of-type {
+	border: 1px solid #b8b8bf;
+	color: #b8b8bf;
+	margin-right: 10px;
+}
+#setPreBidding .modal-body > .mes > i:last-of-type {
+	border: 1px solid #5093e1;
+	color: #5093e1;
+	margin-right: 10px;
+}
+#setPreBidding .modal-body > .mes > i:first-of-type:hover {
+	background: #b8b8bf;
+	color: #fff;
+}
+#setPreBidding .modal-body > .mes > i:last-of-type:hover {
+	background: #5093e1;
+	color: #fff;
+
+}
+#setPreBidding .modal-body > .mes > input {
+	display: inline-block;
+	width: 100px;
+	height: 34px;
+	padding: 0 15px;
+	line-height: 34px;
+	font-size: 14px;
+	border-radius: 6px;
+	text-shadow: none;
+	border: 1px solid #ccc;
+	margin-right: 10px;
+}
+#setPreBidding .modal-body > .mes > span.preBidding-totalPrice {
+	display: inline-block;
+	width: 65px;
+	text-align: center;
+	color: #ff6b6b;
+}
+#setPreBidding .modal-body > p.info-tips {
+	position: absolute;
+	top: -20px;
+	left: 120px;
+	font-size: 12px;
+	color: #ff6b6b;
+	padding: 10px 20px;
+	border: 1px solid #ccc;
+	background: #fff;
+	opacity: 0;
+	-webkit-border-radius: 6px;
+	   -moz-border-radius: 6px;
+	    -ms-border-radius: 6px;
+	     -o-border-radius: 6px;
+	        border-radius: 6px;
+	-webkit-transition: opacity .4s;
+	   -moz-transition: opacity .4s;
+	    -ms-transition: opacity .4s;
+	     -o-transition: opacity .4s;
+	        transition: opacity .4s;
+	-webkit-box-shadow: 2px 2px 3px #ccc;
+	   -moz-box-shadow: 2px 2px 3px #ccc;
+	    -ms-box-shadow: 2px 2px 3px #ccc;
+	     -o-box-shadow: 2px 2px 3px #ccc;
+	        box-shadow: 2px 2px 3px #ccc;
+}
+#setPreBidding .modal-body > p.info-tips.active {
+	opacity: 1;
 }
 
-
-
+#setPreBidding .modal-body > p.info-tips:after{
+	position: absolute;
+	top: 34px;
+	left: 16%;
+	content: "";
+	width: 8px;
+	height: 8px;
+	border: 1px solid #ccc;
+	border-bottom: none;
+	border-left: none;
+	z-index: 100;
+	background: #fff;
+	-webkit-transform: rotateZ(135deg);
+	   -moz-transform: rotateZ(135deg);
+	    -ms-transform: rotateZ(135deg);
+	     -o-transform: rotateZ(135deg);
+	        transform: rotateZ(135deg);
+}
+#setPreBidding .modal-footer {
+	text-align: center;
+}
+#setPreBidding .modal-footer > .btn{
+	width: 120px;
+}
 
 
 

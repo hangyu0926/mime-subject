@@ -7,9 +7,16 @@ var global_route = {
     "releaseAuditList":"/stocks/releaseAuditList",//待审核订单-发布审核
     "backoutAuditList":"/stocks/backoutAuditList",//待审核订单-撤销审核
     "releaseAudit": "/stocks/releaseAudit",//发布审核通过/不通过
-    "confirmOrder":"/stocks/confirmOrder",//确认订单
+    "beConfirmedList":"/stocks/beConfirmedList",//待确认订单
+    "confirmOrder":"/stocks/confirmOrder",//待确认订单
     "myBidding":"/stocks/myBidding",//我的竞拍
     "biddingList":"/stocks/biddingList",//竞拍列表
+    "bidding":"/stocks/bidding",//竞拍标的
+    "preBidding":"/stocks/preBidding",//准备竞拍
+    "getMyOrder":"/stocks/getMyOrder",//我的发布
+    "releaseOrder": "/stocks/releaseOrder",//发布新标的
+    "backoutOrder": "/stocks/backoutOrder", //撤销订单
+    "jumpReleaseOrder": "/stocks/jumpReleaseOrder",//跳转我的发布页
     'login': '/user/login',// 用户登录
     'passModify':'/user/modifyPassword',//修改密码
     'getUserList':'/user/getUserList',//获取用户信息

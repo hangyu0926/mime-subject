@@ -19,8 +19,6 @@ $(function() {
 */
     $(".leftMenu .secondMenu>li").on("click", function(e) {
     	var urlSrc = $(this).attr("urlSrc");
-        var menuState = $(this).parents("li").index() + "&" + $(this).index();
-        window.sessionStorage.setItem("menuState", menuState);
     	window.location.href = urlSrc;
     })
 /**

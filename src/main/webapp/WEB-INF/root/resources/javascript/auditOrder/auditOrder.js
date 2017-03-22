@@ -7,11 +7,11 @@ $(function() {
     var isHistory = (window.location.href.indexOf("?") == -1) ? false : true;
     var winHeight = document.documentElement.clientHeight;
     var getReleaseAuditDataJson = {
-            pageSize: 10,
+            pageSize: 4,
             pageNo: 1
         };
     var backoutAuditDatajson = {
-            pageSize: 10,
+            pageSize: 4,
             pageNo: 1
         };
 /**
@@ -36,17 +36,23 @@ $(function() {
 */ 
     var getReleaseAudit = function(toEmpty){
         global_ajax("releaseAuditList", getReleaseAuditDataJson, function(data) {
-            var len = data.detailInfo.orderList.length;
+            console.log(data)
+            var len = data.detailInfo.orderDTOList.length;
             var orderList = null;
-            var list = null;
+            var list = "";
             for(var i = 0; i < len; i++) {
-                orderList = data.detailInfo.orderList[i];
+                orderList = data.detailInfo.orderDTOList[i];
+                if(orderList.createTime == null) {
+                    orderList.createTime = "--";
+                } else {
+                    orderList.createTime = (new Date(orderList.createTime)).getFullYear()+"-"+((new Date(orderList.createTime)).getMonth()+1)+"-"+(new Date(orderList.createTime)).getDate()
+                }
                 list += "<li>"
                     + "<div class='orderInfo clearfix'>"
                     + "<div>"
                     + "<span class='orderNo'>订单号:"+orderList.orderNo+"</span>"
-                    + "<span class='userName'>发布人:"+orderList.userName+"</span>"
-                    + "<span class='stocksAmt'>股权数:"+orderList.stocksAmt+"</span>"
+                    + "<span class='sellerName'>发布人:"+orderList.sellerName+"</span>"
+                    + "<span class='stockAmt'>股权数:"+orderList.stockAmt+"</span>"
                     + "<span class='initialPrice'>起拍单价:"+orderList.initialPrice+"</span>"
                     + "<span class='createTime'>提交时间:"+orderList.createTime+"</span>"
                     + "</div>"
@@ -65,11 +71,9 @@ $(function() {
             }
             if(toEmpty) {
                 $(".issuedAudit").empty();
-            } else {
-                return;
             }
             $(".issuedAudit").append(list);
-            $(".issuedAudit").attr("maxPage", Math.ceil(data.detailInfo.orderList.totalCount/10));
+            $(".issuedAudit").attr("maxPage", Math.ceil(data.detailInfo.totalCount/4));
         }, "POST", function(data) {
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");
@@ -82,11 +86,11 @@ $(function() {
 */
     var getBackoutAudit = function(toEmpty){
         global_ajax("backoutAuditList", backoutAuditDatajson, function(data) {
-            var len = data.detailInfo.orderList.length;
+            var len = data.detailInfo.orderDTOList.length;
             var orderList = null;
-            var list = null;
+            var list = "";
             for(var i = 0; i < len; i++) {
-                orderList = data.detailInfo.orderList[i];
+                orderList = data.detailInfo.orderDTOList[i];
                 list += "<li>"
                     + "<div class='orderInfo clearfix'>"
                     + "<div>"
@@ -115,11 +119,9 @@ $(function() {
             }
             if(toEmpty) {
                 $(".cancelAudit").empty();
-            } else {
-                return;
             }
             $(".cancelAudit").append(list);
-            $(".cancelAudit").attr("maxPage", Math.ceil(data.detailInfo.orderList.totalCount/10));
+            $(".cancelAudit").attr("maxPage", Math.ceil(data.detailInfo.totalCount/4));
         }, "POST", function(data) {
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");
@@ -138,43 +140,12 @@ $(function() {
                 "checkingView": checkingView
             };
         global_ajax("releaseAudit", sendData, function(data) {
-            return;
+            $("#errorTips").find(".myModal-body").html("操作成功");
+            $("#errorTips").modal("show");
         }, "POST", function(data){
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");
         });
-    })
-/**
-*判断是否为浏览器返回历史纪录加载数据
-*/
-    if(!isHistory) {
-        //getReleaseAudit(true);
-        //getBackoutAudit(true);
-    } else {
-        //window.sessionStorage.getItem();
-        // if(window.sessionStorage.getItem("issuedAudit")) {
-        //     $(".issuedAudit").removeClass("hide");
-        //     $(".cancelAudit").addClass("hide");
-        // } else {
-        //     $(".issuedAudit").addClass("hide");
-        //     $(".cancelAudit").removeClass("hide");
-        // }
-    }
-/**
-*点击子菜单展示对应的页面
-*/
-    $(".leftMenu .secondMenu>li").on("click", function(e) {
-        if($(this).parents("li").index() == 1 && $(this).index() == 1){
-            console.log(1111)
-            var auditOrderData = window.sessionStorage.getItem("issuedAudit") + "&" + getReleaseAuditDataJson.pageNo + "&" + backoutAuditDatajson.pageNo
-            setCookie("auditOrder", auditOrderData);
-        } else {
-            
-        }
-        var urlSrc = $(this).attr("urlSrc");
-        // var menuState = $(this).parents("li").index() + "&" + $(this).index();
-        // window.sessionStorage.setItem("menuState", menuState);
-        //window.location.href = urlSrc;
     })
 /**
 *页面滚动到当前页面最底部时加载下一页
@@ -185,29 +156,70 @@ $(function() {
         var issueBottom = "";
         var cancelBottom = "";
         window.onscroll = function(e) {
-            if($(".issuedAudit").hasClass("hide")) {
-                var cancelBottom = document.querySelector(".cancelAudit").getBoundingClientRect().bottom;
-                if(issueBottom == winHeight - 40) {
-                    backoutAuditDatajson.pageNo += 1;
-                    if(backoutAuditDatajson.pageNo >= parseInt($(".cancelAudit").attr("maxPage"))) {
-                        backoutAuditDatajson.pageNo = parseInt($(".cancelAudit").attr("maxPage"));
-                    }
-                    getBackoutAudit();
-                }
-            } else {
-                var issueBottom = document.querySelector(".issuedAudit").getBoundingClientRect().bottom;
+            if(!$(".issuedAudit").hasClass("hide")) {
+                issueBottom = document.querySelector(".issuedAudit").getBoundingClientRect().bottom;
                 if(issueBottom == winHeight - 40) {
                     getReleaseAuditDataJson.pageNo += 1;
-                    if(getReleaseAuditDataJson.pageNo >= parseInt($(".issuedAudit").attr("maxPage"))) {
+                    if(getReleaseAuditDataJson.pageNo <= parseInt($(".issuedAudit").attr("maxPage"))) {
+                        getReleaseAudit();
+                    } else {
                         getReleaseAuditDataJson.pageNo = parseInt($(".issuedAudit").attr("maxPage"));
                     }
-                    getReleaseAudit();
+                    console.log(getReleaseAuditDataJson.pageNo)
+                }
+            } else {
+                cancelBottom = document.querySelector(".cancelAudit").getBoundingClientRect().bottom;
+                if(issueBottom == winHeight - 40) {
+                    backoutAuditDatajson.pageNo += 1;
+                    if(backoutAuditDatajson.pageNo <= parseInt($(".cancelAudit").attr("maxPage"))) {
+                        getBackoutAudit();
+                    } else {
+                        backoutAuditDatajson.pageNo = parseInt($(".cancelAudit").attr("maxPage"));
+                    }
                 }
             }
         };
     }
-
-
-
-
+    addNextPageData();
+/**
+*判断是否为浏览器返回历史纪录加载数据
+*historyData:上一次存贮的信息（包含哪个页面， 当前第几页）
+*/
+    if(!isHistory) {
+        getReleaseAudit(true);
+        getBackoutAudit(true);
+    } else {
+        var historyData = getCookie("auditOrder");
+        $("#issuedAudit").html(window.sessionStorage.getItem("auditOrderOne"));
+        $("#cancelAudit").html(window.sessionStorage.getItem("auditOrderTwo"));
+        if(historyData.split("&")[0] == "1") {
+            $(".issuedAudit").addClass("hide");
+            $(".cancelAudit").removeClass("hide");
+            $(".contentRight>.content-title>span").eq(1).addClass("active").siblings().removeClass("active");
+        } else {
+            $(".issuedAudit").removeClass("hide");
+            $(".cancelAudit").addClass("hide");
+            $(".contentRight>.content-title>span").eq(0).addClass("active").siblings().removeClass("active");
+        }
+        getReleaseAuditDataJson.pageNo = parseInt(historyData.split("&")[1]);
+        backoutAuditDatajson.pageNo = parseInt(historyData.split("&")[2]);
+        $(".cancelAudit").attr("maxPage", parseInt(historyData.split("&")[3]));
+        history.replaceState({}, "", "auditOrder.html");
+    }
+/**
+*点击子菜单展示对应的页面
+*/
+    $(".leftMenu .secondMenu>li").on("click", function(e) {
+        var auditOrderOne = $("#issuedAudit").html();
+        var auditOrderTwo = $("#cancelAudit").html();
+        var auditOrderData = window.sessionStorage.getItem("issuedAudit") + "&" + getReleaseAuditDataJson.pageNo + "&" + backoutAuditDatajson.pageNo + "&" + $(".cancelAudit").attr("maxPage");
+        if($(this).attr("urlSrc") == "auditOrder.html" || $(this).attr("urlSrc") == "auditOrder.html?true"){
+            return;
+        }else {
+            setCookie("auditOrder", auditOrderData);
+            window.sessionStorage.setItem("auditOrderOne", auditOrderOne);
+            window.sessionStorage.setItem("auditOrderTwo", auditOrderTwo);
+            history.replaceState({}, "", "auditOrder.html?true");
+        }
+    })
 })

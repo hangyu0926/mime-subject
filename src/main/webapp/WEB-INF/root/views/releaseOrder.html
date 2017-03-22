@@ -7,6 +7,7 @@
 	<title>我的发布</title>
 	<script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="../resources/javascript/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../resources/javascript/cookie.js"></script>
 	<script type="text/javascript" src="../resources/javascript/main.js"></script>
 	<script type="text/javascript" src="../resources/javascript/dialog.js"></script>
     <script type="text/javascript" src="../resources/javascript/validate.js"></script>
@@ -57,52 +58,9 @@
 		</div>
 		<div class="contentRight">
 			<div class="content-title">
-				<span data-target="#releaseNewInfo" data-toggle="modal">发布新标的</span>
+				<span>发布新标的</span>
 			</div>
-			<ul class="cancelAudit">
-				<li>
-					<div class="orderInfo clearfix">
-						<div>
-							<span class="orderNumber">订单号：123456789</span>
-							<span class="issuerEquity">股权数： 100</span>
-							<span class="orderNumber">上架时间：2017-3-15</span>
-							<span class="price">起拍单价：100</span>
-							<span class="submitTime">订单状态：发布中</span>
-							<span class="issuerEquity">当前竞价：500</span>
-							<span class="price">结束时间：2017-03-25</span>
-						</div>
-					</div>
-					<div class="resultInfo clearfix">
-						<div class="audit-btn">
-							<span class="audit-true">撤销该订单</span>
-						</div>
-						<div class="auditIdea">
-							<span></span>
-						</div>
-					</div>
-				</li>
-
-				<li>
-					<div class="orderInfo clearfix">
-						<div>
-							<span class="orderNumber">订单号：123456789</span>
-							<span class="issuerEquity">股权数： 100</span>
-							<span class="orderNumber">上架时间：2017-3-15</span>
-							<span class="price">起拍单价：100</span>
-							<span class="submitTime">订单状态：竞拍完成，等待确认</span>
-							<span class="issuerEquity">当前竞价：500</span>
-							<span class="price">结束时间：2017-03-25</span>
-						</div>
-					</div>
-					<div class="resultInfo clearfix">
-						<div class="audit-btn">
-							<span class="audit-true">确认完成</span>
-						</div>
-						<div class="auditIdea">
-							<span>确认该订单线下交易完成</span>
-						</div>
-					</div>
-				</li>
+			<ul class="releaseOrder" id="releaseOrder">
 
 			</ul>
 		</div>
@@ -173,17 +131,18 @@
 					<div class="form-group row">
 						<label for="saleNum" class="col-md-3">出售股权数:</label>
 						<div class="col-md-5">
-						    <input type="text" name="saleNum" id="saleNum" class="form-control" placeholder="100"> 
+						    <input type="text" name="stocksAmt" id="stocksAmt" class="form-control" placeholder="100"> 
 						</div>
-						<span class="col-md-4 title-tip">（最多100）</span>
+						<span class="col-md-4 title-tip"></span>
 					</div>
 					<div class="form-group row">
 						<label for="originPrice" class="col-md-3">每股起拍价:</label>
 						<div class="col-md-5">
-						    <input type="text" name="originPrice" id="originPrice" class="form-control" placeholder="100"> 
+						    <input type="text" name="initialPrice" id="initialPrice" class="form-control" placeholder="100"> 
 						</div>
-						<span class="col-md-4 title-tip">（最低100，最高5000）</span>
+						<span class="col-md-4 title-tip"></span>
 					</div>
+					<p>请按照相关提示，输入响应的数据</p>
 				</div>
 				<div class="modal-footer">
 					<div>
