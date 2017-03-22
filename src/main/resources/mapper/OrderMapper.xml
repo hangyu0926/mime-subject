@@ -25,6 +25,7 @@
         <result column="SALE_TIME" javaType="Date" property="saleTime"></result>
         <result column="EXPIRE_TIME" javaType="Date" property="expireTime"></result>
         <result column="SYSTEM_RULE_ID" javaType="Long" property="systemRuleId"></result>
+        <result column="SELLER_CONFIRM" javaType="int" property="sellerConfirm"></result>
     </resultMap>
 
     <select id="getBiddingList" resultMap="biddingListMap">
@@ -57,9 +58,14 @@
     </insert>
 
     <select id="getMyOrder" resultMap="orderListMap">
-        SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,ORDER_STATE,SELLER_ID,UU.USER_NAME,MAX_BIDDING_PRICE,MAX_BIDDER,UO.CREATE_TIME,SALE_TIME,EXPIRE_TIME,SYSTEM_RULE_ID,
+        SELECT ORDER_NO,UO.STOCKS_AMT,INITIAL_PRICE,ORDER_STATE,SELLER_ID,UU.USER_NAME,
+        case when MAX_BIDDER is null then 0
+        else MAX_BIDDING_PRICE end as MAX_BIDDING_PRICE,
+        MAX_BIDDING_PRICE,MAX_BIDDER,UO.CREATE_TIME,SALE_TIME,EXPIRE_TIME,SYSTEM_RULE_ID,
         case when ORDER_STATE=4 and  date_add(SALE_TIME, interval SS.BACK_PERIOD hour) > now()  then 0
-				else 1 end as hasbackout
+				else 1 end as hasbackout,
+		 case when ORDER_STATE=6 and SELLER_CONFIRM is null then 0
+               else 1 end as SELLER_CONFIRM
         FROM USER_ORDER UO
         LEFT JOIN SYSTEM_RULES SS
 		ON SS.RULE_ID = UO.SYSTEM_RULE_ID

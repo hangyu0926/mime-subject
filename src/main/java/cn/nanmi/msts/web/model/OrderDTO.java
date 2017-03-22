@@ -43,6 +43,17 @@ public class OrderDTO implements Serializable {
     //是否能撤销（0：可撤销 1：不可撤销）
     private int hasbackout;
 
+    //卖家是否确认订单（0：未确认 1：已确认）
+    private int sellerConfirm;
+
+    public int getSellerConfirm() {
+        return sellerConfirm;
+    }
+
+    public void setSellerConfirm(int sellerConfirm) {
+        this.sellerConfirm = sellerConfirm;
+    }
+
     public int getHasbackout() {
         return hasbackout;
     }
