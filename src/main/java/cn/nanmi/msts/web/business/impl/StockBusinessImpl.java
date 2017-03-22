@@ -83,7 +83,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
     }
 
     public CSResponse releaseOrder(OrderDTO orderDTO) {
-        String  curDate = DateUtil.getShortStrDate(new Date());
+       /* String  curDate = DateUtil.getShortStrDate(new Date());
 
         long num = stockService.queryTodayOrder(curDate);
 
@@ -100,7 +100,9 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
             nums = "0" + nums;
         }
 
-        orderDTO.setOrderNo(curDate+nums);
+        orderDTO.setOrderNo(curDate+nums);*/
+
+        orderDTO.setOrderNo(DateUtil.getMillisecond(new Date()));
 
         stockService.releaseOrder(orderDTO);
 

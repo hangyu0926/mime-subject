@@ -814,4 +814,15 @@ public class DateUtil {
         return resultMis;
 
     }
+
+    /**
+     * 把日期转换成 yyyyMMddHHmmssSSS格式的字符串
+     *
+     * @param date
+     * @return
+     */
+    public static String getMillisecond(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return dateFormat.format(date);
+    }
 }
