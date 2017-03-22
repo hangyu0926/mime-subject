@@ -65,14 +65,14 @@ if (str3 == undefined) {
   //密码格式正不正确
 if (str3 == undefined) {
     if (!global_validate.passwordIsOk(str1) || !global_validate.passwordIsOk(str2) ) {
-        global_dialog.error("密码格式不正确", function() {
+        global_dialog.error("密码为6位数字", function() {
             closeAlertDialog();
         });
         return
     };
 }else{
     if (!global_validate.passwordIsOk(str1) || !global_validate.passwordIsOk(str2) || !global_validate.passwordIsOk(str3)) {
-        global_dialog.error("密码格式不正确", function() {
+        global_dialog.error("密码为6位数字", function() {
             closeAlertDialog();
         });
         return
@@ -87,7 +87,18 @@ if (str1 == str2) {
     });
     return
 };
-
+if(str1=="123456"){
+      global_dialog.error("不能修改为初始密码", function() {
+        closeAlertDialog();
+    });
+    return
+}
+if(str2==str3){
+    global_dialog.error("旧密码和新密码一致无法修改", function() {
+        closeAlertDialog();
+    });
+    return
+};
 if (str3 == undefined) {
     str3 = '';
     str2=hex_md5(str2);

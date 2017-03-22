@@ -27,8 +27,8 @@ var totalCount = 0; //最大页
       			  + m.userMailAdd + '</td><td>' 
       			  + m.userMobile + '</td><td>' 
       			  + m.totalStock + '</td><td>' 
-      			  + m.availableStock + '</td><td onclick="doModify(' + m.userId + ')">' 
-      			  + '重置密码</td><td onclick="doDelete(' + m.userId + ')">' 
+      			  + m.availableStock + '</td><td class="canClick" onclick="doModify(' + m.userId + ')">' 
+      			  + '重置密码</td><td class="canClick" onclick="doDelete(' + m.userId + ')">' 
       			  + '删除</td></tr>'
     });
     $("#accountTbody").append(account);

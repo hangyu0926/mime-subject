@@ -123,3 +123,11 @@
 .modal-body-font-header{
 	font-size: 18px;
 }
+.canClick:hover{
+cursor: pointer;
+}
+#accountTbody tr td:nth-of-type(6):hover,#accountTbody tr td:nth-of-type(7):hover{
+	background-color:#dadde0;
+	color: #fff;
+	cursor: pointer;
+}
