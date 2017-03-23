@@ -19,7 +19,12 @@ public interface UserMapper {
      * @return
      */
 	 UserDTO getUserByMail(@Param("mail") String mail);
-
+    /**
+     *  根据id查找用户
+     * @param userId
+     * @return
+     */
+    UserDTO getUserById(@Param("userId") Long userId);
 
     /**
      *  根据userId修改密码

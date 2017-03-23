@@ -38,6 +38,12 @@ public class UserServiceImpl implements IUserService {
         return userDto;
     }
 
+    @Override
+    public UserDTO getUserById(long userId) {
+        UserDTO userDto = userMapper.getUserById(userId);
+        return userDto;
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)
     public void modifyPassword(Long userID, String newPassword) {
         logger.info("用户修改密码,userID:{}", userID);

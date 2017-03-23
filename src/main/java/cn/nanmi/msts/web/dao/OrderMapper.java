@@ -61,4 +61,6 @@ public interface OrderMapper {
     void updateStatus2Pass();
 
     SystemRules getSystemRulesById(@Param("ruleId")Long ruleId);
+
+    List<String> getCompleteOrder();
 }

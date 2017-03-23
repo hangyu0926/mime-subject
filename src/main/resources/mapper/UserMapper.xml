@@ -24,6 +24,14 @@
         where LOGIN_NAME=#{mail} AND DEL_FLAG=0
     </select>
 
+    <!-- 根据用户名查找用户 -->
+    <select id="getUserById" resultMap="userMap" parameterType="Long">
+        select USER_ID,MOBILE_NO,USER_NAME,LOGIN_NAME,LOGIN_PASS,PERMISSION,DEL_FLAG,CREATE_MAN,CREATE_TIME,STOCKS_AMT,STOCKS_SALE_AMT,FROZEN_STOCKS
+        from USER
+        where USER_ID=#{userId} AND DEL_FLAG=0
+    </select>
+
+
     <select id="getUsersByUserGroups" resultType="java.lang.String">
         SELECT WX_USER_ID
         FROM USER

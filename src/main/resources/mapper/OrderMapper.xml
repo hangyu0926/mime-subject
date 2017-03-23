@@ -132,9 +132,12 @@
         ON SR.RULE_ID = UO.SYSTEM_RULE_ID
         WHERE ORDER_NO = #{orderNo}
     </select>
-
+    <!-- 获取拍卖竞拍结束订单 -->
+    <select id="getCompleteOrder" resultType="cn.nanmi.msts.web.web.vo.out.OrderNoListVO">
+         SELECT ORDER_NO  FROM USER_ORDER WHERE date(EXPIRE_TIME) = curdate()-1 AND ORDER_STATE IN (3,4) AND MAX_BIDDER IS NOT NULL;
+    </select>
     <!-- 定时更新拍卖竞拍结束订单 -->
-    <update id="updateStatus" >
+    <update id="updateStatus">
         UPDATE USER_ORDER  SET  ORDER_STATE=6 WHERE date(EXPIRE_TIME) = curdate()-1 AND ORDER_STATE IN (3,4) AND MAX_BIDDER IS NOT NULL;
     </update>
 

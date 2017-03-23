@@ -147,6 +147,11 @@ public class StockServiceImpl implements IStockService {
     }
 
     @Override
+    public List<String> getCompleteOrder() {
+        return orderMapper.getCompleteOrder();
+    }
+
+    @Override
     public List<OrderDTO> getPassOrder() {
         return orderMapper.getPassOrder();
     }

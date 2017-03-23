@@ -500,7 +500,12 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
 
     @Override
     public void updateOrderState() {
-        //更新非流拍订单
+        //给已经完成订单状态的买卖方发邮件
+        List<String> orders = stockService.getCompleteOrder();
+        for(String orderNo:orders){
+            sendEmail(orderNo,3);
+        }
+        //更新已结束的订单状态
         stockService.updateStatus();
         //结算流拍订单
         List<OrderDTO> orderList = stockService.getPassOrder();
@@ -515,44 +520,69 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
      * 发送邮件
      *
      * @param OrderNo 订单号
-     * @param type    1发布  2竞价更新
+     * @param type    1发布  2竞价更新 3 竞拍成功
      */
     public boolean sendEmail(String OrderNo, int type) {
-        if (StringUtils.isBlank(OrderNo) || !(type == 1 || type == 2)) {
+        if (StringUtils.isBlank(OrderNo)){
             return false;
         }
-//    if(fileServerOutPath==null){
-//        fileServerOutPath = BusinessConfUtil.get("sys.root.address");
-//    }
         //根据orderNo拿到order实体
         BiddingDetailDTO orderDetail = stockService.getOrderDetail(OrderNo);
-        //拿到所有用户的邮箱
-        ArrayList<String> mails = userService.getMailList();
-        String str = StringUtils.join(mails.toArray(), ",");
+        ArrayList<String> mails;
+        String mailAdds = "";
+        UserDTO buyer = null;
+        UserDTO seller = null;
         try {
             SendMail sm = new SendMail();
-            String subject;
-            if (type == 1) {
-                subject = "新增标的通知，订单号：" + orderDetail.getOrderNo();
-            } else {
-                subject = "标的竞价更新通知，订单号：" + orderDetail.getOrderNo();
+            String subject = "";
+            switch (type){
+                case 1:
+                    subject = "新增标的通知，订单号：" + orderDetail.getOrderNo();
+                    //拿到所有用户的邮箱
+                    mails = userService.getMailList();
+                    mailAdds = StringUtils.join(mails.toArray(), ",");
+                case 2:
+                    subject = "标的竞价更新通知，订单号：" + orderDetail.getOrderNo();
+                    //拿到所有用户的邮箱
+                    mails = userService.getMailList();
+                    mailAdds = StringUtils.join(mails.toArray(), ",");
+                case 3:
+                    subject = "标的竞拍成功通知，订单号：" + orderDetail.getOrderNo();
+                    buyer = userService.getUserById(orderDetail.getMaxBidder());
+                    seller = userService.getUserById(orderDetail.getSellerId());
+                    mailAdds = buyer.getMailAddress()+","+seller.getMailAddress();
             }
-            sm.setAddress(Constants.FROM, str, subject);
+
+            sm.setAddress(Constants.FROM, mailAdds, subject);
             StringBuffer txt = new StringBuffer();
             txt.append("您好：");
             txt.append("<br/>");
-            if (type == 1) {
-                txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新增标的，订单号：" + orderDetail.getOrderNo() + ",起拍价:" + orderDetail.getInitialPrice() + ",请注意查看。");
-            } else {
-                txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标的竞价更新，订单号：" + orderDetail.getOrderNo() + ",起拍价:" + orderDetail.getInitialPrice() + ",当前最高出价:" + orderDetail.getMaxBiddingPrice() + ",请注意查看。");
+            switch (type){
+                case 1:
+                    txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新增标的，订单号：" + orderDetail.getOrderNo()
+                            + ",起拍价:" + orderDetail.getInitialPrice()
+                            + ",请注意查看。");
+
+                case 2:
+                    txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标的竞价更新，订单号：" + orderDetail.getOrderNo()
+                            + ",起拍价:" + orderDetail.getInitialPrice()
+                            + ",当前最高出价:" + orderDetail.getMaxBiddingPrice()
+                            + ",请注意查看。");
+
+                case 3:
+                    txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标的竞拍成功，<br/>订单号：" + orderDetail.getOrderNo()
+                            + ",<br/>最终每股单价:" + orderDetail.getMaxBiddingPrice()
+                            + ",<br/>股权数:" + orderDetail.getStockAmt()
+                            +", <br/>共计:" + orderDetail.getMaxBiddingPrice()*orderDetail.getStockAmt()
+                            +"元,<br/>卖家信息:" + seller.getUserName()+","+seller.getUserMobile()+","+seller.getMailAddress()
+                            +", <br/>买家信息:" + buyer.getUserName()+","+buyer.getUserMobile()+","+buyer.getMailAddress()
+                            + ",<br/>请收到邮件后尽快联系对方完成线下交易，交易完成后及时在系统确认订单，完成股权变更。");
+
 
             }
-//            txt.append("详情请点击链接获取");
-//            txt.append("<a href='" + fileServerOutPath+"/msts/views" + "'>" + attach.getUrl() + "</a>");
             txt.append("<br/>");
             txt.append("<br/>");
             txt.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;米么股权系统");
-
             sm.send(Constants.HOST, Constants.USER, Constants.PWD, txt.toString());
             return true;
         } catch (Exception e) {

@@ -26,6 +26,14 @@ public interface IUserService {
     UserDTO getUserByMail(String mail);
 
     /**
+     * 根据userId拿到user
+     *
+     * @param userId
+     * @return
+     */
+    UserDTO getUserById(long userId);
+
+    /**
      * 修改密码
      *
      * @param userID

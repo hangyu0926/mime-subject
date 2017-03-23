@@ -111,6 +111,7 @@ public interface IStockService {
      */
     void updateStatus();
 
+
     /**
      * 更新流拍订单状态
      */
@@ -194,4 +195,10 @@ public interface IStockService {
      * @param buyerConfirm
      */
     void confirmOrder(Integer orderState,Integer sellerConfirm,Integer buyerConfirm,String orderNo);
+
+    /**
+     * 获取结算完成的订单
+     * @return
+     */
+    List<String> getCompleteOrder();
 }
