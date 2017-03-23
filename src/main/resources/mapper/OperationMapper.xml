@@ -30,7 +30,7 @@
 	  LEFT JOIN USER UU
 	  ON UU.USER_ID = UO.SELLER_ID
       WHERE UOS.USER_ID = #{userId} AND UOS.OPERATION_TYPE = 1
-      ORDER BY UOS.OPERATION_TIME
+      ORDER BY UO.SALE_TIME DESC
 	  LIMIT #{startPage},#{pageSize}
     </select>
 
