@@ -101,6 +101,7 @@ $(function() {
                 } else {
                     orderList.orderState = "已拍";
                 }
+                orderList.maxBiddingPrice = (orderList.maxBiddingPrice == 0)? "--":orderList.maxBiddingPrice;
                 list += "<li>"
                     + "<div class='orderInfo clearfix'>"
                     + "<div>"

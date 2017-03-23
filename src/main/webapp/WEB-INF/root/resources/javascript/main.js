@@ -7,6 +7,7 @@ var global_route = {
     "releaseAuditList":"/stocks/releaseAuditList",//待审核订单-发布审核
     "backoutAuditList":"/stocks/backoutAuditList",//待审核订单-撤销审核
     "releaseAudit": "/stocks/releaseAudit",//发布审核通过/不通过
+    "backoutAudit": "/stocks/backoutAudit",//撤销审核通过/不通过
     "beConfirmedList":"/stocks/beConfirmedList",//待确认订单
     "confirmOrder":"/stocks/confirmOrder",//待确认订单
     "myBidding":"/stocks/myBidding",//我的竞拍
