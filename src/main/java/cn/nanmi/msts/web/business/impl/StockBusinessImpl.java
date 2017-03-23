@@ -143,6 +143,9 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
                     UserDTO userDTO =  userService.getUserById(orderDTO.getMaxBidder());
                     orderDTO.setUserName(userDTO.getUserName());
                     orderDTO.setUserMobile(userDTO.getUserMobile());
+                }else{
+                    orderDTO.setUserName("");
+                    orderDTO.setUserMobile("");
                 }
             }
         }
