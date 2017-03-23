@@ -12,6 +12,8 @@
         <result column="EXPIRE_TIME" javaType="Date" property="expireTime"></result>
         <result column="ORDER_STATE" javaType="Integer" property="orderState"></result>
         <result column="BUYER_CONFIRM" javaType="Integer" property="buyerConfirm"></result>
+        <result column="USER_NAME" javaType="String" property="sellerName"></result>
+        <result column="MOBILE_NO" javaType="String" property="sellerMobile"></result>
     </resultMap>
 
     <select id="addOperation" parameterType="cn.nanmi.msts.web.dao.entities.OperationEntity">
@@ -20,11 +22,13 @@
     </select>
 
     <select id="getMyBiddingRecord" resultMap="myBiddingMap">
-       SELECT UO.ORDER_NO,UO.STOCKS_AMT,UO.INITIAL_PRICE,UO.SALE_TIME,UO.MAX_BIDDING_PRICE,UO.BUYER_CONFIRM
-          ,UO.MAX_BIDDER,UOS.OPERATION_AMT,UO.EXPIRE_TIME,UO.ORDER_STATE
+      SELECT UO.ORDER_NO,UO.STOCKS_AMT,UO.INITIAL_PRICE,UO.SALE_TIME,UO.MAX_BIDDING_PRICE,UO.BUYER_CONFIRM
+          ,UO.MAX_BIDDER,UOS.OPERATION_AMT,UO.EXPIRE_TIME,UO.ORDER_STATE,UU.USER_NAME,UU.MOBILE_NO
       FROM USER_OPERATION_STATUS UOS
       LEFT JOIN USER_ORDER UO
       ON UO.ORDER_NO = UOS.ORDER_NO
+	  LEFT JOIN USER UU
+	  ON UU.USER_ID = UO.SELLER_ID
       WHERE UOS.USER_ID = #{userId} AND UOS.OPERATION_TYPE = 1
       ORDER BY UOS.OPERATION_TIME
 	  LIMIT #{startPage},#{pageSize}

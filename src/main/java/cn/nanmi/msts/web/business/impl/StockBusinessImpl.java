@@ -357,9 +357,16 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
                 }
                 Date now = new Date();
                 int spanTime = myBiddingDTO.getExpireTime().compareTo(now);
-                if(myBiddingVO.getBiddingState()==4 || myBiddingVO.getBiddingState()==3 && spanTime<0){
+                if(myBiddingVO.getOrderState()==4 && spanTime<0){
                     //竞拍结束，等待结算
                     myBiddingVO.setOrderState(9);
+                }
+                if(myBiddingVO.getOrderState()==6 || myBiddingVO.getOrderState()==7){
+                    myBiddingVO.setSellerName(myBiddingDTO.getSellerName());
+                    myBiddingVO.setSellerMobile(myBiddingDTO.getSellerMobile());
+                }else{
+                    myBiddingVO.setSellerName("--");
+                    myBiddingVO.setSellerMobile("--");
                 }
                 myBiddingVOList.add(myBiddingVO);
             }

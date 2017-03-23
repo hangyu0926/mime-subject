@@ -30,8 +30,12 @@ public class MyBiddingVO implements Serializable{
     private Date saleTime;
     //结束时间
     private Date expireTime;
-    //卖家确认
+    //买家确认
     private Integer buyerConfirm;
+    //卖家姓名
+    private String sellerName;
+    //卖家电话
+    private String sellerMobile;
 
 
     public MyBiddingVO(MyBiddingDTO myBiddingDTO) {
@@ -125,5 +129,21 @@ public class MyBiddingVO implements Serializable{
 
     public void setBuyerConfirm(Integer buyerConfirm) {
         this.buyerConfirm = buyerConfirm;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public String getSellerMobile() {
+        return sellerMobile;
+    }
+
+    public void setSellerMobile(String sellerMobile) {
+        this.sellerMobile = sellerMobile;
     }
 }
