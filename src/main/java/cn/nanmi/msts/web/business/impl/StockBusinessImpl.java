@@ -277,6 +277,17 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         int startPage = (page - 1) * pageSize;
         List<OrderDTO> orderDTOList = stockService.beConfirmedList(startPage, pageSize);
 
+        if (orderDTOList != null && orderDTOList.size() > 0) {
+            for (OrderDTO orderDTO : orderDTOList) {
+                //如果有人拍了，查出购买者姓名
+                if (null != orderDTO.getMaxBidder()){
+                    UserDTO userDTO =  userService.getUserById(orderDTO.getMaxBidder());
+                    orderDTO.setBuyName(userDTO.getUserName());
+                }else{
+                    orderDTO.setBuyName("--");
+                }
+            }
+        }
         //总页数
         Long count = stockService.beConfirmedListCount();
         OrderListVO orderListVO = new OrderListVO();
