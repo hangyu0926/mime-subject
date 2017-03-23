@@ -81,6 +81,8 @@ $(function() {
                     + "<span class='orderState'>竞拍状态:"+orderList.orderState+"</span>"
                     + "<span class='maxBiddingPrice'>当前竞价:"+orderList.maxBiddingPrice+"</span>"
                     + "<span class='expireTime'>结束时间:"+orderList.expireTime+"</span>"
+                    + "<span class='userName'>买家姓名:"+orderList.userName+"</span>"
+                    + "<span class='userMobile'>买家电话:"+orderList.userMobile+"</span>"
                     + "</div>"
                     + "</div>"
                     + "<div class='resultInfo clearfix'>"
