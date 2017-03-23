@@ -25,10 +25,10 @@ $(function() {
                     + "<div class='orderInfo clearfix'>"
                     + "<div>"
                     + "<span class='orderNo'>订单号:"+orderList.orderNo+"</span>"
-                    + "<span class='userName'>发布人:"+orderList.userName+"</span>"
-                    + "<span class='stocksAmt'>股权数:"+orderList.stocksAmt+"</span>"
+                    + "<span class='userName'>发布人:"+orderList.sellerName+"</span>"
+                    + "<span class='stocksAmt'>股权数:"+orderList.stockAmt+"</span>"
                     + "<span class='initialPrice'>起拍单价:"+orderList.initialPrice+"</span>"
-                    + "<span class='saleTime'>上架时间:"+orderList.saleTime+"</span>"
+                    + "<span class='saleTime'>上架时间:"+(new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()+"</span>"
                     + "<span class='maxBiddingPrice'>最终竞价:"+orderList.maxBiddingPrice+"</span>"
                     + "</div>"
                     + "</div>"
@@ -51,7 +51,6 @@ $(function() {
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");
         })
-        console.log(getConfirmOrderDataJson);
     };
 /**
 *完成该订单
@@ -65,11 +64,8 @@ $(function() {
         global_ajax("confirmOrder", sendData, function(data) {
             $("#errorTips").find(".myModal-body").html("操作成功");
             $("#errorTips").modal("show");
-            $("#errorTips .myModal-footer>.btn").on("click", function(e) {
-                if($("#errorTips").find(".myModal-body").html() == "操作成功") {
-                    window.location.reload();
-                }
-            })
+            getConfirmOrderDataJson.pageNo = 1;
+            getConfirmedList(true);
         }, "POST", function(data){
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");

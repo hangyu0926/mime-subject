@@ -55,11 +55,21 @@ $(function() {
                 	orderList.orderState = "交易结束";
                 } else if(orderList.orderState ==8) {
                 	orderList.orderState = "流拍";
+                } else if(orderList.orderState ==9) {
+                    orderList.orderState = "竞拍完成，等待系统结算";
                 }
                 if(orderList.saleTime == null) {
-                	orderList.saleTime = "--";
+                    orderList.saleTime = "--";
                 } else {
-                	orderList.saleTime = (new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()
+                    orderList.saleTime = (new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()
+                }
+                if(orderList.expireTime == null) {
+                    orderList.expireTime = "--";
+                } else {
+                    orderList.expireTime = (new Date(orderList.expireTime)).getFullYear()+"-"+((new Date(orderList.expireTime)).getMonth()+1)+"-"+(new Date(orderList.expireTime)).getDate()
+                }
+                if(orderList.maxBiddingPrice == 0) {
+                    orderList.maxBiddingPrice = "--";
                 }
                 list += "<li>"
                     + "<div class='orderInfo clearfix'>"
@@ -70,7 +80,7 @@ $(function() {
                     + "<span class='saleTime'>上架时间:"+orderList.saleTime+"</span>"
                     + "<span class='orderState'>竞拍状态:"+orderList.orderState+"</span>"
                     + "<span class='maxBiddingPrice'>当前竞价:"+orderList.maxBiddingPrice+"</span>"
-                    + "<span class='expireTime'>结束时间:"+(new Date(orderList.expireTime)).getFullYear()+"-"+((new Date(orderList.expireTime)).getMonth()+1)+"-"+(new Date(orderList.expireTime)).getDate()+"</span>"
+                    + "<span class='expireTime'>结束时间:"+orderList.expireTime+"</span>"
                     + "</div>"
                     + "</div>"
                     + "<div class='resultInfo clearfix'>"
@@ -98,8 +108,10 @@ $(function() {
                 "confirmUser": 2
             };
         global_ajax("confirmOrder", sendData, function(data) {
-            $("#errorTips").find(".myModal-body").html("操作成功");
+            $("#errorTips").find(".myModal-body").html("订单确认成功");
             $("#errorTips").modal("show");
+            getReleaseOrderDataJson.pageNo = 1;
+            getReleaseOrderData(true);
         }, "POST", function(data){
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");
@@ -114,8 +126,10 @@ $(function() {
                 "orderNo": orderNo
             };
         global_ajax("backoutOrder", sendData, function(data) {
-            $("#errorTips").find(".myModal-body").html("操作成功");
+            $("#errorTips").find(".myModal-body").html("撤销订单成功");
             $("#errorTips").modal("show");
+            getReleaseOrderDataJson.pageNo = 1;
+            getReleaseOrderData(true);
         }, "POST", function(data){
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");
@@ -159,8 +173,6 @@ $(function() {
         var maxStockPrice = $("#releaseNewInfo .modal-body").attr("maxStockPrice");
         if(stocksAmt > 0 && stocksAmt<= parseInt($("#releaseNewInfo .modal-body").attr("stocksSaleAmt")) && initialPrice >= parseInt($("#releaseNewInfo .modal-body").attr("minStockPrice")) && initialPrice <= parseInt($("#releaseNewInfo .modal-body").attr("maxStockPrice"))) {
         	$("#releaseNewInfo .modal-body>p").removeClass("active");
-        } else {
-        	//$("#releaseNewInfo .modal-body>p").addClass("active");
         }
     })
 /**
@@ -170,7 +182,6 @@ $(function() {
         global_ajax("jumpReleaseOrder", {}, function(data) {
     		$("#releaseNewInfo").modal("show");
     		$("#releaseNewInfo .modal-body>p").removeClass("active");
-    		console.log(data)
     		$("#releaseNewInfo .modal-body span").eq(0).html("（最多"+ data.detailInfo.stocksSaleAmt+"）");
     		$("#releaseNewInfo .modal-body span").eq(1).html("（最低"+ data.detailInfo.minStockPrice+"，最高"+data.detailInfo.maxStockPrice+"）");
             $("#releaseNewInfo .modal-body").attr("stocksSaleAmt", data.detailInfo.stocksSaleAmt);
@@ -206,7 +217,7 @@ $(function() {
 *historyData:上一次存贮的信息（包含哪个页面， 当前第几页）
 */
     if(!isHistory) {
-        getReleaseOrderData();
+        getReleaseOrderData(true);
     } else {
         var historyData = getCookie("releaseOrderData");
         $("#releaseOrder").html(window.sessionStorage.getItem("releaseOrder"));

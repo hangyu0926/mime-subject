@@ -42,7 +42,7 @@ var global_ajax = function(urlKey, params, callback, method, error) {
     	for(var key in params) {
     		ajaxUrl += key + "=" + params[key] + "&";
     	}
-    	ajaxUrl = ajaxUrl.subString(0, ajaxUrl.length-1);
+    	ajaxUrl = ajaxUrl.substring(0, ajaxUrl.length-1);
     }
     $.ajax({
     	type: !method ? "post" : method,

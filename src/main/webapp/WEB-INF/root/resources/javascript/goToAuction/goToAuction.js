@@ -107,11 +107,8 @@ $(function() {
 	        global_ajax("bidding", sendData, function(data) {
 	            $("#errorTips").find(".myModal-body").html("竞拍成功");
 	            $("#errorTips").modal("show");
-                $("#errorTips .myModal-footer>.btn").on("click", function(e) {
-                    if($("#errorTips").find(".myModal-body").html() == "竞拍成功") {
-                        window.location.reload();
-                    }
-                })
+                getBiddingListDataJson.pageNo = 1;
+                getBiddingList(true);
 	        }, "POST", function(data){
 	            $("#errorTips").find(".myModal-body").html(data.desc);
 	            $("#errorTips").modal("show");
@@ -181,7 +178,7 @@ $(function() {
 *historyData:上一次存贮的信息（包含哪个页面， 当前第几页）
 */
     if(!isHistory) {
-        getBiddingList();
+        getBiddingList(true);
     } else {
         var historyData = getCookie("auctionListData");
         $("#auctionList").html(window.sessionStorage.getItem("auctionList"));

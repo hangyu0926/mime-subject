@@ -86,23 +86,33 @@ $(function() {
 */
     var getBackoutAudit = function(toEmpty){
         global_ajax("backoutAuditList", backoutAuditDatajson, function(data) {
+            console.log(data)
             var len = data.detailInfo.orderDTOList.length;
             var orderList = null;
             var list = "";
             for(var i = 0; i < len; i++) {
                 orderList = data.detailInfo.orderDTOList[i];
+                if(orderList.maxBiddingPrice == 0) {
+                    orderList.maxBiddingPrice = "--";
+                }
+                if(orderList.maxBidder == null) {
+                    orderList.orderState = "未拍";
+                    orderList.maxBidder = "--";
+                } else {
+                    orderList.orderState = "已拍";
+                }
                 list += "<li>"
                     + "<div class='orderInfo clearfix'>"
                     + "<div>"
                     + "<span class='orderNo'>订单号:"+orderList.orderNo+"</span>"
-                    + "<span class='userName'>发布人:"+orderList.userName+"</span>"
-                    + "<span class='stocksAmt'>股权数:"+orderList.stocksAmt+"</span>"
+                    + "<span class='sellerName'>发布人:"+orderList.sellerName+"</span>"
+                    + "<span class='stockAmt'>股权数:"+orderList.stockAmt+"</span>"
                     + "<span class='initialPrice'>起拍单价:"+orderList.initialPrice+"</span>"
-                    + "<span class='createTime'>提交时间:"+orderList.createTime+"</span>"
-                    + "<span class='saleTime'>上架时间:"+orderList.saleTime+"</span>"
+                    + "<span class='createTime'>提交时间:"+(new Date(orderList.createTime)).getFullYear()+"-"+((new Date(orderList.createTime)).getMonth()+1)+"-"+(new Date(orderList.createTime)).getDate()+"</span>"
+                    + "<span class='saleTime'>上架时间:"+(new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()+"</span>"
                     + "<span class='orderState'>订单状态:"+orderList.orderState+"</span>"
-                    + "<span class='biddingPrice'>当前竞价:"+orderList.biddingPrice+"</span>"
-                    + "<span class='userName'>当前持有人:"+orderList.userName+"</span>"
+                    + "<span class='maxBiddingPrice'>当前竞价:"+orderList.maxBiddingPrice+"</span>"
+                    + "<span class='maxBidder'>当前持有人:"+orderList.maxBidder+"</span>"
                     + "</div>"
                     + "</div>"
                     + "<div class='resultInfo clearfix'>"
@@ -128,9 +138,9 @@ $(function() {
         });
     };
 /**
-*发布审核通过不通过
+*发布审核通过/不通过
 */
-    $(".contentRight").on("click", ".resultInfo>.audit-btn>span", function(e) {
+    $(".contentRight").on("click", "#issuedAudit .resultInfo>.audit-btn>span", function(e) {
         var checkingResult = $(this).index();
         var orderNo = $(this).parents(".resultInfo").siblings(".orderInfo").find(".orderNo").html().split(":")[1];
         var checkingView = $(this).parent().siblings(".auditIdea").find(".auditIdea-area").val();
@@ -142,6 +152,30 @@ $(function() {
         global_ajax("releaseAudit", sendData, function(data) {
             $("#errorTips").find(".myModal-body").html("操作成功");
             $("#errorTips").modal("show");
+            getReleaseAuditDataJson.pageNo = 1;
+            getReleaseAudit(true);
+        }, "POST", function(data){
+            $("#errorTips").find(".myModal-body").html(data.desc);
+            $("#errorTips").modal("show");
+        });
+    })
+/**
+*撤销审核通过/不通过
+*/
+    $(".contentRight").on("click", "#cancelAudit .resultInfo>.audit-btn>span", function(e) {
+        var checkingResult = $(this).index();
+        var orderNo = $(this).parents(".resultInfo").siblings(".orderInfo").find(".orderNo").html().split(":")[1];
+        var checkingView = $(this).parent().siblings(".auditIdea").find(".auditIdea-area").val();
+        var sendData = {
+                "checkingResult": checkingResult,
+                "orderNo": orderNo,
+                "checkingView": checkingView
+            };
+        global_ajax("backoutAudit", sendData, function(data) {
+            $("#errorTips").find(".myModal-body").html("操作成功");
+            $("#errorTips").modal("show");
+            backoutAuditDatajson.pageNo = 1;
+            getBackoutAudit(true);
         }, "POST", function(data){
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");

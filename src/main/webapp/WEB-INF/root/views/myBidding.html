@@ -57,87 +57,8 @@
 			</ul>
 		</div>
 		<div class="contentRight">
-			<ul class="myBidding">
-				<li>
-					<div class="orderInfo clearfix">
-						<div>
-							<span class="orderNumber">订单号：123456789</span>
-							<span class="issuerEquity">股权数： 100</span>
-							<span class="orderNumber">上架时间：2017-3-15</span>
-							<span class="price">起拍单价：100</span>
-							<span class="submitTime">订单状态：竞拍完成，等待确认</span>
-							<span class="issuerEquity">当前竞价：500</span>
-							<span class="price">结束时间：2017-03-25</span>
-						</div>
-					</div>
-					<div class="resultInfo clearfix">
-						<div class="order-true">
-							<span>订单完成</span>
-							<span>确认一线下交易完成，完成该订单</span>
-						</div>
-						<div class="order-false hide">
-							<span>继续竞价</span>
-							<span>您的出价已被超，点击按钮继续竞价</span>
-						</div>
-						<div class="order-continue hide">
-							请及时刷新页面或关注邮箱邮件，以保持竞价领先
-						</div>
-					</div>
-				</li>
-
-				<li>
-					<div class="orderInfo clearfix">
-						<div>
-							<span class="orderNumber">订单号：123456789</span>
-							<span class="issuerEquity">股权数： 100</span>
-							<span class="orderNumber">上架时间：2017-3-15</span>
-							<span class="price">起拍单价：100</span>
-							<span class="submitTime">订单状态：竞拍完成，等待确认</span>
-							<span class="issuerEquity">当前竞价：500</span>
-							<span class="price">结束时间：2017-03-25</span>
-						</div>
-					</div>
-					<div class="resultInfo clearfix">
-						<div class="order-true hide">
-							<span>订单完成</span>
-							<span>确认一线下交易完成，完成该订单</span>
-						</div>
-						<div class="order-false">
-							<span>继续竞价</span>
-							<span>您的出价已被超，点击按钮继续竞价</span>
-						</div>
-						<div class="order-continue hide">
-							请及时刷新页面或关注邮箱邮件，以保持竞价领先
-						</div>
-					</div>
-				</li>
-
-				<li>
-					<div class="orderInfo clearfix">
-						<div>
-							<span class="orderNumber">订单号：123456789</span>
-							<span class="issuerEquity">股权数： 100</span>
-							<span class="orderNumber">上架时间：2017-3-15</span>
-							<span class="price">起拍单价：100</span>
-							<span class="submitTime">订单状态：竞拍完成，等待确认</span>
-							<span class="issuerEquity">当前竞价：500</span>
-							<span class="price">结束时间：2017-03-25</span>
-						</div>
-					</div>
-					<div class="resultInfo clearfix">
-						<div class="order-true hide">
-							<span>订单完成</span>
-							<span>确认一线下交易完成，完成该订单</span>
-						</div>
-						<div class="order-false hide">
-							<span>继续竞价</span>
-							<span>您的出价已被超，点击按钮继续竞价</span>
-						</div>
-						<div class="order-continue">
-							请及时刷新页面或关注邮箱邮件，以保持竞价领先
-						</div>
-					</div>
-				</li>
+			<ul class="myBidding" id="myBidding">
+			
 			</ul>
 		</div>
 	</div>
@@ -212,5 +133,31 @@
 			</div>
 		</div>
 	</div>
+    <!--竞拍单价设置-->
+    <div class="modal fade" id="setPreBidding">
+        <div class="modal-dialog" style="width: 440px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title text-center">竞拍该标的</p>
+                </div>
+                <div class="modal-body">
+                    <div class="mes">
+                        <span class="unitPrice">竞拍单价</span>
+                        <i class="preBidding-reduceprice">-</i>
+                        <input type="text" id="preBidding-unitPrice" maxlength=8>
+                        <i class="preBidding-addPrice">+</i>
+                        <span>共计</span>
+                        <span class="preBidding-totalPrice">123456</span>
+                        <span>元</span>
+                    </div>
+                    <p class="info-tips">此次最小加价50，最多加价500</p>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">确认竞拍</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
