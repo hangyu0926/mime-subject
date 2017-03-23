@@ -327,7 +327,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
                 } else {
                     myBiddingVO.setOrderState(myBiddingDTO.getOrderState());
                 }
-                if (myBiddingDTO.getBidderId() != userId) {
+                if (myBiddingDTO.getBidderId()!=null && myBiddingDTO.getBidderId() != userId) {
                     //竞拍失败
                     myBiddingVO.setBiddingState(1);
                 } else {
@@ -335,9 +335,17 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
                     myBiddingVO.setBiddingState(2);
                 }
                 if(myBiddingDTO.getBuyerConfirm() == null){
+                    //买家未确认
                     myBiddingVO.setBuyerConfirm(1);
                 }else{
+                    //买家已确认
                     myBiddingVO.setBuyerConfirm(2);
+                }
+                Date now = new Date();
+                int spanTime = myBiddingDTO.getExpireTime().compareTo(now);
+                if(spanTime<0){
+                    //竞拍结束，等待结算
+                    myBiddingVO.setOrderState(9);
                 }
                 myBiddingVOList.add(myBiddingVO);
             }
@@ -478,10 +486,10 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
 
     @Override
     public void updateOrderState() {
-        //更新竞拍结束的订单
+        //更新非流拍订单
         stockService.updateStatus();
+        //结算流拍订单
         List<OrderDTO> orderList = stockService.getPassOrder();
-        //结算流拍订单的个人股权
         for (OrderDTO orderDTO : orderList) {
             stockService.restoreFrozenStocks(orderDTO.getSellerId(), orderDTO.getStockAmt());
         }
