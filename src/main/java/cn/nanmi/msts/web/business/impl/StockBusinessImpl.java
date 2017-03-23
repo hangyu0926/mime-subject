@@ -144,8 +144,8 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
                     orderDTO.setUserName(userDTO.getUserName());
                     orderDTO.setUserMobile(userDTO.getUserMobile());
                 }else{
-                    orderDTO.setUserName("");
-                    orderDTO.setUserMobile("");
+                    orderDTO.setUserName("--");
+                    orderDTO.setUserMobile("--");
                 }
             }
         }
