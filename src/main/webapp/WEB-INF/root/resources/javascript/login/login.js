@@ -31,7 +31,7 @@ String.prototype.trim = function() {
 		localStorage.setItem("name", name);
 		var permissionId=data.detailInfo.permissionId;
 		localStorage.setItem("permissionId", permissionId);
-		window.location.href="/msts/views/goToAuction.html?id="+data.code;
+		window.location.href="/views/goToAuction.html?id="+data.code;
 	},"post",function(data){
 		global_dialog.error(data.desc,function(){
 			closeAlertDialog();

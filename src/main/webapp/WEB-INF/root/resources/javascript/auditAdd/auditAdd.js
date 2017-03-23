@@ -30,6 +30,24 @@
 		});
 		return
 	};
+	if(email.length>32){
+		global_dialog.error("邮箱小于33位",function(){
+			closeAlertDialog();
+		});
+		return
+	}
+	if(name.length>11){
+		global_dialog.error("姓名小于12位",function(){
+			closeAlertDialog();
+		});
+		return
+	}
+	if(gushu>100000000 || ksgushu>100000000){
+		global_dialog.error("股权数小于等于1个亿",function(){
+			closeAlertDialog();
+		});
+		return
+	}
 	global_ajax("addUser",{
 		"userMobile":phone,
 		"userMailAdd":email,
