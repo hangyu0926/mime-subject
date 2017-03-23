@@ -64,6 +64,7 @@ $(function() {
                         str = "<div class='order-continue'>交易已经结束</div>";
                     }
                 } else if(orderList.orderState == 9) {
+                    orderList.orderState = "系统结算中";
                     if(orderList.biddingState == 1) {
                         orderList.biddingState = "失败";
                         str = "<div class='order-continue'>竞拍失败，系统结算中</div>";
@@ -126,6 +127,14 @@ $(function() {
 /**
 *继续竞价
 */
+    var myBiddingData = {
+            orderNo: "",
+            stocksAmt: "",
+            minMakeUp: "",
+            maxMakeUp: "",
+            maxPrice: "",
+            nowPrice: ""
+        };
     $(".contentRight").on("click", ".resultInfo>.order-false>.continueBidding-btn", function(e) {
         var orderNo = $(this).parents(".resultInfo").siblings(".orderInfo").find(".orderNo").html().split(":")[1];
         var stocksAmt = $(this).parents(".resultInfo").siblings(".orderInfo").find(".stocksAmt").html().split(":")[1];
@@ -133,19 +142,24 @@ $(function() {
                 "orderNo": orderNo
             };
         global_ajax("preBidding", sendData, function(data) {
-            console.log(data)
             var orderList = data.detailInfo;
-            $("#setPreBidding").find("#preBidding-unitPrice").val(orderList.nowPrice + orderList.minMakeUp);
+            var nowPrice = "";
+            var maxPrice = (orderList.maxPrice >= orderList.nowPrice + orderList.maxMakeUp) ? orderList.nowPrice + orderList.maxMakeUp : orderList.maxPrice;
+            if(orderList.nowPrice + orderList.minMakeUp >= maxPrice) {
+                nowPrice = maxPrice;
+            } else {
+                nowPrice = orderList.nowPrice + orderList.minMakeUp;
+            }
+            $("#setPreBidding").find("#preBidding-unitPrice").val(nowPrice);
             $("#setPreBidding").find(".info-tips").html("此次最小加价"+orderList.minMakeUp+"，最多加价"+orderList.maxMakeUp+"");
-            $("#setPreBidding").find(".mes").attr("maxPrice", orderList.maxPrice);
-            $("#setPreBidding").find(".mes").attr("orderNo", orderNo);
-            $("#setPreBidding").find(".mes").attr("minMakeUp", orderList.minMakeUp);
-            $("#setPreBidding").find(".mes").attr("maxMakeUp", orderList.maxMakeUp);
-            $("#setPreBidding").find(".mes").attr("nowPrice", orderList.nowPrice);
-            $("#setPreBidding").find(".mes").attr("stocksAmt", stocksAmt);
+            myBiddingData.orderNo = orderNo;
+            myBiddingData.stocksAmt = stocksAmt;
+            myBiddingData.maxPrice = orderList.maxPrice;
+            myBiddingData.minMakeUp = orderList.minMakeUp;
+            myBiddingData.maxMakeUp = orderList.maxMakeUp;
+            myBiddingData.nowPrice = orderList.nowPrice;
             $("#setPreBidding").find(".preBidding-totalPrice").html(stocksAmt*(orderList.nowPrice + orderList.minMakeUp));
             $("#setPreBidding").modal("show");
-            setUnitPrice(orderList.minMakeUp, orderList.maxMakeUp, orderList.nowPrice, orderList.maxPrice, stocksAmt);
         }, "GET", function(data){
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");
@@ -154,8 +168,8 @@ $(function() {
 /**
 *竞拍单价设置
 */
-    var setUnitPrice = function(minMakeUp, maxMakeUp, originPrice, maxPrice, stocksAmt) {
-        maxPrice = (maxPrice>maxMakeUp+originPrice)?maxMakeUp+originPrice:maxPrice;
+    var setUnitPrice = function() {
+        var maxPrice = "";
         $("#setPreBidding .modal-body #preBidding-unitPrice").on({
             focus: function(e) {
                 $(this).parent().siblings(".info-tips").addClass("active");
@@ -164,8 +178,9 @@ $(function() {
                 $(this).parent().siblings(".info-tips").removeClass("active");
             },
             keyup: function(e) {
-                $("#setPreBidding").find(".preBidding-totalPrice").html(stocksAmt*parseInt($(this).val()));
-                if(parseInt($(this).val()) <= maxPrice && parseInt($(this).val()) >= originPrice + minMakeUp) {
+                maxPrice = (myBiddingData.maxPrice >= myBiddingData.maxMakeUp + myBiddingData.nowPrice) ? myBiddingData.maxMakeUp + myBiddingData.nowPrice : myBiddingData.maxPrice;
+                $("#setPreBidding").find(".preBidding-totalPrice").html(myBiddingData.stocksAmt*parseInt($(this).val()));
+                if(parseInt($(this).val()) <= myBiddingData.maxPrice && parseInt($(this).val()) >= myBiddingData.nowPrice + myBiddingData.minMakeUp) {
                     $(this).parent().siblings(".info-tips").removeClass("active");
                     $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
                 } else {
@@ -177,36 +192,30 @@ $(function() {
 
         $("#setPreBidding .modal-body>.mes>i").on("click", function(e) {
             var nowPrice = parseInt($("#setPreBidding").find("#preBidding-unitPrice").val());
+            maxPrice = (myBiddingData.maxPrice >= myBiddingData.maxMakeUp + myBiddingData.nowPrice) ? myBiddingData.maxMakeUp + myBiddingData.nowPrice : myBiddingData.maxPrice;
             if($(this).hasClass("preBidding-addPrice")) {
-                nowPrice +=  minMakeUp;
-                nowPrice = (nowPrice >= maxPrice) ? maxPrice : nowPrice;
+                nowPrice +=  myBiddingData.minMakeUp;
             } else if($(this).hasClass("preBidding-reduceprice")) {
-                nowPrice -=  minMakeUp;
-                nowPrice = (nowPrice <= originPrice + minMakeUp) ? originPrice + minMakeUp : nowPrice;
+                nowPrice -=  myBiddingData.minMakeUp;
             }
+            nowPrice = (nowPrice >= maxPrice) ? maxPrice : nowPrice;
+            nowPrice = (nowPrice <= myBiddingData.nowPrice + myBiddingData.minMakeUp) ? myBiddingData.nowPrice + myBiddingData.minMakeUp : nowPrice;
             $("#setPreBidding").find("#preBidding-unitPrice").val(nowPrice);
-            $("#setPreBidding").find(".preBidding-totalPrice").html(stocksAmt*nowPrice);
+            $("#setPreBidding").find(".preBidding-totalPrice").html(myBiddingData.stocksAmt*nowPrice);
         })
     };
+    setUnitPrice();
 /**
 *竞拍该标的
 */
     $("#setPreBidding .modal-footer>.btn").on("click", function(e) {
-        var orderNo = $("#setPreBidding").find(".mes").attr("orderNo");
         var biddingPrice = parseInt($("#setPreBidding").find("#preBidding-unitPrice").val());
         var sendData = {
-                "orderNo": orderNo,
+                "orderNo": myBiddingData.orderNo,
                 "biddingPrice": biddingPrice
             };
-        var maxPrice = parseInt($("#setPreBidding").find(".mes").attr("maxPrice"));
-        var originPrice = parseInt($("#setPreBidding").find(".mes").attr("nowPrice"));
-        var maxMakeUp = parseInt($("#setPreBidding").find(".mes").attr("maxMakeUp"));
-        var minMakeUp = parseInt($("#setPreBidding").find(".mes").attr("minMakeUp"));
-        var minprice = originPrice + minMakeUp;
-        maxPrice = (maxPrice>maxMakeUp+originPrice)?maxMakeUp+originPrice:maxPrice;
         if($(this).hasClass("btn-primary")) {
             global_ajax("bidding", sendData, function(data) {
-                console.log(data)
                 $("#errorTips").find(".myModal-body").html("竞拍成功");
                 $("#errorTips").modal("show");
                 getMyBiddingDataJson.pageNo = 1;
@@ -215,7 +224,7 @@ $(function() {
                 $("#errorTips").find(".myModal-body").html(data.desc);
                 $("#errorTips").modal("show");
             });
-                $("#setPreBidding").modal("hide");
+            $("#setPreBidding").modal("hide");
         }
     })
 /**

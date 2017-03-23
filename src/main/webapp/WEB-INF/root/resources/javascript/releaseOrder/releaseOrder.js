@@ -56,7 +56,7 @@ $(function() {
                 } else if(orderList.orderState ==8) {
                 	orderList.orderState = "流拍";
                 } else if(orderList.orderState ==9) {
-                    orderList.orderState = "竞拍完成，等待系统结算";
+                    orderList.orderState = "等待系统结算";
                 }
                 if(orderList.saleTime == null) {
                     orderList.saleTime = "--";
