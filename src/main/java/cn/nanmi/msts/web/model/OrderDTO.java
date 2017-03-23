@@ -46,6 +46,10 @@ public class OrderDTO implements Serializable {
     //卖家是否确认订单（0：未确认 1：已确认）
     private int sellerConfirm;
 
+    //买家姓名
+    private String userName;
+    private String userMobile;//买家手机
+
     public int getSellerConfirm() {
         return sellerConfirm;
     }
@@ -180,5 +184,21 @@ public class OrderDTO implements Serializable {
 
     public void setBuyerCounts(int buyerCounts) {
         this.buyerCounts = buyerCounts;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserMobile() {
+        return userMobile;
+    }
+
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile;
     }
 }

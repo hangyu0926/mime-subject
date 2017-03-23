@@ -240,7 +240,7 @@ public class StockController {
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        //return stockBusiness.getMyOrder(queryVO, 1L);
+        //return stockBusiness.getMyOrder(queryVO, 48L);
         return stockBusiness.getMyOrder(queryVO, user.getUserId());
     }
 

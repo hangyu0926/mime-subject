@@ -136,6 +136,17 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         int startPage = (page - 1) * pageSize;
         List<OrderDTO> orderDTOList = stockService.getMyOrder(startPage, pageSize, userId);
 
+        if (orderDTOList != null && orderDTOList.size() > 0) {
+            for (OrderDTO orderDTO : orderDTOList) {
+                //6-竞拍结束，等待确认，7-交易结束 我的发布可以看到买方信息，姓名电话。
+                if (6 == orderDTO.getOrderState() || 7 == orderDTO.getOrderState()){
+                    UserDTO userDTO =  userService.getUserById(orderDTO.getMaxBidder());
+                    orderDTO.setUserName(userDTO.getUserName());
+                    orderDTO.setUserMobile(userDTO.getUserMobile());
+                }
+            }
+        }
+
         //总页数
         Long count = stockService.getMyOrderCount(userId);
         OrderListVO orderListVO = new OrderListVO();

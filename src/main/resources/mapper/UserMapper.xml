@@ -141,4 +141,10 @@
     <update id="restoreFrozenStocks" >
         UPDATE USER  SET STOCKS_SALE_AMT = STOCKS_SALE_AMT + #{stockAmt},FROZEN_STOCKS = FROZEN_STOCKS -  #{stockAmt} WHERE USER_ID = #{sellId}
     </update>
+
+    <select id="getUserById" resultMap="userMap">
+        select USER_ID,MOBILE_NO,USER_NAME,LOGIN_NAME,LOGIN_PASS,PERMISSION,DEL_FLAG,CREATE_MAN,CREATE_TIME,STOCKS_AMT,STOCKS_SALE_AMT,FROZEN_STOCKS
+        from USER
+        where USER_ID=#{userId}
+    </select>
 </mapper>

@@ -94,4 +94,10 @@ public class UserServiceImpl implements IUserService {
     public void balanceOrder(Double stockAmt, Long userId) {
         userMapper.balanceOrder(stockAmt,userId);
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public UserDTO getUserById(Long userId) {
+        UserDTO userDto = userMapper.getUserById(userId);
+        return userDto;
+    }
 }
