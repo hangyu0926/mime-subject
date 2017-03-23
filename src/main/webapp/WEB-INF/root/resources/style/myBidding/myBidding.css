@@ -6,7 +6,7 @@
 }
 .contentRight > ul > li {
 	width: 100%;
-	height: 200px;
+	height: 245px;
 	border: 1px solid #b9b9bf;
 	-webkit-border-radius: 6px;
 	   -moz-border-radius: 6px;
@@ -26,13 +26,13 @@
 
 .contentRight > ul > li > div.orderInfo {
 	width: 100%;
-	height: 120px;
+	height: 165px;
 	padding: 15px 30px;
 	border-bottom: 1px solid #b9b9bf;
 }
 .contentRight > ul > li > div.orderInfo > div {
 	width: 100%;
-	height: 90px;
+	height: 135px;
 }
 .contentRight > ul > li > div.orderInfo > div > span {
 	display: table;

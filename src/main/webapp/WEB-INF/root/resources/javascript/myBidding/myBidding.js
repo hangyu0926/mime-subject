@@ -16,7 +16,6 @@ $(function() {
 */ 
     var getMyBidding = function(toEmpty){
         global_ajax("myBidding", getMyBiddingDataJson, function(data) {
-            console.log(data);
             var len = data.detailInfo.myBiddingVOList.length;
             var orderList = null;
             var list = "";
@@ -85,6 +84,8 @@ $(function() {
                     + "<span class='orderState'>订单状态:"+orderList.orderState+"</span>"
                     + "<span class='saleTime'>上架时间:"+(new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()+"</span>"
                     + "<span class='expireTime'>结束时间:"+(new Date(orderList.expireTime)).getFullYear()+"-"+((new Date(orderList.expireTime)).getMonth()+1)+"-"+(new Date(orderList.expireTime)).getDate()+"</span>"
+                    + "<span class='sellerName'>卖家姓名:"+orderList.sellerName+"</span>"
+                    + "<span class='sellerMobile'>卖家电话:"+orderList.sellerMobile+"</span>"
                     + "</div>"
                     + "</div>"
                     + "<div class='resultInfo clearfix'>"
