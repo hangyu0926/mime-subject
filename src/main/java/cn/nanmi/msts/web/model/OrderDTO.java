@@ -46,9 +46,20 @@ public class OrderDTO implements Serializable {
     //卖家是否确认订单（0：未确认 1：已确认）
     private int sellerConfirm;
 
-    //买家姓名
+    //当前购买者姓名
+    private String buyName;
+
+    //最终买家姓名
     private String userName;
-    private String userMobile;//买家手机
+    private String userMobile;//最终买家手机
+
+    public String getBuyName() {
+        return buyName;
+    }
+
+    public void setBuyName(String buyName) {
+        this.buyName = buyName;
+    }
 
     public int getSellerConfirm() {
         return sellerConfirm;
