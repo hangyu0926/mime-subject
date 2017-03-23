@@ -343,7 +343,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
                 }
                 Date now = new Date();
                 int spanTime = myBiddingDTO.getExpireTime().compareTo(now);
-                if(spanTime<0){
+                if(myBiddingVO.getBiddingState()==4 || myBiddingVO.getBiddingState()==3 && spanTime<0){
                     //竞拍结束，等待结算
                     myBiddingVO.setOrderState(9);
                 }

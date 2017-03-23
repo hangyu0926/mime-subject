@@ -36,14 +36,10 @@ public class BaseJunit4Test {
 
     @Test
     public void test() throws ParseException {
-        String date1str = "2011-10-1 10:20:16";
-        String date2str = "2011-10-07 15:50:35";
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date1 = dateFormat.parse(date1str);
-        Date date2 = dateFormat.parse(date2str);
-        int spanTime = date1.compareTo(date2);
-        if(spanTime<=0){
-            System.out.print("date1 < date2");
+        Integer a = 3;
+        Integer b = 2;
+        if(a==4 ||a ==3 && b<0){
+            System.out.print("aaaa");
         }
     }
 
