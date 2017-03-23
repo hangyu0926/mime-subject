@@ -77,6 +77,7 @@ public enum ErrorCode {
     ADD_MAIL_EXIST_FAILED("8011", "邮箱已存在"),
     ADD_NOT_ALL_FAILED("8012", "信息不全"),
     ADD_FORMAT_ERROR_FAILED("8013", "格式错误"),
+    TOO_MACH_STOCK("8017","您的股权数已突破天际，系统无法承受了呢!"),
 
     USER_ID_IS_NULL("7001","用户ID不能为空"),
     USER_ID_NOT_HAVE_PERMISSION("7002","用户没有权限"),

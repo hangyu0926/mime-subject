@@ -154,6 +154,10 @@ public class UserBusinessImpl extends BaseBussinessImpl implements IUserBusiness
         if (addVO.getUserName().length() > 22 || addVO.getUserMobile().length() != 11) {
             return new CSResponse(ErrorCode.ADD_FORMAT_ERROR_FAILED);
         }
+        if (addVO.getTotalStock()>2000000000||addVO.getAvailableStock()>2000000000) {
+            return new CSResponse(ErrorCode.TOO_MACH_STOCK);
+        }
+
         if (userService.getEmployeeNumByMobile(addVO.getUserMobile()) > 0) {
             return new CSResponse(ErrorCode.ADD_MOBILE_EXIST_FAILED);
         }
