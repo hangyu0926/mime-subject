@@ -368,9 +368,15 @@ public class StockController {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
         }
 
+        if (null != map.get("checkingView")){
+            if (map.get("checkingView").toString().length() > 32){
+                return new CSPageResponse(ErrorCode.YOUR_VIEW_LONGER);
+            }
+        }
+
         OrderCheckDTO orderCheckDTO = new OrderCheckDTO();
         orderCheckDTO.setAuditor(user.getUserId());
-        //orderCheckDTO.setAuditor(2);
+        //orderCheckDTO.setAuditor(43);
         orderCheckDTO.setTransId(UUID.randomUUID().toString().replace("-", ""));
         orderCheckDTO.setOrderNo(map.get("orderNo").toString());
         orderCheckDTO.setCheckingType(1);
@@ -405,6 +411,12 @@ public class StockController {
         }
         if (null == map.get("orderNo") || null == map.get("checkingResult")) {
             return new CSPageResponse(ErrorCode.FAIL_INVALID_PARAMS);
+        }
+
+        if (null != map.get("checkingView")){
+            if (map.get("checkingView").toString().length() > 32){
+                return new CSPageResponse(ErrorCode.YOUR_VIEW_LONGER);
+            }
         }
 
         OrderCheckDTO orderCheckDTO = new OrderCheckDTO();
