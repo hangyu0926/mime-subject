@@ -230,7 +230,7 @@ $(function() {
             if(myBiddingBottom == winHeight - 40) {
                 getMyBiddingDataJson.pageNo += 1;
                 if(getMyBiddingDataJson.pageNo <= parseInt($("#myBidding").attr("maxPage"))) {
-                    getBiddingList();
+                    getMyBidding();
                 } else {
                     getMyBiddingDataJson.pageNo = parseInt($("#myBidding").attr("maxPage"));
                 }
