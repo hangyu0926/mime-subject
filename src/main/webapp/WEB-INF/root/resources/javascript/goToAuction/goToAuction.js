@@ -88,14 +88,16 @@ $(function() {
             }
             $("#setPreBidding").find("#preBidding-unitPrice").val(nowPrice);
             $("#setPreBidding").find(".info-tips").html("此次最小加价"+orderList.minMakeUp+"，最多加价"+orderList.maxMakeUp+"");
+            $("#setPreBidding").find(".preBidding-totalPrice").html(stocksAmt*nowPrice);
             biddingData.orderNo = orderNo;
             biddingData.stocksAmt = stocksAmt;
             biddingData.maxPrice = orderList.maxPrice;
             biddingData.minMakeUp = orderList.minMakeUp;
             biddingData.maxMakeUp = orderList.maxMakeUp;
             biddingData.nowPrice = orderList.nowPrice;
-            console.log(biddingData)
             $("#setPreBidding").modal("show");
+            $("#setPreBidding").find(".info-tips").removeClass("active");
+            $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
         }, "GET", function(data){
             $("#errorTips").find(".myModal-body").html(data.desc);
             $("#errorTips").modal("show");
@@ -136,28 +138,54 @@ $(function() {
                 $(this).parent().siblings(".info-tips").removeClass("active");
             },
             keyup: function(e) {
-                maxPrice = (biddingData.maxPrice>biddingData.maxMakeUp+biddingData.nowPrice)?biddingData.maxMakeUp+biddingData.nowPrice:biddingData.maxPrice;
                 $("#setPreBidding").find(".preBidding-totalPrice").html(biddingData.stocksAmt*parseInt($(this).val()));
-                if(parseInt($(this).val()) <= maxPrice && parseInt($(this).val()) >= biddingData.nowPrice + biddingData.minMakeUp) {
-                    $(this).parent().siblings(".info-tips").removeClass("active");
-                    $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
-                } else {
-                    $(this).parent().siblings(".info-tips").addClass("active");
-                    $("#setPreBidding .modal-footer>.btn").removeClass("btn-primary").addClass("btn-default");
+                if(biddingData.maxPrice >= biddingData.maxMakeUp+biddingData.nowPrice) {
+                    maxPrice = biddingData.maxMakeUp+biddingData.nowPrice;
+                    if(parseInt($(this).val()) <= maxPrice && parseInt($(this).val()) >= biddingData.nowPrice + biddingData.minMakeUp) {
+                        $(this).parent().siblings(".info-tips").removeClass("active");
+                        $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
+                    } else {
+                        $(this).parent().siblings(".info-tips").addClass("active");
+                        $("#setPreBidding .modal-footer>.btn").removeClass("btn-primary").addClass("btn-default");
+                    }
+                } else if(biddingData.maxPrice < biddingData.maxMakeUp+biddingData.nowPrice) {
+                    maxPrice = biddingData.maxPrice;
+                    if(biddingData.maxPrice >= biddingData.minMakeUp+biddingData.nowPrice) {
+                        if(parseInt($(this).val()) <= maxPrice && parseInt($(this).val()) >= biddingData.nowPrice + biddingData.minMakeUp) {
+                            $(this).parent().siblings(".info-tips").removeClass("active");
+                            $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
+                        } else {
+                            $(this).parent().siblings(".info-tips").addClass("active");
+                            $("#setPreBidding .modal-footer>.btn").removeClass("btn-primary").addClass("btn-default");
+                        }
+                    } else {
+                        $(this).parent().siblings(".info-tips").addClass("active");
+                        $("#setPreBidding .modal-footer>.btn").removeClass("btn-primary").addClass("btn-default");
+
+                    }
                 }
             }
         })
 
         $("#setPreBidding .modal-body>.mes>i").on("click", function(e) {
 			var nowPrice = parseInt($("#setPreBidding").find("#preBidding-unitPrice").val());
-            maxPrice = (biddingData.maxPrice>=biddingData.maxMakeUp+biddingData.nowPrice)?biddingData.maxMakeUp+biddingData.nowPrice:biddingData.maxPrice;
+            $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
             if($(this).hasClass("preBidding-addPrice")) {
 	            nowPrice +=  biddingData.minMakeUp;
 	    	} else if($(this).hasClass("preBidding-reduceprice")) {
 	            nowPrice -=  biddingData.minMakeUp;
 	    	}
-            nowPrice = (nowPrice >= maxPrice) ? maxPrice : nowPrice;
-            nowPrice = (nowPrice <= biddingData.nowPrice + biddingData.minMakeUp) ? biddingData.nowPrice + biddingData.minMakeUp : nowPrice;
+            if(biddingData.maxPrice >= biddingData.maxMakeUp+biddingData.nowPrice) {
+                maxPrice = biddingData.maxMakeUp+biddingData.nowPrice;
+                nowPrice = (nowPrice >= maxPrice) ? maxPrice : nowPrice;
+                nowPrice = (nowPrice <= biddingData.nowPrice + biddingData.minMakeUp) ? biddingData.nowPrice + biddingData.minMakeUp : nowPrice;
+            } else if(biddingData.maxPrice <= biddingData.maxMakeUp+biddingData.nowPrice) {
+                maxPrice = biddingData.maxPrice;
+                nowPrice = maxPrice;
+            } else if(biddingData.nowPrice == biddingData.maxPrice) {
+                maxPrice = biddingData.maxPrice;
+                nowPrice = maxPrice;
+            }
 	    	$("#setPreBidding").find("#preBidding-unitPrice").val(nowPrice);
 	    	$("#setPreBidding").find(".preBidding-totalPrice").html(biddingData.stocksAmt*nowPrice);
 	    })
