@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <jmxConfigurator />
-    <property name="path.log" value="/usr/local/src/tomcat7/mstsLogs" />
+    <property name="path.log" value="./../mstsLogs" />
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 日志输出编码 -->
