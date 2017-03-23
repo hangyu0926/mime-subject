@@ -7,11 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@Component
+import javax.annotation.Resource;
+
+@Component("updateStatusJob")
 public class UpdateStatusJob {
 
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-	
+
+	@Resource
 	private IStockBusiness stockBusiness ;
 	
 	@Scheduled(cron="0 0 2 * * ?")

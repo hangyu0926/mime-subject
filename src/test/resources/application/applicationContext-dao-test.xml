@@ -16,7 +16,7 @@
 	<!-- mybatis和数据库会话管理 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="cn.nanmi.msts.web.dao" />
+		<property name="typeAliasesPackage" value="cn.nanmi.msts.web.model.entity" />
 		<property name="mapperLocations" value="classpath*:mapper/*Mapper.xml" />
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
 	</bean>
