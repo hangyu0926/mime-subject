@@ -82,7 +82,14 @@ public interface IStockService {
      *  //添加订单上架时间
      * @param orderNo
      */
-    void updateOrderSaleTime(String orderNo);
+    void updateOrderSaleTime(String orderNo,int biddingPeriod);
+
+    /**
+     * 根据规则Id获取系统规则
+     * @param ruleId
+     * @return
+     */
+    SystemRules getSystemRulesById(Long ruleId);
 
     /**
      * 查询准备竞拍参数

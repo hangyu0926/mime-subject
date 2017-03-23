@@ -363,25 +363,20 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         //审核新增记录
         stockService.releaseAudit(orderCheckDTO);
 
+        BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
         //修改订单状态
         if (0 == orderCheckDTO.getCheckingResult()) {
-
-            BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
-            Date now = new Date();
-            int spanTime = biddingDetailDTO.getExpireTime().compareTo(now);
-            if (spanTime < 0) {
-                //该订单已结束
-                return new CSResponse(ErrorCode.ORDER_IS_OVER);
-            }
-
             stockService.updateOrderState(orderCheckDTO.getOrderNo(), 4);
-            //添加订单上架时间
-            stockService.updateOrderSaleTime(orderCheckDTO.getOrderNo());
+
+
+            //添加订单上架时间和失效时间
+            SystemRules systemRules =  stockService.getSystemRulesById(biddingDetailDTO.getSysRuleId());
+
+            stockService.updateOrderSaleTime(orderCheckDTO.getOrderNo(),systemRules.getBiddingPeriod());
         } else {
             stockService.updateOrderState(orderCheckDTO.getOrderNo(), 2);
 
             //发布审核不通过。还原冻结资金
-            BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
             stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(), biddingDetailDTO.getStockAmt());
         }
 
@@ -394,10 +389,17 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
 
         //修改订单状态
         if (0 == orderCheckDTO.getCheckingResult()) {
+            BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
+            Date now = new Date();
+            int spanTime = biddingDetailDTO.getExpireTime().compareTo(now);
+            if (spanTime < 0) {
+                //该订单已结束
+                return new CSResponse(ErrorCode.ORDER_IS_OVER);
+            }
+
             stockService.updateOrderState(orderCheckDTO.getOrderNo(), 5);
 
-            //发布审核不通过。还原冻结资金
-            BiddingDetailDTO biddingDetailDTO = stockService.getOrderDetail(orderCheckDTO.getOrderNo());
+            //撤销审核通过。还原冻结资金
             stockService.restoreFrozenStocks(biddingDetailDTO.getSellerId(), biddingDetailDTO.getStockAmt());
         } else {
 

@@ -85,9 +85,14 @@ public class StockServiceImpl implements IStockService {
         orderMapper.updateOrderState(orderNo,orderState);
     }
 
-    public void updateOrderSaleTime(String orderNo){
+    public void updateOrderSaleTime(String orderNo,int biddingPeriod){
 
-        orderMapper.updateOrderSaleTime(orderNo);
+        orderMapper.updateOrderSaleTime(orderNo,biddingPeriod);
+    }
+
+    public SystemRules getSystemRulesById(Long ruleId){
+
+        return orderMapper.getSystemRulesById(ruleId);
     }
 
     public SystemRules getSystemRules(){

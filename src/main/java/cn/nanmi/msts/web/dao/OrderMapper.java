@@ -30,7 +30,7 @@ public interface OrderMapper {
 
     void updateOrderState(@Param("orderNo")String orderNo,@Param("orderState")int orderState);
 
-    void updateOrderSaleTime(@Param("orderNo")String orderNo);
+    void updateOrderSaleTime(@Param("orderNo")String orderNo,@Param("biddingPeriod") int biddingPeriod);
 
     SystemRules getSystemRules();
 
@@ -59,4 +59,6 @@ public interface OrderMapper {
     List<OrderDTO> getPassOrder();
 
     void updateStatus2Pass();
+
+    SystemRules getSystemRulesById(@Param("ruleId")Long ruleId);
 }

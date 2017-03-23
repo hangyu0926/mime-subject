@@ -52,9 +52,9 @@
 
     <insert id="releaseOrder" parameterType="cn.nanmi.msts.web.model.OrderDTO" >
         insert into USER_ORDER (ORDER_ID, ORDER_NO, STOCKS_AMT,
-        INITIAL_PRICE, ORDER_STATE, SELLER_ID,CREATE_TIME,SYSTEM_RULE_ID,EXPIRE_TIME,MAX_BIDDING_PRICE)
+        INITIAL_PRICE, ORDER_STATE, SELLER_ID,CREATE_TIME,SYSTEM_RULE_ID,MAX_BIDDING_PRICE)
         values (#{orderId}, #{orderNo}, #{stockAmt}, #{initialPrice},
-         1, #{sellerId}, now(),#{systemRuleId},date_add(now(), interval #{biddingPeriod} hour),#{initialPrice})
+         1, #{sellerId}, now(),#{systemRuleId},#{initialPrice})
     </insert>
 
     <select id="getMyOrder" resultMap="orderListMap">
@@ -92,7 +92,7 @@
 
     <update id="updateOrderSaleTime">
         UPDATE USER_ORDER SET
-        SALE_TIME= now()
+        SALE_TIME= now(),EXPIRE_TIME = date_add(now(), interval #{biddingPeriod} hour)
         WHERE ORDER_NO=#{orderNo}
     </update>
 
@@ -240,5 +240,9 @@
 
     <select id="queryTodayOrder" resultType="java.lang.Long">
         SELECT count(1) FROM USER_ORDER where ORDER_NO  LIKE '%${curDate}%'
+    </select>
+
+    <select id="getSystemRulesById" resultType="cn.nanmi.msts.web.model.SystemRules">
+        select RULE_ID as ruleId,BIDDING_PERIOD as biddingPeriod from SYSTEM_RULES where  RULE_ID = #{ruleId}
     </select>
 </mapper>
