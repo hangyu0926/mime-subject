@@ -63,11 +63,5 @@ public interface IUserService {
 
     void balanceOrder(Double stockAmt,Long userId);
 
-    /**
-     * 用户登录
-     *
-     * @param userId
-     * @return
-     */
-    UserDTO getUserById(Long userId);
+
 }
