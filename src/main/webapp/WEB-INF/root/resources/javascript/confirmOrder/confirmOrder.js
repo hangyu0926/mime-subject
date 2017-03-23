@@ -30,6 +30,8 @@ $(function() {
                     + "<span class='initialPrice'>起拍单价:"+orderList.initialPrice+"</span>"
                     + "<span class='saleTime'>上架时间:"+(new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()+"</span>"
                     + "<span class='maxBiddingPrice'>最终竞价:"+orderList.maxBiddingPrice+"</span>"
+                    + "<span class='buyName'>竞拍获胜者:"+orderList.buyName+"</span>"
+                    + "<span class='buyerCounts'>竞价轮数:"+orderList.buyerCounts+"</span>"
                     + "</div>"
                     + "</div>"
                     + "<div class='resultInfo clearfix'>"

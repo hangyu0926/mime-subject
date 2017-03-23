@@ -97,7 +97,6 @@ $(function() {
                 }
                 if(orderList.maxBidder == null) {
                     orderList.orderState = "未拍";
-                    orderList.maxBidder = "--";
                 } else {
                     orderList.orderState = "已拍";
                 }
@@ -113,7 +112,7 @@ $(function() {
                     + "<span class='saleTime'>上架时间:"+(new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()+"</span>"
                     + "<span class='orderState'>订单状态:"+orderList.orderState+"</span>"
                     + "<span class='maxBiddingPrice'>当前竞价:"+orderList.maxBiddingPrice+"</span>"
-                    + "<span class='maxBidder'>当前持有人:"+orderList.maxBidder+"</span>"
+                    + "<span class='buyName'>当前持有人:"+orderList.buyName+"</span>"
                     + "</div>"
                     + "</div>"
                     + "<div class='resultInfo clearfix'>"
