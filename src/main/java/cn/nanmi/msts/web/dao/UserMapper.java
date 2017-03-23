@@ -57,5 +57,4 @@ public interface UserMapper {
     void balanceOrder(@Param("stockAmt")Double stockAmt,@Param("userId")Long userId);
     ArrayList<String> getMailList();
 
-    UserDTO getUserById(@Param("userId")Long userId);
 }
