@@ -18,6 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 单元测试<br>
@@ -45,5 +46,6 @@ public class BaseJunit4Test {
 
     @Test
     public void test2(){
+        List<String> orders = orderMapper.getCompleteOrder();
     }
 }
