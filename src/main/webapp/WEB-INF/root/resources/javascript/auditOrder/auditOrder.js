@@ -42,10 +42,21 @@ $(function() {
             var list = "";
             for(var i = 0; i < len; i++) {
                 orderList = data.detailInfo.orderDTOList[i];
-                if(orderList.createTime == null) {
+                if(!orderList.createTime) {
                     orderList.createTime = "--";
                 } else {
-                    orderList.createTime = (new Date(orderList.createTime)).getFullYear()+"-"+((new Date(orderList.createTime)).getMonth()+1)+"-"+(new Date(orderList.createTime)).getDate()
+                    createTime = new Date(orderList.createTime);
+                    cT = {
+                        Y: createTime.getFullYear(),
+                        M: createTime.getMonth()+1,
+                        D: createTime.getDate(),
+                        H: createTime.getHours(),
+                        m: createTime.getMinutes()
+                    };
+                    cT.D = (cT.D < 10) ? "0"+cT.D+"" : cT.D;
+                    cT.H = (cT.H < 10) ? "0"+cT.H+"" : cT.H;
+                    cT.m = (cT.m < 10) ? "0"+cT.m+"" : cT.m;
+                    orderList.createTime = cT.Y + "-" + cT.M + "-" + cT.D + " " + cT.H + ":" + cT.m;
                 }
                 list += "<li>"
                     + "<div class='orderInfo clearfix'>"
@@ -55,7 +66,7 @@ $(function() {
                     + "<span class='stockAmt'>股权数:"+orderList.stockAmt+"</span>"
                     + "<span class='initialPrice'>起拍单价:"+orderList.initialPrice+"</span>"
                     + "<span class='createTime'>提交时间:"+orderList.createTime+"</span>"
-                    + "</div>"
+                    + "</div>" 
                     + "</div>"
                     + "<div class='resultInfo clearfix'>"
                     + "<div class='audit-btn'>"

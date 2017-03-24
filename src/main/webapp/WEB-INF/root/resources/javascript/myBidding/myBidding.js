@@ -73,6 +73,38 @@ $(function() {
                         str = "<div class='order-continue'>竞拍获胜，系统结算中</div>";
                     }
                 }
+                if(!orderList.saleTime) {
+                    orderList.saleTime = "--";
+                } else {
+                    saleTime = new Date(orderList.saleTime);
+                    sT = {
+                        Y: saleTime.getFullYear(),
+                        M: saleTime.getMonth()+1,
+                        D: saleTime.getDate(),
+                        H: saleTime.getHours(),
+                        m: saleTime.getMinutes()
+                    };
+                    sT.D = (sT.D < 10) ? "0"+sT.D+"" : sT.D;
+                    sT.H = (sT.H < 10) ? "0"+sT.H+"" : sT.H;
+                    sT.m = (sT.m < 10) ? "0"+sT.m+"" : sT.m;
+                    orderList.saleTime = sT.Y + "-" + sT.M + "-" + sT.D + " " + sT.H + ":" + sT.m;
+                }
+                if(!orderList.expireTime) {
+                    orderList.expireTime = "--";
+                } else {
+                    expireTime = new Date(orderList.expireTime);
+                    cT = {
+                        Y: expireTime.getFullYear(),
+                        M: expireTime.getMonth()+1,
+                        D: expireTime.getDate(),
+                        H: expireTime.getHours(),
+                        m: expireTime.getMinutes()
+                    };
+                    cT.D = (cT.D < 10) ? "0"+cT.D+"" : cT.D;
+                    cT.H = (cT.H < 10) ? "0"+cT.H+"" : cT.H;
+                    cT.m = (cT.m < 10) ? "0"+cT.m+"" : cT.m;
+                    orderList.expireTime = cT.Y + "-" + cT.M + "-" + cT.D + " " + cT.H + ":" + cT.m;
+                }
                 list += "<li>"
                     + "<div class='orderInfo clearfix'>"
                     + "<div>"
@@ -83,8 +115,8 @@ $(function() {
                     + "<span class='myPrice'>我的出价:"+orderList.myPrice+"</span>"
                     + "<span class='biddingState'>竞拍状态:"+orderList.biddingState+"</span>"
                     + "<span class='orderState'>订单状态:"+orderList.orderState+"</span>"
-                    + "<span class='saleTime'>上架时间:"+(new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()+"</span>"
-                    + "<span class='expireTime'>结束时间:"+(new Date(orderList.expireTime)).getFullYear()+"-"+((new Date(orderList.expireTime)).getMonth()+1)+"-"+(new Date(orderList.expireTime)).getDate()+"</span>"
+                    + "<span class='saleTime'>上架时间:"+orderList.saleTime+"</span>"
+                    + "<span class='expireTime'>结束时间:"+orderList.expireTime+"</span>"
                     + "<span class='sellerName'>卖家姓名:"+orderList.sellerName+"</span>"
                     + "<span class='sellerMobile'>卖家电话:"+orderList.sellerMobile+"</span>"
                     + "</div>"
@@ -151,7 +183,7 @@ $(function() {
                 nowPrice = orderList.nowPrice + orderList.minMakeUp;
             }
             $("#setPreBidding").find("#preBidding-unitPrice").val(nowPrice);
-            $("#setPreBidding").find(".info-tips").html("此次最小加价"+orderList.minMakeUp+"，最多加价"+orderList.maxMakeUp+"");
+            $("#setPreBidding").find(".info-tips").html("此次最小加价"+orderList.minMakeUp+"，最多加价"+orderList.maxMakeUp+ "，最高单价"+maxPrice);
             $("#setPreBidding").find(".preBidding-totalPrice").html(stocksAmt*nowPrice);
             myBiddingData.orderNo = orderNo;
             myBiddingData.stocksAmt = stocksAmt;

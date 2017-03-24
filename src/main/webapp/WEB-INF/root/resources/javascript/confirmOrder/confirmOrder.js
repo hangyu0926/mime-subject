@@ -21,6 +21,22 @@ $(function() {
             var list = "";
             for(var i = 0; i < len; i++) {
                 orderList = data.detailInfo.orderDTOList[i];
+                if(!orderList.saleTime) {
+                    orderList.saleTime = "--";
+                } else {
+                    saleTime = new Date(orderList.saleTime);
+                    sT = {
+                        Y: saleTime.getFullYear(),
+                        M: saleTime.getMonth()+1,
+                        D: saleTime.getDate(),
+                        H: saleTime.getHours(),
+                        m: saleTime.getMinutes()
+                    };
+                    sT.D = (sT.D < 10) ? "0"+sT.D+"" : sT.D;
+                    sT.H = (sT.H < 10) ? "0"+sT.H+"" : sT.H;
+                    sT.m = (sT.m < 10) ? "0"+sT.m+"" : sT.m;
+                    orderList.saleTime = sT.Y + "-" + sT.M + "-" + sT.D + " " + sT.H + ":" + sT.m;
+                }
                 list += "<li>"
                     + "<div class='orderInfo clearfix'>"
                     + "<div>"
@@ -28,7 +44,7 @@ $(function() {
                     + "<span class='userName'>发布人:"+orderList.sellerName+"</span>"
                     + "<span class='stocksAmt'>股权数:"+orderList.stockAmt+"</span>"
                     + "<span class='initialPrice'>起拍单价:"+orderList.initialPrice+"</span>"
-                    + "<span class='saleTime'>上架时间:"+(new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()+"</span>"
+                    + "<span class='saleTime'>上架时间:"+orderList.saleTime+"</span>"
                     + "<span class='maxBiddingPrice'>最终竞价:"+orderList.maxBiddingPrice+"</span>"
                     + "<span class='buyName'>竞拍获胜者:"+orderList.buyName+"</span>"
                     + "<span class='buyerCounts'>竞价轮数:"+orderList.buyerCounts+"</span>"

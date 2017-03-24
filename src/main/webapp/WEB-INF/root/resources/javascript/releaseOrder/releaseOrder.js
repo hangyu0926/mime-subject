@@ -58,15 +58,37 @@ $(function() {
                 } else if(orderList.orderState ==9) {
                     orderList.orderState = "等待系统结算";
                 }
-                if(orderList.saleTime == null) {
+                if(!orderList.saleTime) {
                     orderList.saleTime = "--";
                 } else {
-                    orderList.saleTime = (new Date(orderList.saleTime)).getFullYear()+"-"+((new Date(orderList.saleTime)).getMonth()+1)+"-"+(new Date(orderList.saleTime)).getDate()
+                    saleTime = new Date(orderList.saleTime);
+                    sT = {
+                        Y: saleTime.getFullYear(),
+                        M: saleTime.getMonth()+1,
+                        D: saleTime.getDate(),
+                        H: saleTime.getHours(),
+                        m: saleTime.getMinutes()
+                    };
+                    sT.D = (sT.D < 10) ? "0"+sT.D+"" : sT.D;
+                    sT.H = (sT.H < 10) ? "0"+sT.H+"" : sT.H;
+                    sT.m = (sT.m < 10) ? "0"+sT.m+"" : sT.m;
+                    orderList.saleTime = sT.Y + "-" + sT.M + "-" + sT.D + " " + sT.H + ":" + sT.m;
                 }
-                if(orderList.expireTime == null) {
+                if(!orderList.expireTime) {
                     orderList.expireTime = "--";
                 } else {
-                    orderList.expireTime = (new Date(orderList.expireTime)).getFullYear()+"-"+((new Date(orderList.expireTime)).getMonth()+1)+"-"+(new Date(orderList.expireTime)).getDate()
+                    expireTime = new Date(orderList.expireTime);
+                    cT = {
+                        Y: expireTime.getFullYear(),
+                        M: expireTime.getMonth()+1,
+                        D: expireTime.getDate(),
+                        H: expireTime.getHours(),
+                        m: expireTime.getMinutes()
+                    };
+                    cT.D = (cT.D < 10) ? "0"+cT.D+"" : cT.D;
+                    cT.H = (cT.H < 10) ? "0"+cT.H+"" : cT.H;
+                    cT.m = (cT.m < 10) ? "0"+cT.m+"" : cT.m;
+                    orderList.expireTime = cT.Y + "-" + cT.M + "-" + cT.D + " " + cT.H + ":" + cT.m;
                 }
                 if(orderList.maxBiddingPrice == 0) {
                     orderList.maxBiddingPrice = "--";

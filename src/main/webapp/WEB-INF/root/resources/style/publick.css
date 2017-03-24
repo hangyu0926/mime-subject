@@ -254,10 +254,12 @@ ul {
 	z-index: 10;
 }
 
-#errorTips .modal-title {
+#errorTips .modal-title,
+#loginOut .modal-title {
 	line-height: 40px;
 }
-#errorTips .myModal-body {
+#errorTips .myModal-body,
+#loginOut .myModal-body {
 	width: 100%;
 	height: 80px;
 	line-height: 80px;
@@ -265,13 +267,18 @@ ul {
 	font-size: 14px;
 	color: #ff6b6b;
 }
-#errorTips .myModal-footer {
+#errorTips .myModal-footer,
+#loginOut .myModal-footer {
 	width: 100%;
 	height: 60px;
 	text-align: center;
 }
-#errorTips .myModal-footer > .btn {
+#errorTips .myModal-footer > .btn,
+#loginOut .myModal-footer > .btn {
 	width: 120px;
+}
+#loginOut .myModal-footer > .btn + .btn {
+	margin-left: 20px;
 }
 #setPreBidding .modal-body {
     position: relative;
@@ -369,7 +376,7 @@ ul {
 #setPreBidding .modal-body > p.info-tips {
 	position: absolute;
 	top: -20px;
-	left: 110px;
+	left: 100px;
 	font-size: 12px;
 	color: #ff6b6b;
 	padding: 10px 20px;
@@ -395,7 +402,25 @@ ul {
 #setPreBidding .modal-body > p.info-tips.active {
 	opacity: 1;
 }
-
+#setPreBidding .modal-body > p.infoError-tips {
+    position: absolute;
+    bottom: -10px;
+    left: 0px;
+    width: 100%;
+    line-height: 30px;
+    font-size: 14px;
+    color: #ff6b6b;
+    text-align: center;
+    opacity: 0;
+    -webkit-transition: opacity .4s;
+       -moz-transition: opacity .4s;
+        -ms-transition: opacity .4s;
+         -o-transition: opacity .4s;
+            transition: opacity .4s;
+}
+#setPreBidding .modal-body > p.infoError-tips.active {
+	opacity: 1;
+}
 #setPreBidding .modal-body > p.info-tips:after{
 	position: absolute;
 	top: 34px;

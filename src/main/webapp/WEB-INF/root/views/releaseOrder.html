@@ -23,7 +23,7 @@
 	<nav class="nav-head">
 		 <div class="nav-head-LOGO">米么股权系统</div>
 		 <div class="nav-head-right">
-		    <span class="nav-head-logout" data-target="#errorTips" data-toggle="modal">退出</span>
+		    <span class="nav-head-logout" data-target="#loginOut" data-toggle="modal">退出</span>
 		    <span class="nav-head-changPwd" data-target="#changePwd-modal" data-toggle="modal">修改密码</span>
 		    <span class="nav-head-userName">沈旭祥</span>
 		 </div>
@@ -103,18 +103,19 @@
         </div>
     </div>
     <!-- 登出模态框 -->
-     <div class="modal fade" id="loginOut">
-        <div class="modal-dialog">
+    <div class="modal fade" id="loginOut">
+        <div class="modal-dialog" style="width: 450px">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <p class="modal-title text-center">登出</p>
+                    <p class="modal-title text-center">退出系统</p>
                 </div>
-                <div class="modal-footer">
-                    <div>
-                        <button type="button" id="modifyPassword" class="btn btn-primary" onclick="doLoginout()">确认</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    </div>
+                <div class="myModal-body">
+                    亲！是否真的要退出当前系统。。。
+                </div>
+                <div class="myModal-footer">
+                    <button type="button" id="modifyPassword" class="btn btn-primary" onclick="doLoginout()">确认</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
             </div>
         </div>
@@ -142,7 +143,7 @@
 						</div>
 						<span class="col-md-4 title-tip"></span>
 					</div>
-					<p>请按照相关提示，输入响应的数据</p>
+					<p>请按照相关提示，输入相应的数据</p>
 				</div>
 				<div class="modal-footer">
 					<div>
@@ -153,7 +154,7 @@
 			</div>
 		</div>
 	</div>
-    <!-- 登出模态框 -->
+    <!-- 错误提示模态框 -->
 	<div class="modal fade" id="errorTips">
 		<div class="modal-dialog" style="width: 360px">
 			<div class="modal-content">
