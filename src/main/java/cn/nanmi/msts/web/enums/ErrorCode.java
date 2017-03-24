@@ -115,8 +115,8 @@ public enum ErrorCode {
     YOUR_RELEASE_BEYOND("5011","您的发布股权数超出您的可售股权数"),
     YOUR_RELEASE_LOWER("5012","您的每股单价小于起拍单价"),
     YOUR_RELEASE_HIGHER("5013","您的每股单价大于最大单价"),
-
     TODAY_RELEASE_HIGHER("5014","今日发布订单已达上限"),
+    YOU_ARE_MAXBIDDER("5015","您已经是最高竞价人，不能重复竞价"),
 
     YOUR_VIEW_LONGER("5015","您的审核意见长度过长");
     /**

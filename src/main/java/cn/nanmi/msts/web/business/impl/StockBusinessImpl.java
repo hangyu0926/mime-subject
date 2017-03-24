@@ -199,6 +199,10 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
             //不能竞拍自己的标的
             return new CSResponse(ErrorCode.FORBID_BIDDING_YOURSELF);
         }
+        if(biddingDetailDTO.getMaxBidder() == user.getUserId()){
+            //您已经是最高竞价人，不能重复竞价
+            return new CSResponse(ErrorCode.YOU_ARE_MAXBIDDER);
+        }
         Date now = new Date();
         int spanTime = biddingDetailDTO.getExpireTime().compareTo(now);
         if (spanTime < 0) {
