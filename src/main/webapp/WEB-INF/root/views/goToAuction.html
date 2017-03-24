@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta http-equiv="Content-type" content="text/html;charset=utf-8">
-	<meta http-equiv="X-UA-compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<title>我要竞拍</title>
-	<script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>我要竞拍</title>
+    <script type="text/javascript" src="../resources/javascript/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../resources/javascript/bootstrap.min.js"></script>
     <script type="text/javascript" src="../resources/javascript/cookie.js"></script>
-	<script type="text/javascript" src="../resources/javascript/main.js"></script>
-	<script type="text/javascript" src="../resources/javascript/dialog.js"></script>
+    <script type="text/javascript" src="../resources/javascript/main.js"></script>
+    <script type="text/javascript" src="../resources/javascript/dialog.js"></script>
     <script type="text/javascript" src="../resources/javascript/validate.js"></script>
     <script type="text/javascript" src="../resources/javascript/md5.js"></script>
     <script type="text/javascript" src="../resources/javascript/publick.js"></script>
-	<script type="text/javascript" src="../resources/javascript/goToAuction/goToAuction.js"></script>
+    <script type="text/javascript" src="../resources/javascript/goToAuction/goToAuction.js"></script>
     <link rel="stylesheet" type="text/css" href="../resources/style/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../resources/style/publick.css">
     <link rel="stylesheet" type="text/css" href="../resources/style/alert.css">
     <link rel="stylesheet" type="text/css" href="../resources/style/goToAuction/goToAuction.css">
 </head>
+
 <body>
-    <nav class="nav-head"> 
+    <nav class="nav-head">
         <div class="nav-head-LOGO">米么股权系统</div>
         <div class="nav-head-right">
             <span class="nav-head-logout" data-target="#loginOut" data-toggle="modal">退出</span>
@@ -58,8 +60,7 @@
         </div>
         <div class="contentRight">
             <ul class="auctionList" id="auctionList">
-  
-              </ul>
+            </ul>
         </div>
     </div>
     <!-- 模态框修改密码-->
@@ -159,7 +160,7 @@
                     未知错误
                 </div>
                 <div class="myModal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
                 </div>
             </div>
         </div>
@@ -185,16 +186,20 @@
                     <p class="info-tips">此次最小加价50，最多加价500</p>
                 </div>
                 <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">确认竞拍</button>
+                    <button type="button" class="btn btn-primary">确认竞拍</button>
                 </div>
             </div>
         </div>
     </div>
 </body>
-<!--     <script type="text/javascript">
-    var code=window.location.href.split("?")[1].split("=")[1];
-    if(code=="9016"){
+<script type="text/javascript">
+var href = window.location.href;
+if (href.indexOf("?") > 0) {
+    var code = window.location.href.split("?")[1].split("=")[1];
+    if (code == "9016") {
         $("#firstPwd-modal").modal("show");
     };
-    </script>
- --></html>
+};
+</script>
+
+</html>
