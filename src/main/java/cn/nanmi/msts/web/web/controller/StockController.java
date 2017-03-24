@@ -452,4 +452,17 @@ public class StockController {
         //return stockBusiness.jumpReleaseOrder(1L);
         return stockBusiness.jumpReleaseOrder(user.getUserId());
     }
+
+    /**
+     * 触发系统跑批接口
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "turnOnTask")
+    @ResponseBody
+    public CSResponse turnOnTask(HttpServletRequest request) {
+        stockBusiness.updateOrderState();
+        return new CSResponse();
+    }
 }
