@@ -114,6 +114,9 @@ ul {
     overflow: hidden;
     cursor: pointer;
     -webkit-transition: height .4s;
+       -moz-transition: height .4s;
+        -ms-transition: height .4s;
+         -o-transition: height .4s;
             transition: height .4s;
 }
 .contentBox > .leftMenu > ul > li > span {
@@ -285,6 +288,7 @@ ul {
 	        user-select:none;
 }
 #setPreBidding .modal-body > .mes > span {
+	float: left;
 	line-height: 60px;
     cursor: default;
 }
@@ -292,18 +296,29 @@ ul {
 	margin-right: 20px;
 }
 #setPreBidding .modal-body > .mes > i {
-	display: inline-block;
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 0;
+	margin-top: 13px;
 	width: 34px;
 	height: 34px;
-	line-height: 32px;
+	line-height: 28px;
 	text-align: center;
-	vertical-align: middle;
 	font-size: 18px;
 	font-style: normal;
 	cursor: pointer;
 	background: transparent;
 	-webkit-border-radius: 6px;
+	   -moz-border-radius: 6px;
+	    -ms-border-radius: 6px;
+	     -o-border-radius: 6px;
+	        border-radius: 6px;
 	-webkit-text-shadow: none;
+	   -moz-text-shadow: none;
+	    -ms-text-shadow: none;
+	     -o-text-shadow: none;
+	        text-shadow: none;
 }
 #setPreBidding .modal-body > .mes > i:first-of-type {
 	border: 1px solid #b8b8bf;
@@ -313,7 +328,7 @@ ul {
 #setPreBidding .modal-body > .mes > i:last-of-type {
 	border: 1px solid #5093e1;
 	color: #5093e1;
-	margin-right: 10px;
+	margin-right: 20px;
 }
 #setPreBidding .modal-body > .mes > i:first-of-type:hover {
 	background: #b8b8bf;
@@ -325,14 +340,23 @@ ul {
 
 }
 #setPreBidding .modal-body > .mes > input {
-	display: inline-block;
+	float: left;
 	width: 100px;
 	height: 34px;
 	padding: 0 15px;
-	line-height: 34px;
+	margin-top: 13px;
+	line-height: 32px;
 	font-size: 14px;
-	border-radius: 6px;
-	text-shadow: none;
+	-webkit-border-radius: 6px;
+	   -moz-border-radius: 6px;
+	    -ms-border-radius: 6px;
+	     -o-border-radius: 6px;
+	        border-radius: 6px;
+	-webkit-text-shadow: none;
+	   -moz-text-shadow: none;
+	    -ms-text-shadow: none;
+	     -o-text-shadow: none;
+	        text-shadow: none;
 	border: 1px solid #ccc;
 	margin-right: 10px;
 }
@@ -345,7 +369,7 @@ ul {
 #setPreBidding .modal-body > p.info-tips {
 	position: absolute;
 	top: -20px;
-	left: 120px;
+	left: 110px;
 	font-size: 12px;
 	color: #ff6b6b;
 	padding: 10px 20px;
