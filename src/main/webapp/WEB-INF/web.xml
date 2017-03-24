@@ -80,7 +80,7 @@
             <param-name>excludeUrl</param-name>
             <param-value>
                 /404.jsp,/404.jsp,/web/login,/user/login,/resources,/login.html,/user/modifyPassword,/wechat/coreJoin,
-                /wechat/authentication,/user/wechatLogin,.jsp,.js,.png,.jpg,.css,/weixin,
+                /wechat/authentication,/user/wechatLogin,.jsp,.js,.png,.jpg,.css,/weixin,/turnOnTask,
             </param-value>
         </init-param>
         <init-param>
