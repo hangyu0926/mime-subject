@@ -571,7 +571,7 @@
                 <cos.file.temp.cospicpath>/temp_pictures/</cos.file.temp.cospicpath>
                 <cos.file.cosattachpath>/attachments/</cos.file.cosattachpath>
                 <cos.file.temp.cosattachpath>/temp_pictures/</cos.file.temp.cosattachpath>
-                <sys.root.address>http://mststest.xiyucapital.com:8080</sys.root.address>
+                <sys.root.address>54.222.189.210:8888</sys.root.address>
             </properties>
         </profile>
     </profiles>
