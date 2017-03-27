@@ -54,7 +54,10 @@ public interface UserMapper {
     void frozenStocks(@Param("sellId")Long sellId,@Param("stockAmt")Double stockAmt);
 
     void restoreFrozenStocks(@Param("sellId")Long sellId,@Param("stockAmt")Double stockAmt);
-    void balanceOrder(@Param("stockAmt")Double stockAmt,@Param("userId")Long userId);
     ArrayList<String> getMailList();
+
+    void updateSellerStocks(@Param("stockAmt")Double stockAmt,@Param("sellerId")Long sellerId);
+
+    void updateBuyerStocks(@Param("stockAmt")Double stockAmt,@Param("buyerId")Long buyerId);
 
 }

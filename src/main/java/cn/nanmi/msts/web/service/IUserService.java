@@ -61,7 +61,8 @@ public interface IUserService {
 
     public Long getEmployeeNum(GetUserPageListVO getVO);
 
-    void balanceOrder(Double stockAmt,Long userId);
+    void updateSellerStocks(Double stockAmt,Long sellerId);
 
+    void updateBuyerStocks(Double stockAmt,Long buyerId);
 
 }

@@ -100,7 +100,7 @@
     </update>
 
     <select id="getPreBidding" resultType="cn.nanmi.msts.web.model.PreBiddingDTO">
-        SELECT SR.MIN_STOCK_PRICE AS minPrice,SR.MAX_STOCK_PRICE AS maxPrice,SR.MIN_MAKEUP AS minMakeUp,SR.MAX_MAKEUP AS maxMakeUp,UO.MAX_BIDDING_PRICE AS nowPrice
+        SELECT SR.MIN_STOCK_PRICE AS minPrice,SR.MAX_STOCK_PRICE AS maxPrice,SR.MIN_MAKEUP AS minMakeUp,SR.MAX_MAKEUP AS maxMakeUp,UO.MAX_BIDDING_PRICE AS nowPrice,UO.MAX_BIDDER AS maxBidder
         FROM USER_ORDER UO
         LEFT JOIN SYSTEM_RULES SR
         ON SR.RULE_ID = UO.SYSTEM_RULE_ID

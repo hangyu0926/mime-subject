@@ -55,8 +55,6 @@ public class StockController {
         }
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
-//        UserDTO user = new UserDTO();
-//        user.setUserId(2L);
         if (user == null) {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
@@ -81,8 +79,6 @@ public class StockController {
         }
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
-//        UserDTO user = new UserDTO();
-//        user.setUserId(47L);
         if (user == null) {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
@@ -124,8 +120,6 @@ public class StockController {
         }
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
-//        UserDTO user = new UserDTO();
-//        user.setUserId(2L);
         if (user == null) {
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
@@ -149,9 +143,6 @@ public class StockController {
         }
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute(ConstantHelper.USER_SESSION);
-//        UserDTO user = new UserDTO();
-//        user.setUserId(20L);
-//        user.setPermissionId(1);
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
@@ -240,7 +231,6 @@ public class StockController {
         if(user == null){
             return new CSResponse(ErrorCode.SESSION_ERROR);
         }
-        //return stockBusiness.getMyOrder(queryVO, 48L);
         return stockBusiness.getMyOrder(queryVO, user.getUserId());
     }
 

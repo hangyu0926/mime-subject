@@ -210,7 +210,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
             return new CSResponse(ErrorCode.ORDER_IS_OVER);
         }
         if(myPrice < biddingDetailDTO.getMinPrice() ){
-            //您的每股单价小于起拍单价
+            //您的每股单价小于系统最小单价
             return new CSResponse(ErrorCode.YOUR_RELEASE_LOWER);
         }
         if(myPrice > biddingDetailDTO.getMaxPrice() ){
@@ -218,17 +218,27 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
             return new CSResponse(ErrorCode.YOUR_RELEASE_HIGHER);
         }
         Double bidMakeup = MathUtil.sub(myPrice, biddingDetailDTO.getMaxBiddingPrice());
-        if (bidMakeup <= 0) {
-            //您的出价低于当前竞价
-            return new CSResponse(ErrorCode.YOUR_PRICE_LOWER);
-        }
-        if (bidMakeup < biddingDetailDTO.getMinMakeUp()) {
-            //您的加价低于最低限制
-            return new CSResponse(ErrorCode.LOWER_MIN_MAKEUP);
-        }
         if (bidMakeup > biddingDetailDTO.getMaxMakeUp()) {
             //您的加价高于最高限制
             return new CSResponse(ErrorCode.GREATER_MAX_MAKEUP);
+        }
+
+        if(biddingDetailDTO.getMaxBidder() == null){
+            //首次竞价
+            if (bidMakeup < 0) {
+                //您的出价低于当前竞价
+                return new CSResponse(ErrorCode.YOUR_PRICE_LOWER);
+            }
+        }else{
+            //非首次竞价
+            if (bidMakeup <= 0) {
+                //您的出价低于当前竞价
+                return new CSResponse(ErrorCode.YOUR_PRICE_LOWER);
+            }
+            if (bidMakeup < biddingDetailDTO.getMinMakeUp()) {
+                //您的加价低于最小加价
+                return new CSResponse(ErrorCode.LOWER_MIN_MAKEUP);
+            }
         }
         synchronized (orderNo) {
             takeBidding(bidStockVO, user.getUserId());
@@ -500,8 +510,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
             if (biddingDetailDTO.getSellerConfirm() != null && biddingDetailDTO.getSellerConfirm() == 1) {
                 //双方已确认，订单结算
                 stockService.confirmOrder(7, null, 1, orderNo);
-                userService.balanceOrder(biddingDetailDTO.getStockAmt(), biddingDetailDTO.getSellerId());
-
+                balanceOrder(biddingDetailDTO.getStockAmt(), biddingDetailDTO.getSellerId(), biddingDetailDTO.getMaxBidder());
             } else {
                 stockService.confirmOrder(null, null, 1, orderNo);
             }
@@ -519,7 +528,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
             if (biddingDetailDTO.getBuyerConfirm() != null && biddingDetailDTO.getBuyerConfirm() == 1) {
                 //双方已确认，订单结算
                 stockService.confirmOrder(7, 1, null, orderNo);
-                userService.balanceOrder(biddingDetailDTO.getStockAmt(), biddingDetailDTO.getSellerId());
+                balanceOrder(biddingDetailDTO.getStockAmt(), biddingDetailDTO.getSellerId(), biddingDetailDTO.getMaxBidder());
             } else {
                 stockService.confirmOrder(null, 1, null, orderNo);
             }
@@ -527,9 +536,21 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         if (confirmUser == 3) {
             stockService.updateOrderState(orderNo, 7);
             //结算订单
-            userService.balanceOrder(biddingDetailDTO.getStockAmt(), biddingDetailDTO.getSellerId());
+            balanceOrder(biddingDetailDTO.getStockAmt(), biddingDetailDTO.getSellerId(), biddingDetailDTO.getMaxBidder());
         }
         return new CSResponse();
+    }
+
+    /**
+     * 订单完成，结算买家卖家股权
+     * @param stockAmt
+     * @param sellerId
+     * @param buyerId
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    private void balanceOrder(Double stockAmt, Long sellerId, Long buyerId ){
+        userService.updateSellerStocks(stockAmt,sellerId);
+        userService.updateBuyerStocks(stockAmt, buyerId);
     }
 
     @Override

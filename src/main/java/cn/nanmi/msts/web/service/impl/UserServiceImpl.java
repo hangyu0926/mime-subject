@@ -97,9 +97,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void balanceOrder(Double stockAmt, Long userId) {
-        userMapper.balanceOrder(stockAmt,userId);
+    public void updateSellerStocks(Double stockAmt, Long sellerId) {
+        userMapper.updateSellerStocks(stockAmt,sellerId);
     }
 
-
+    @Override
+    public void updateBuyerStocks(Double stockAmt, Long buyerId) {
+        userMapper.updateBuyerStocks(stockAmt, buyerId);
+    }
 }

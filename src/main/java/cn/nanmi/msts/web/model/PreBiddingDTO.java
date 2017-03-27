@@ -20,6 +20,8 @@ public class PreBiddingDTO implements Serializable{
     private Double minMakeUp;
     //最大加价
     private Double maxMakeUp;
+    //当前最高竞价人
+    private Long maxBidder;
 
     public PreBiddingDTO() {
     }
@@ -62,5 +64,13 @@ public class PreBiddingDTO implements Serializable{
 
     public void setMaxPrice(Double maxPrice) {
         this.maxPrice = maxPrice;
+    }
+
+    public Long getMaxBidder() {
+        return maxBidder;
+    }
+
+    public void setMaxBidder(Long maxBidder) {
+        this.maxBidder = maxBidder;
     }
 }

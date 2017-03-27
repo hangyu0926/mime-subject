@@ -142,8 +142,13 @@
     <update id="frozenStocks" >
         UPDATE USER  SET STOCKS_SALE_AMT = STOCKS_SALE_AMT - #{stockAmt},FROZEN_STOCKS = FROZEN_STOCKS +  #{stockAmt} WHERE USER_ID = #{sellId}
     </update>
-    <update id="balanceOrder" >
-        UPDATE USER  SET STOCKS_AMT =  STOCKS_AMT - #{stockAmt},FROZEN_STOCKS = FROZEN_STOCKS - #{stockAmt} WHERE USER_ID = #{userId}
+
+    <update id="updateSellerStocks" >
+        UPDATE USER  SET STOCKS_AMT =  STOCKS_AMT - #{stockAmt},FROZEN_STOCKS = FROZEN_STOCKS - #{stockAmt} WHERE USER_ID = #{sellerId}
+    </update>
+
+    <update id="updateBuyerStocks" >
+        UPDATE USER  SET STOCKS_AMT =  STOCKS_AMT + #{stockAmt},STOCKS_SALE_AMT = STOCKS_SALE_AMT + #{stockAmt} WHERE USER_ID = #{buyerId}
     </update>
 
     <update id="restoreFrozenStocks" >
