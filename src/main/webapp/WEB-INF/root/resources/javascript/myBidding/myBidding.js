@@ -191,6 +191,7 @@ $(function() {
             myBiddingData.minMakeUp = orderList.minMakeUp;
             myBiddingData.maxMakeUp = orderList.maxMakeUp;
             myBiddingData.nowPrice = orderList.nowPrice;
+            myBiddingData.isFirstBidding = orderList.firstBidding;
             $("#setPreBidding").modal("show");
             $("#setPreBidding").find(".info-tips").removeClass("active");
             $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
@@ -212,8 +213,8 @@ $(function() {
                 $(this).parent().siblings(".info-tips").removeClass("active");
             },
             keyup: function(e) {
-                $("#setPreBidding").find(".preBidding-totalPrice").html(myBiddingData.stocksAmt*parseInt($(this).val()));
-                if(myBiddingData.maxPrice >= myBiddingData.maxMakeUp+myBiddingData.nowPrice) {
+                $("#setPreBidding").find(".preBidding-totalPrice").html(biddingData.stocksAmt*parseInt($(this).val()));
+                if(myBiddingData.maxMakeUp + myBiddingData.nowPrice <= myBiddingData.maxPrice) {
                     maxPrice = myBiddingData.maxMakeUp+myBiddingData.nowPrice;
                     if(parseInt($(this).val()) <= maxPrice && parseInt($(this).val()) >= myBiddingData.nowPrice + myBiddingData.minMakeUp) {
                         $(this).parent().siblings(".info-tips").removeClass("active");
@@ -222,20 +223,23 @@ $(function() {
                         $(this).parent().siblings(".info-tips").addClass("active");
                         $("#setPreBidding .modal-footer>.btn").removeClass("btn-primary").addClass("btn-default");
                     }
-                } else if(myBiddingData.maxPrice < myBiddingData.maxMakeUp+myBiddingData.nowPrice) {
+                } else if(myBiddingData.maxMakeUp + myBiddingData.nowPrice > myBiddingData.maxPrice && myBiddingData.minMakeUp + myBiddingData.nowPrice >= myBiddingData.maxPrice) {
                     maxPrice = myBiddingData.maxPrice;
-                    if(myBiddingData.maxPrice >= myBiddingData.minMakeUp+myBiddingData.nowPrice) {
-                        if(parseInt($(this).val()) <= maxPrice && parseInt($(this).val()) >= myBiddingData.nowPrice + myBiddingData.minMakeUp) {
-                            $(this).parent().siblings(".info-tips").removeClass("active");
-                            $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
-                        } else {
-                            $(this).parent().siblings(".info-tips").addClass("active");
-                            $("#setPreBidding .modal-footer>.btn").removeClass("btn-primary").addClass("btn-default");
-                        }
+                    if(parseInt($(this).val()) == maxPrice && parseInt($(this).val()) == myBiddingData.minMakeUp + myBiddingData.nowPrice) {
+                        $(this).parent().siblings(".info-tips").removeClass("active");
+                        $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
                     } else {
                         $(this).parent().siblings(".info-tips").addClass("active");
                         $("#setPreBidding .modal-footer>.btn").removeClass("btn-primary").addClass("btn-default");
-
+                    }
+                } else if(myBiddingData.maxMakeUp + myBiddingData.nowPrice > myBiddingData.maxPrice && myBiddingData.minMakeUp + myBiddingData.nowPrice < myBiddingData.maxPrice) {
+                    maxPrice = myBiddingData.maxPrice;
+                    if(parseInt($(this).val()) <= maxPrice && parseInt($(this).val()) >= myBiddingData.nowPrice + myBiddingData.minMakeUp) {
+                        $(this).parent().siblings(".info-tips").removeClass("active");
+                        $("#setPreBidding .modal-footer>.btn").removeClass("btn-default").addClass("btn-primary");
+                    } else {
+                        $(this).parent().siblings(".info-tips").addClass("active");
+                        $("#setPreBidding .modal-footer>.btn").removeClass("btn-primary").addClass("btn-default");
                     }
                 }
             }
@@ -249,15 +253,15 @@ $(function() {
             } else if($(this).hasClass("preBidding-reduceprice")) {
                 nowPrice -=  myBiddingData.minMakeUp;
             }
-            if(myBiddingData.maxPrice >= myBiddingData.maxMakeUp+myBiddingData.nowPrice) {
+            if(myBiddingData.maxMakeUp + myBiddingData.nowPrice <= myBiddingData.maxPrice) {
                 maxPrice = myBiddingData.maxMakeUp+myBiddingData.nowPrice;
                 nowPrice = (nowPrice >= maxPrice) ? maxPrice : nowPrice;
-                nowPrice = (nowPrice <= myBiddingData.nowPrice + myBiddingData.minMakeUp) ? myBiddingData.nowPrice + myBiddingData.minMakeUp : nowPrice;
-            } else if(myBiddingData.maxPrice <= myBiddingData.maxMakeUp+myBiddingData.nowPrice) {
-                maxPrice = myBiddingData.maxPrice;
+                nowPrice = (nowPrice <= myBiddingData.nowPrice + myBiddingData.minMakeUp) ? myBiddingData.nowPrice + myBiddingData.minMakeUp : nowPrice; 
+            } else if(myBiddingData.maxMakeUp + myBiddingData.nowPrice > myBiddingData.maxPrice && myBiddingData.minMakeUp + myBiddingData.nowPrice >= myBiddingData.maxPrice) {
+                maxPrice = myBiddingData.maxPrice; 
                 nowPrice = maxPrice;
-            } else if(myBiddingData.nowPrice == myBiddingData.maxPrice) {
-                maxPrice = myBiddingData.maxPrice;
+            } else if(myBiddingData.maxMakeUp + myBiddingData.nowPrice > myBiddingData.maxPrice && myBiddingData.minMakeUp + myBiddingData.nowPrice < myBiddingData.maxPrice) {
+                maxPrice = myBiddingData.maxPrice; 
                 nowPrice = maxPrice;
             }
             $("#setPreBidding").find("#preBidding-unitPrice").val(nowPrice);
