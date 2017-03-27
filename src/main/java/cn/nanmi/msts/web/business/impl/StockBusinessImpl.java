@@ -1,7 +1,6 @@
 package cn.nanmi.msts.web.business.impl;
 
 import cn.nanmi.msts.web.business.IStockBusiness;
-import cn.nanmi.msts.web.business.IUserBusiness;
 import cn.nanmi.msts.web.core.ConstantHelper;
 import cn.nanmi.msts.web.core.Constants;
 import cn.nanmi.msts.web.dao.entities.OperationEntity;
@@ -13,7 +12,6 @@ import cn.nanmi.msts.web.service.IOperationService;
 import cn.nanmi.msts.web.service.IStockService;
 import cn.nanmi.msts.web.service.ITransactionService;
 import cn.nanmi.msts.web.service.IUserService;
-import cn.nanmi.msts.web.utils.BusinessConfUtil;
 import cn.nanmi.msts.web.utils.DateUtil;
 import cn.nanmi.msts.web.utils.MathUtil;
 import cn.nanmi.msts.web.utils.SendMail;
@@ -23,6 +21,7 @@ import cn.nanmi.msts.web.web.vo.in.PagedQueryVO;
 import cn.nanmi.msts.web.web.vo.in.UpdateConfigVO;
 import cn.nanmi.msts.web.web.vo.out.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +50,8 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
     private ITransactionService transactionService;
     @Resource
     private IUserService userService;
-//    private String fileServerOutPath;
+    @Resource
+    private TaskExecutor taskExecutor;
 
     @Override
     public CSResponse getBiddingList(PagedQueryVO queryVO, Long bidderId) {
@@ -243,14 +243,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         synchronized (orderNo) {
             takeBidding(bidStockVO, user.getUserId());
         }
-        try{
-            Boolean result = sendEmail(orderNo,2);
-            if(!result){
-                LOGGER.error("竞拍邮件发送失败，订单号:{}，用户ID:{}", orderNo, user.getUserId());
-            }
-        }catch (Exception e){
-            LOGGER.error("竞拍邮件发送异常，订单号:{}，用户ID:{}",orderNo,user.getUserId());
-        }
+        sendMailByAsynchronousMode(orderNo,2);
         return new CSResponse();
     }
 
@@ -558,7 +551,7 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         //给已经完成订单状态的买卖方发邮件
         List<String> orders = stockService.getCompleteOrder();
         for(String orderNo:orders){
-            sendEmail(orderNo,3);
+            sendMailByAsynchronousMode(orderNo,3);
         }
         //更新已结束的订单状态
         stockService.updateStatus();
@@ -569,6 +562,30 @@ public class StockBusinessImpl extends BaseBussinessImpl implements IStockBusine
         }
         //更新流拍的订单状态
         stockService.updateStatus2Pass();
+    }
+
+    /**
+     * 异步发送邮件
+     * @param orderNo   订单号
+     * @param type      1发布  2竞价更新 3 竞拍成功
+     * @return
+     */
+    public void sendMailByAsynchronousMode(final String orderNo,final int type){
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Boolean result =  sendEmail(orderNo,type);
+                    if(!result){
+                        LOGGER.error("邮件发送失败，订单号:{}", orderNo);
+                    }else{
+                        LOGGER.info("邮件发送成功，订单号:{}",orderNo);
+                    }
+                }catch (Exception e){
+                    LOGGER.error("邮件发送异常，订单号:{}",orderNo,e);
+                }
+            }
+        });
     }
 
     /**
